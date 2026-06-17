@@ -1144,7 +1144,8 @@
             try {
                 const { base64, mimeType } = await svgToPngBase64(svgElement, 2048, false);
                 const link = document.createElement('a'); link.href = `data:${mimeType};base64,${base64}`; link.download = 'stammbaum.png'; link.click();
-            } catch (e) { alert('Export fehlgeschlagen.'); }\n        };
+            } catch (e) { alert('Export fehlgeschlagen.'); }
+        };
 
         document.getElementById('checkout-btn').onclick = () => {
             if (!finalCompositedImage) {
