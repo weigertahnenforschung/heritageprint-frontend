@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Mittelalter",
+    "prompt": "Transform this family tree into an illuminated medieval manuscript illustration. The background should resemble aged parchment with warm golden-brown tones, decorated with intricate Celtic knotwork borders in deep red and gold leaf. Connecting lines between boxes should become ornate vine tendrils with small leaves and acanthus scrolls. Decorative miniature illustrations of castles, heraldic shields, fleur-de-lis, and ravens fill the margins. The overall palette is warm ochre, vermillion, ultramarine, and burnished gold, as if painted by a 13th-century monk in a Benedictine scriptorium. Slightly worn and aged appearance with visible parchment texture"
+  },
+  {
+    "name": "Barock",
+    "prompt": "A 17th-century copperplate engraving on laid paper, featuring visible foxing and aged patina. The artwork uses fine cross-hatching for shading, with text rendered in Roman Square Capitals for primary titles and Chancery-style Italics. The color palette is strictly monochrome, dominated by carbon ink with subtle oxidized sepia tones. The composition is symmetrical, centered around an arboreal (tree-like) structure, with directional lighting emanating from the top-left corner. The header text reads 'Fol. 11.' in the same historical style."
+  },
+  {
+    "name": "Art Nouveau",
+    "prompt": "Transform this family tree into a stunning Art Nouveau decorative poster in the style of Alphonse Mucha, circa 1900. The background features flowing sinuous curves and organic natural forms — lily pads, irises, wisteria blossoms, and peacock feathers. Connecting lines become elegant curved stems and intertwining botanical vines. The border is a graceful arched frame of stylized flowers and flowing feminine hair. The color palette is soft pastel — sage green, dusty rose, gold, ivory, and lavender — with delicate watercolor gradients and precise fine-line details. Ornamental circles and halos frame the composition. Printed poster aesthetic with visible grain texture"
+  },
+  {
+    "name": "Realistischer Baum",
+    "prompt": "Transform this family tree into a photorealistic painting of a magnificent ancient oak tree. The tree trunk rises from fertile earth at the bottom of the image, with large gnarled roots spreading wide. Each generation of the family is represented by a sturdy branch growing outward, with smaller twigs for individuals. The rectangular boxes are integrated as natural wooden plaques or stone tablets embedded into the bark. Warm afternoon sunlight filters through a lush green canopy. Background shows a rolling pastoral landscape with meadows and a river. Painted in the style of a 19th-century Romantic landscape — rich earthy tones, dappled light, and atmospheric depth"
+  },
+  {
+    "name": "Antik / Griechisch-Römisch",
+    "prompt": "Transform this family tree into a classical Greco-Roman stone inscription relief. The background resembles aged white marble with subtle grey veining and carved texture. Connecting lines become carved stone borders and classical meander (Greek key) patterns etched in relief. The borders are adorned with carved laurel wreaths, Roman eagles, ionic column capitals, and amphora motifs. Decorative elements include Greek pottery-style red and black figure illustrations in the margins. The overall aesthetic is a monumental marble stele or triumphal arch inscription panel. Slight weathering and patina on the stone surface. Color palette: marble white, travertine cream, terracotta red, and verdigris bronze"
+  },
+  {
+    "name": "1930er Jahre Art Déco",
+    "prompt": "Transform this family tree into a sleek Art Déco graphic composition from the 1930s. The background features bold geometric patterns — sunburst rays, chevron stripes, and stepped pyramid shapes in deep charcoal, gold, and ivory. Connecting lines become precise geometric angular pathways with small diamond and triangle accents. The borders are strong symmetrical Art Déco frames with stylized eagle motifs, zigzag lightning bolt ornaments, and chrome-like metallic sheen. Influenced by Chrysler Building architectural details and WPA poster design. The color palette is sophisticated and bold: jet black, burnished gold, ivory white, and deep teal, with sharp high-contrast graphic lines and a printed lithograph quality"
+  }
+]
