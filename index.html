@@ -1314,16 +1314,37 @@
         let _lastDetection = null;
 
         async function callBackendGemini(prompt, imageBase64, imageMime) {
-            const response = await fetch('/api/transform-design', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt, svgSnapshot: imageBase64 })
-            });
-            if (!response.ok) throw new Error('Backend-KI-Transformation fehlgeschlagen.');
-            const data = await response.json();
-            const imgPart = data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.mimeType?.startsWith('image/'));
-            if (!imgPart) throw new Error('Kein Bild in der Antwort.');
-            return `data:${imgPart.inlineData.mimeType};base64,${imgPart.inlineData.data}`;
+            try {
+                // Use the full Render backend URL
+                const backendUrl = 'https://heritageprint-backend.onrender.com/api/transform-design';
+        
+                const response = await fetch(backendUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        svgSnapshot: imageBase64
+                    })
+                });
+        
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `Backend error: ${response.status}`);
+                }
+        
+                const data = await response.json();
+                const candidates = data?.candidates?.[0];
+                if (!candidates) throw new Error('No AI response received.');
+        
+                const parts = candidates.content?.parts;
+                const imgPart = parts?.find(p => p.inlineData?.mimeType?.startsWith('image/'));
+                if (!imgPart) throw new Error('No image in AI response.');
+        
+                return `data:${imgPart.inlineData.mimeType};base64,${imgPart.inlineData.data}`;
+            } catch (error) {
+                console.error('Backend AI Error:', error.message);
+                throw error;
+            }
         }
 
         function showFinalResult(compositedUrl) {
