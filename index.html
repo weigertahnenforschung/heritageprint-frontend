@@ -430,9 +430,6 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Live Render Backend URL Definition
-        const BACKEND_URL = "https://heritageprint-backend.onrender.com";
-
         let rawData = { individuals: {}, families: {} };
         let scale = 0.8;
         let pX = 80, pY = 80;
@@ -598,7 +595,7 @@
         });
 
         function updateRulers() {
-            if (window.innerWidth <= 768) return; 
+            if (window.innerWidth <= 768) return; // Do not calculate or draw rulers on mobile viewport
             const topRuler = document.getElementById('top-ruler');
             const leftRuler = document.getElementById('left-ruler');
             topRuler.innerHTML = ''; leftRuler.innerHTML = '';
@@ -634,7 +631,8 @@
         function parseGedcom(text) {
             rawData = { individuals: {}, families: {} };
             const lines = text.split('\n');
-            let lastId = ''; let lastTag = '';
+            let lastId = '';
+            let lastTag = '';
             lines.forEach(line => {
                 const parts = line.trim().split(' ');
                 if (parts[0] === '0') {
@@ -655,8 +653,14 @@
                     else if (parts[1] === 'WIFE' && lastTag === 'FAM') rawData.families[lastId].wife = parts[2].replace(/@/g, '');
                     else if (parts[1] === 'CHIL' && lastTag === 'FAM') rawData.families[lastId].children.push(parts[2].replace(/@/g, ''));
                 } else if (parts[0] === '2' && parts[1] === 'DATE') {
-                    if (lastTag === 'BIRT') { rawData.individuals[lastId].birth = parts.slice(2).join(' '); lastTag = 'INDI'; }
-                    if (lastTag === 'DEAT') { rawData.individuals[lastId].death = parts.slice(2).join(' '); lastTag = 'INDI'; }
+                    if (lastTag === 'BIRT') {
+                        rawData.individuals[lastId].birth = parts.slice(2).join(' ');
+                        lastTag = 'INDI';
+                    }
+                    if (lastTag === 'DEAT') {
+                        rawData.individuals[lastId].death = parts.slice(2).join(' ');
+                        lastTag = 'INDI';
+                    }
                 }
             });
             Object.values(rawData.families).forEach(f => {
@@ -674,13 +678,20 @@
         searchInput.addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
             resultsDiv.innerHTML = '';
-            if (val.length < 2) { resultsDiv.style.display = 'none'; return; }
+            if (val.length < 2) {
+                resultsDiv.style.display = 'none';
+                return;
+            }
             const matches = Object.values(rawData.individuals).filter(i => i.name.toLowerCase().includes(val)).slice(0, 10);
             matches.forEach(m => {
                 const item = document.createElement('div');
                 item.className = 'search-item';
                 item.innerHTML = `<span><strong>${m.name}</strong></span> <small>ID: ${m.id}</small>`;
-                item.onclick = () => { searchInput.value = m.name; hiddenIdInput.value = m.id; resultsDiv.style.display = 'none'; };
+                item.onclick = () => {
+                    searchInput.value = m.name;
+                    hiddenIdInput.value = m.id;
+                    resultsDiv.style.display = 'none';
+                };
                 resultsDiv.appendChild(item);
             });
             resultsDiv.style.display = 'block';
@@ -722,438 +733,550 @@
 
         function hyphenateToFit(word, maxWidth, fontSize, bold) {
             const vowels = 'AEIOUaeiouÄÖÜäöü';
-            let splitAt = word.length - 1;
-            for (let i = word.length - 1; i >= 1; i--) {
-                if (measureText(word.substring(0, i) + '-', fontSize, bold) <= maxWidth) {
-                    splitAt = i;
-                    break;
-                }
-            }
-            for (let j = splitAt; j >= Math.max(1, splitAt - 3); j--) {
-                if (vowels.includes(word[j - 1])) {
-                    splitAt = j;
-                    break;
-                }
-            }
-            return { head: word.substring(0, splitAt) + '-', tail: word.substring(splitAt) };
+            let splitAt = Math.floor(word.length / 2);
+            if (splitAt < 2) splitAt = word.length - 1;
+            return {
+                head: word.slice(0, splitAt) + '-',
+                tail: word.slice(splitAt)
+            };
         }
 
-        function buildHierarchy(id, curD, maxD, mode) {
-            const p = rawData.individuals[id];
-            if (!p || curD >= maxD) return { name: p ? p.name : '?', birth: p?.birth, death: p?.death };
-            let children = [];
-            if (mode === 'ancestors') {
-                if (p.father) children.push(buildHierarchy(p.father, curD + 1, maxD, mode));
-                if (p.mother) children.push(buildHierarchy(p.mother, curD + 1, maxD, mode));
-            } else {
-                p.children.forEach(cId => children.push(buildHierarchy(cId, curD + 1, maxD, mode)));
+        function buildAncestorsTree(indiId, depth) {
+            let nodes = [];
+            let links = [];
+            let idCounter = 0;
+
+            function traverse(id, currentDepth, xPos, yPos) {
+                if (!id || currentDepth > depth) return null;
+                const person = rawData.individuals[id];
+                if (!person) return null;
+
+                idCounter++;
+                let node = {
+                    uniqueId: idCounter,
+                    id: person.id,
+                    name: person.name,
+                    birth: person.birth,
+                    death: person.death,
+                    depth: currentDepth,
+                    x: xPos,
+                    y: yPos
+                };
+                nodes.push(node);
+
+                const orientation = document.getElementById('tree-orientation').value;
+                const verticalStep = orientation === 'up' ? -130 : 130;
+                const horizontalSpread = 240 / Math.pow(currentDepth, 0.85);
+
+                let fatherNode = traverse(person.father, currentDepth + 1, xPos - horizontalSpread, yPos + verticalStep);
+                let motherNode = traverse(person.mother, currentDepth + 1, xPos + horizontalSpread, yPos + verticalStep);
+
+                if (fatherNode) links.push({ source: node, target: fatherNode });
+                if (motherNode) links.push({ source: node, target: motherNode });
+
+                return node;
             }
-            return { name: p.name, birth: p.birth, death: p.death, children: children.length > 0 ? children : null };
+
+            traverse(indiId, 1, 600, document.getElementById('tree-orientation').value === 'up' ? 500 : 80);
+            return { nodes, links };
         }
 
-        document.getElementById('generate-btn').addEventListener('click', () => {
-            if (hiddenIdInput.value) renderTree();
-            else alert('Bitte wählen Sie im 1. Schritt eine Person aus.');
-        });
+        function buildDescendantsTree(indiId, depth) {
+            let nodes = [];
+            let links = [];
+            let idCounter = 0;
+
+            function traverse(id, currentDepth, xPos, yPos) {
+                if (!id || currentDepth > depth) return null;
+                const person = rawData.individuals[id];
+                if (!person) return null;
+
+                idCounter++;
+                let node = {
+                    uniqueId: idCounter,
+                    id: person.id,
+                    name: person.name,
+                    birth: person.birth,
+                    death: person.death,
+                    depth: currentDepth,
+                    x: xPos,
+                    y: yPos
+                };
+                nodes.push(node);
+
+                const orientation = document.getElementById('tree-orientation').value;
+                const verticalStep = orientation === 'up' ? -130 : 130;
+
+                const childrenIds = person.children || [];
+                if (childrenIds.length > 0) {
+                    const totalWidth = 340 / Math.pow(currentDepth, 0.6);
+                    const stepX = childrenIds.length > 1 ? totalWidth / (childrenIds.length - 1) : 0;
+                    const startX = xPos - (totalWidth / 2);
+
+                    childrenIds.forEach((cId, idx) => {
+                        const childX = childrenIds.length > 1 ? startX + (idx * stepX) : xPos;
+                        let childNode = traverse(cId, currentDepth + 1, childX, yPos + verticalStep);
+                        if (childNode) links.push({ source: node, target: childNode });
+                    });
+                }
+
+                return node;
+            }
+
+            traverse(indiId, 1, 600, document.getElementById('tree-orientation').value === 'up' ? 500 : 80);
+            return { nodes, links };
+        }
 
         function renderTree() {
-            const startId = hiddenIdInput.value;
-            const data = buildHierarchy(startId, 0, parseInt(document.getElementById('gen-depth').value), document.getElementById('lineage-mode').value);
-            const showDates = document.getElementById('show-dates').checked;
-            svg.selectAll('*').remove();
+            const probandId = hiddenIdInput.value;
+            if (!probandId) return;
 
-            const boxScale = parseFloat(document.getElementById('box-scale').value);
-            const nameFontSize = Math.round(13 * boxScale);
-            const dateFontSize = Math.round(10 * boxScale);
-            const PAD_H = Math.round(10 * boxScale);
-            const PAD_V = Math.round(8 * boxScale);
-            const LINE_GAP = Math.round(4 * boxScale);
+            const depth = parseInt(document.getElementById('gen-depth').value) || 4;
+            const mode = document.getElementById('lineage-mode').value;
+            const docTitle = document.getElementById('doc-title-input').value.trim();
 
-            const nodes = d3.hierarchy(data);
-            
-            let maxLabelW = 80;
-            nodes.each(d => {
-                const nameW = measureText(d.data.name, nameFontSize, true);
-                if (nameW > maxLabelW) maxLabelW = nameW;
-                if (showDates) {
-                    const bStr = d.data.birth ? `* ${d.data.birth}` : '';
-                    const dStr = d.data.death ? `† ${d.data.death}` : '';
-                    const bW = measureText(bStr, dateFontSize);
-                    const dW = measureText(dStr, dateFontSize);
-                    if (bW > maxLabelW) maxLabelW = bW;
-                    if (dW > maxLabelW) maxLabelW = dW;
-                }
-            });
+            let treeData = mode === 'descendants' ? buildDescendantsTree(probandId, depth) : buildAncestorsTree(probandId, depth);
 
-            const boxW = Math.min(220, Math.max(120, maxLabelW + PAD_H * 2));
-            let maxLines = 1;
-            
-            nodes.each(d => {
-                d.nameLines = wrapText(d.data.name, boxW - PAD_H * 2, nameFontSize, true);
-                d.dateLines = [];
-                if (showDates) {
-                    if (d.data.birth) d.dateLines.push(`* ${d.data.birth}`);
-                    if (d.data.death) d.dateLines.push(`† ${d.data.death}`);
-                }
-                const totalL = d.nameLines.length + d.dateLines.length;
-                if (totalL > maxLines) maxLines = totalL;
-            });
-
-            const boxH = (nameFontSize * 1.3 * 1.2) + (showDates ? dateFontSize * 1.2 * 2 : 0) + PAD_V * 2 + 10;
-            currentBoxW = boxW; currentBoxH = boxH;
-
-            const baseNodeSizeX = boxW + 25;
-            const baseNodeSizeY = boxH + 45;
-
-            const treeLayout = d3.tree().nodeSize([baseNodeSizeX, baseNodeSizeY]);
-            treeLayout(nodes);
+            const userScale = parseFloat(boxScaleSlider.value) || 1.0;
+            const baseBoxW = 125;
+            const baseBoxH = 55;
+            const boxW = baseBoxW * userScale;
+            const boxH = baseBoxH * userScale;
+            currentBoxW = boxW;
+            currentBoxH = boxH;
 
             let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-            nodes.each(d => {
-                if (d.x < minX) minX = d.x; if (d.x > maxX) maxX = d.x;
-                if (d.y < minY) minY = d.y; if (d.y > maxY) maxY = d.y;
+            treeData.nodes.forEach(n => {
+                if (n.x < minX) minX = n.x; if (n.x > maxX) maxX = n.x;
+                if (n.y < minY) minY = n.y; if (n.y > maxY) maxY = n.y;
             });
 
-            const docW_cm = parseFloat(document.getElementById('sheet-w').value);
-            const docH_cm = parseFloat(document.getElementById('sheet-h').value);
-            const canvasW = docW_cm * PX_PER_CM;
-            const canvasH = docH_cm * PX_PER_CM;
+            if (treeData.nodes.length === 0) { minX = 0; maxX = 1200; minY = 0; maxY = 600; }
 
-            canvas.style.width = canvasW + 'px';
-            canvas.style.height = canvasH + 'px';
-            svgElement.setAttribute('width', canvasW);
-            svgElement.setAttribute('height', canvasH);
+            const paddingX = 150;
+            const paddingY = 150;
+            const totalW = (maxX - minX) + (paddingX * 2);
+            const totalH = (maxY - minY) + (paddingY * 2);
 
-            const treeW = maxX - minX;
-            const treeH = maxY - minY;
-            const offsetX = (canvasW - treeW) / 2 - minX;
-            let offsetY = 60;
+            const shiftX = paddingX - minX;
+            const shiftY = paddingY - minY;
 
-            const orient = document.getElementById('tree-orientation').value;
-            nodes.each(d => {
-                d.finalX = d.x + offsetX;
-                if (orient === 'up') {
-                    d.finalY = canvasH - (d.y + offsetY) - boxH;
-                } else {
-                    d.finalY = d.y + offsetY;
+            treeData.nodes.forEach(n => { n.x += shiftX; n.y += shiftY; });
+            currentNodes = treeData.nodes;
+
+            svg.selectAll("*").remove();
+            svgElement.setAttribute("width", totalW);
+            svgElement.setAttribute("height", totalH);
+            canvas.style.width = totalW + 'px';
+            canvas.style.height = totalH + 'px';
+
+            svg.append("rect")
+               .attr("width", totalW)
+               .attr("height", totalH)
+               .attr("fill", "#fdfbf7");
+
+            if (docTitle) {
+                svg.append("text")
+                   .attr("x", totalW / 2)
+                   .attr("y", 60)
+                   .attr("text-anchor", "middle")
+                   .attr("font-family", "Georgia, serif")
+                   .attr("font-size", "28px")
+                   .attr("font-weight", "bold")
+                   .attr("fill", "#1e293b")
+                   .text(docTitle);
+            }
+
+            svg.append("defs").append("marker")
+                .attr("id", "arrow")
+                .attr("viewBox", "0 0 10 10")
+                .attr("refX", boxW / 2)
+                .attr("refY", 5)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto-start-reverse")
+                .append("path")
+                .attr("d", "M 0 1 L 10 5 L 0 9 z")
+                .attr("fill", "#94a3b8");
+
+            svg.selectAll(".tree-link")
+                .data(treeData.links)
+                .enter()
+                .append("path")
+                .attr("class", "tree-link")
+                .attr("d", d => {
+                    const sX = d.source.x;
+                    const sY = d.source.y;
+                    const tX = d.target.x;
+                    const tY = d.target.y;
+                    return `M ${sX} ${sY} C ${sX} ${(sY + tY) / 2}, ${tX} ${(sY + tY) / 2}, ${tX} ${tY}`;
+                })
+                .attr("fill", "none")
+                .attr("stroke", "#94a3b8")
+                .attr("stroke-width", 2);
+
+            const nodeGroups = svg.selectAll(".tree-node")
+                .data(treeData.nodes)
+                .enter()
+                .append("g")
+                .attr("class", "tree-node")
+                .attr("transform", d => `translate(${d.x - boxW / 2}, ${d.y - boxH / 2})`);
+
+            nodeGroups.append("rect")
+                .attr("width", boxW)
+                .attr("height", boxH)
+                .attr("rx", 6)
+                .attr("fill", selectedBoxColor)
+                .attr("stroke", "#475569")
+                .attr("stroke-width", 1.5)
+                .style("filter", "drop-shadow(0px 2px 4px rgba(0,0,0,0.06))");
+
+            const showDates = document.getElementById('show-dates').checked;
+            const nameFontSize = Math.max(10, Math.min(14, 12 * userScale));
+            const dateFontSize = Math.max(8, Math.min(11, 9 * userScale));
+
+            nodeGroups.each(function(d) {
+                const group = d3.select(this);
+                const maxTextW = boxW - 16;
+                const nameLines = wrapText(d.name, maxTextW, nameFontSize, true);
+
+                let startY = (boxH - (nameLines.length * (nameFontSize + 3))) / 2 + nameFontSize - 2;
+                if (showDates && (d.birth || d.death)) {
+                    startY = (boxH - (nameLines.length * (nameFontSize + 3) + (dateFontSize + 3))) / 2 + nameFontSize - 2;
                 }
-            });
 
-            const gLinks = svg.append("g").attr("class", "links");
-            nodes.links().forEach(link => {
-                const s = link.source;
-                const t = link.target;
-                const sX = s.finalX + boxW / 2;
-                const sY = orient === 'up' ? s.finalY : s.finalY + boxH;
-                const tX = t.finalX + boxW / 2;
-                const tY = orient === 'up' ? t.finalY + boxH : t.finalY;
-                const midY = (sY + tY) / 2;
-
-                gLinks.append("path")
-                    .attr("d", `M ${sX} ${sY} C ${sX} ${midY}, ${tX} ${midY}, ${tX} ${tY}`)
-                    .attr("fill", "none")
-                    .attr("stroke", "#475569")
-                    .attr("stroke-width", Math.max(1, 1.5 * boxScale));
-            });
-
-            const gNodes = svg.append("g").attr("class", "nodes");
-            currentNodes = [];
-
-            nodes.each(d => {
-                currentNodes.push({ id: d.data.name, x: d.finalX, y: d.finalY, w: boxW, h: boxH });
-                const nodeG = gNodes.append("g").attr("transform", `translate(${d.finalX},${d.finalY})`);
-
-                nodeG.append("rect")
-                    .attr("width", boxW)
-                    .attr("height", boxH)
-                    .attr("rx", 6)
-                    .attr("fill", "#ffffff")
-                    .attr("stroke", varColor('--primary'))
-                    .attr("stroke-width", Math.max(1, 1.5 * boxScale))
-                    .attr("style", "filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.04))");
-
-                let curY = PAD_V + nameFontSize;
-                d.nameLines.forEach(line => {
-                    nodeG.append("text")
+                nameLines.forEach((line, idx) => {
+                    group.append("text")
                         .attr("x", boxW / 2)
-                        .attr("y", curY)
+                        .attr("y", startY + (idx * (nameFontSize + 3)))
                         .attr("text-anchor", "middle")
                         .attr("font-family", "Georgia, serif")
-                        .attr("font-size", nameFontSize)
+                        .attr("font-size", `${nameFontSize}px`)
                         .attr("font-weight", "bold")
                         .attr("fill", "#0f172a")
                         .text(line);
-                    curY += nameFontSize * 1.2;
                 });
 
-                curY += LINE_GAP;
-                d.dateLines.forEach(line => {
-                    nodeG.append("text")
-                        .attr("x", boxW / 2)
-                        .attr("y", curY)
-                        .attr("text-anchor", "middle")
-                        .attr("font-family", "Georgia, serif")
-                        .attr("font-size", dateFontSize)
-                        .attr("fill", "#475569")
-                        .text(line);
-                    curY += dateFontSize * 1.2;
-                });
+                if (showDates) {
+                    let dateStr = '';
+                    if (d.birth) dateStr += `* ${d.birth}`;
+                    if (d.death) dateStr += (dateStr ? '  ' : '') + `† ${d.death}`;
+
+                    if (dateStr) {
+                        group.append("text")
+                            .attr("x", boxW / 2)
+                            .attr("y", startY + (nameLines.length * (nameFontSize + 3)) + 2)
+                            .attr("text-anchor", "middle")
+                            .attr("font-family", "Georgia, serif")
+                            .attr("font-size", `${dateFontSize}px`)
+                            .attr("fill", "#475569")
+                            .text(dateStr);
+                    }
+                }
             });
 
             updateTransform();
         }
 
-        function varColor(varName) {
-            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
-        }
+        document.getElementById('generate-btn').onclick = () => {
+            if (!hiddenIdInput.value) { alert('Bitte wählen Sie zuerst einen Probanden aus!'); return; }
+            renderTree();
+        };
 
         function updateTransform() {
             canvas.style.transform = `translate(${pX}px, ${pY}px) scale(${scale})`;
             updateRulers();
         }
 
-        // WORKSPACE MOUSE PAN & ZOOM DRAG SYSTEM
-        let isDragging = false, startX, startY;
+        let isDragging = false;
+        let startX, startY;
         workspace.addEventListener('mousedown', (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'BUTTON') return;
-            isDragging = true; workspace.style.cursor = 'grabbing';
-            startX = e.clientX - pX; startY = e.clientY - pY;
+            isDragging = true;
+            startX = e.clientX - pX;
+            startY = e.clientY - pY;
         });
         window.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            pX = e.clientX - startX; pY = e.clientY - startY;
+            pX = e.clientX - startX;
+            pY = e.clientY - startY;
             updateTransform();
         });
-        window.addEventListener('mouseup', () => { isDragging = false; workspace.style.cursor = 'grab'; });
+        window.addEventListener('mouseup', () => { isDragging = false; });
 
         workspace.addEventListener('wheel', (e) => {
             e.preventDefault();
             const zoomFactor = 1.1;
             const mouseX = e.clientX - workspace.getBoundingClientRect().left;
             const mouseY = e.clientY - workspace.getBoundingClientRect().top;
-            const canvasMouseX = (mouseX - pX) / scale;
-            const canvasMouseY = (mouseY - pY) / scale;
+
+            const canvasX = (mouseX - pX) / scale;
+            const canvasY = (mouseY - pY) / scale;
 
             if (e.deltaY < 0) scale *= zoomFactor;
             else scale /= zoomFactor;
-            scale = Math.min(4, Math.max(0.15, scale));
 
-            pX = mouseX - canvasMouseX * scale;
-            pY = mouseY - canvasMouseY * scale;
+            scale = Math.max(0.1, Math.min( scale, 4.0));
+            pX = mouseX - canvasX * scale;
+            pY = mouseY - canvasY * scale;
+
             updateTransform();
         }, { passive: false });
 
-        async function svgToPngBase64(svgElement, targetWidth = 2048, returnBlob = false) {
+        function svgToPngBase64(svgEl, targetWidth = 2048, returnRawImage = false) {
             return new Promise((resolve, reject) => {
-                const svgString = new XMLSerializer().serializeToString(svgElement);
-                const svgSize = svgElement.getBoundingClientRect();
-                const w = svgElement.sourceWidth || svgElement.width.baseVal.value || svgSize.width;
-                const h = svgElement.sourceHeight || svgElement.height.baseVal.value || svgSize.height;
-
-                const scaleFactor = targetWidth / w;
-                const targetHeight = h * scaleFactor;
-
-                const img = new Image();
-                const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+                const svgData = new XMLSerializer().serializeToString(svgEl);
+                const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
                 const url = URL.createObjectURL(svgBlob);
 
-                img.onload = () => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = function() {
+                    const originalWidth = svgEl.getBoundingClientRect().width || 1200;
+                    const originalHeight = svgEl.getBoundingClientRect().height || 800;
+                    const scaleFactor = targetWidth / originalWidth;
+                    const targetHeight = originalHeight * scaleFactor;
+
                     const canvas = document.createElement('canvas');
-                    canvas.width = targetWidth; canvas.height = targetHeight;
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
                     const ctx = canvas.getContext('2d');
-                    ctx.fillStyle = "rgba(0,0,0,0)";
+
+                    ctx.fillStyle = '#fdfbf7';
                     ctx.fillRect(0, 0, targetWidth, targetHeight);
                     ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
                     URL.revokeObjectURL(url);
 
-                    if (returnBlob) {
-                        canvas.toBlob((blob) => resolve(blob), 'image/png');
+                    if (returnRawImage) {
+                        resolve(img);
                     } else {
-                        const base64 = canvas.toDataURL('image/png').split(',')[1];
-                        resolve({ base64, mimeType: 'image/png', w: targetWidth, h: targetHeight });
+                        const base64Data = canvas.toDataURL('image/png').split(',')[1];
+                        resolve({ base64: base64Data, mimeType: 'image/png', w: targetWidth, h: targetHeight });
                     }
                 };
-                img.onerror = (e) => reject(e);
+                img.onerror = (e) => { reject(e); };
                 img.src = url;
             });
         }
 
-        async function compositeTextIntoBoxes(backgroundImageUrl, detections, aiW, aiH) {
+        async function compositeTextIntoBoxes(rawAiImageUrl, dedupedBoxes, aiW, aiH) {
             return new Promise((resolve, reject) => {
-                const bgImg = new Image();
-                bgImg.crossOrigin = "anonymous";
-                bgImg.src = backgroundImageUrl;
-                bgImg.onload = () => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    canvas.width = bgImg.naturalWidth;
-                    canvas.height = bgImg.naturalHeight;
+                    canvas.width = aiW; canvas.height = aiH;
                     const ctx = canvas.getContext('2d');
-                    ctx.drawImage(bgImg, 0, 0);
+                    ctx.drawImage(img, 0, 0, aiW, aiH);
 
-                    const scaleX = canvas.width / aiW;
-                    const scaleY = canvas.height / aiH;
-
-                    const showDates = document.getElementById('show-dates').checked;
-                    const boxScale = parseFloat(document.getElementById('box-scale').value);
-
-                    const baseNameSize = 13 * boxScale;
-                    const baseDateSize = 10 * boxScale;
-                    const referenceCanvasWidth = parseFloat(document.getElementById('sheet-w').value) * PX_PER_CM;
-                    const renderFactor = canvas.width / referenceCanvasWidth;
-
-                    const nameFontSize = Math.round(baseNameSize * renderFactor);
-                    const dateFontSize = Math.round(baseDateSize * renderFactor);
-                    const PAD_V = Math.round(8 * boxScale * renderFactor);
-                    const LINE_GAP = Math.round(4 * boxScale * renderFactor);
-
-                    detections.forEach(det => {
-                        const originalNode = currentNodes.find(n => n.id === det.id);
-                        if (!originalNode) return;
-
-                        const matchedTreeData = buildHierarchy(hiddenIdInput.value, 0, parseInt(document.getElementById('gen-depth').value), document.getElementById('lineage-mode').value);
-                        const hierarchyRoot = d3.hierarchy(matchedTreeData);
-                        
-                        let targetNode = null;
-                        hierarchyRoot.each(node => { if (node.data.name === det.id) targetNode = node; });
-                        if (!targetNode) return;
-
-                        const x = det.x * scaleX;
-                        const y = det.y * scaleY;
-                        const w = det.w * scaleX;
-                        const h = det.h * scaleY;
-
+                    dedupedBoxes.forEach(box => {
+                        const bX = box.x - box.w / 2;
+                        const bY = box.y - box.h / 2;
                         ctx.fillStyle = selectedBoxColor;
                         ctx.beginPath();
-                        ctx.roundRect(x, y, w, h, 6 * renderFactor);
+                        ctx.roundRect(bX, bY, box.w, box.h, 6);
                         ctx.fill();
-
-                        ctx.strokeStyle = '#000000';
-                        ctx.lineWidth = Math.max(1, 1.5 * boxScale * renderFactor);
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeStyle = '#475569';
                         ctx.stroke();
 
-                        ctx.fillStyle = '#000000';
-                        ctx.textBaseline = 'middle';
-                        ctx.textAlign = 'center';
+                        const showDates = document.getElementById('show-dates').checked;
+                        const userScale = parseFloat(boxScaleSlider.value) || 1.0;
+                        const nameFontSize = Math.max(10, Math.min(14, 12 * userScale));
+                        const dateFontSize = Math.max(8, Math.min(11, 9 * userScale));
 
-                        const maxWidth = w - (10 * boxScale * renderFactor * 2);
-                        const nameLines = wrapText(det.id, maxWidth, nameFontSize, true);
-                        const dateLines = [];
-                        if (showDates) {
-                            if (targetNode.data.birth) dateLines.push(`* ${targetNode.data.birth}`);
-                            if (targetNode.data.death) dateLines.push(`† ${targetNode.data.death}`);
+                        ctx.textAlign = 'center';
+                        const maxTextW = box.w - 16;
+                        const nameLines = wrapText(box.name, maxTextW, nameFontSize, true);
+
+                        let startY = (box.h - (nameLines.length * (nameFontSize + 3))) / 2 + nameFontSize - 2;
+                        if (showDates && (box.birth || box.death)) {
+                            startY = (box.h - (nameLines.length * (nameFontSize + 3) + (dateFontSize + 3))) / 2 + nameFontSize - 2;
                         }
 
-                        let curY = y + PAD_V + (nameFontSize / 2);
                         ctx.font = `bold ${nameFontSize}px Georgia, serif`;
-                        nameLines.forEach(line => {
-                            ctx.fillText(line, x + w / 2, curY);
-                            curY += nameFontSize * 1.2;
+                        ctx.fillStyle = '#0f172a';
+                        nameLines.forEach((line, idx) => {
+                            ctx.fillText(line, box.x, bY + startY + (idx * (nameFontSize + 3)));
                         });
 
-                        curY += LINE_GAP;
-                        ctx.font = `${dateFontSize}px Georgia, serif`;
-                        dateLines.forEach(line => {
-                            ctx.fillText(line, x + w / 2, curY);
-                            curY += dateFontSize * 1.2;
-                        });
+                        if (showDates) {
+                            let dateStr = '';
+                            if (box.birth) dateStr += `* ${box.birth}`;
+                            if (box.death) dateStr += (dateStr ? '  ' : '') + `† ${box.death}`;
+                            if (dateStr) {
+                                ctx.font = `${dateFontSize}px Georgia, serif`;
+                                ctx.fillStyle = '#475569';
+                                ctx.fillText(dateStr, box.x, bY + startY + (nameLines.length * (nameFontSize + 3)) + 2);
+                            }
+                        }
                     });
-
                     resolve(canvas.toDataURL('image/png'));
                 };
-                bgImg.onerror = (e) => reject(e);
+                img.onerror = (err) => reject(err);
+                img.src = rawAiImageUrl;
             });
+        }
+
+        function showFinalResult(compositedUrl) {
+            const loader = document.getElementById('loader');
+            const statusTxt = document.getElementById('ai-status');
+            const closeBtn = document.getElementById('close-overlay');
+            const resultImg = document.getElementById('ai-image-result');
+
+            loader.style.display = 'none';
+            statusTxt.textContent = '🎉 Ihr historischer Stammbaum ist fertig!';
+            resultImg.src = compositedUrl;
+            resultImg.style.display = 'block';
+            closeBtn.style.display = 'block';
+            document.getElementById('download-btn').style.display = 'block';
+            document.getElementById('edit-btn').style.display = 'block';
+
+            finalCompositedImage = compositedUrl;
+
+            document.getElementById('download-btn').onclick = () => {
+                const link = document.createElement('a'); link.href = compositedUrl; link.download = 'stammbaum_meisterwerk.png'; link.click();
+            };
         }
 
         let _lastRawAiUrl = null;
         let _lastDetection = null;
 
-        // STEP 3: INTERACTIVE AI DESIGN STUDIO EVENT HANDLER
-        document.getElementById('design-btn').addEventListener('click', async () => {
-            const promptValue = hiddenStylePrompt.value || styleSearch.value;
-            if (!hiddenIdInput.value) { alert('Bitte generieren Sie zuerst einen Stammbaum in Schritt 2!'); return; }
-            if (!promptValue) { alert('Bitte wählen Sie zuerst einen gültigen Kunststil aus der Liste aus.'); return; }
+        document.getElementById('design-btn').onclick = async () => {
+            if (!hiddenIdInput.value) { alert('Bitte generieren Sie zuerst ein Standard-Layout (Schritt 2)!'); return; }
+            const stylePrompt = hiddenStylePrompt.value || 'A beautiful historical renaissance oil painting on parchment, family tree background art, highly detailed, masterpieces';
 
+            const overlay = document.getElementById('ai-overlay');
             const loader = document.getElementById('loader');
             const statusTxt = document.getElementById('ai-status');
+            const resultImg = document.getElementById('ai-image-result');
             const closeBtn = document.getElementById('close-overlay');
-            const aiImg = document.getElementById('ai-image-result');
 
-            document.getElementById('ai-overlay').style.display = 'flex';
+            overlay.style.display = 'flex';
             loader.style.display = 'block';
-            statusTxt.textContent = 'Bereite Vektordaten vor...';
+            statusTxt.textContent = 'Bereite Vektordaten für Creative Engine vor...';
+            resultImg.style.display = 'none';
             closeBtn.style.display = 'none';
-            aiImg.style.display = 'none';
+            document.getElementById('download-btn').style.display = 'none';
+            document.getElementById('edit-btn').style.display = 'none';
+            document.getElementById('apply-color-btn').style.display = 'none';
+            document.getElementById('apply-text-btn').style.display = 'none';
             colorPaletteContainer.style.display = 'none';
+            document.getElementById('edit-area').style.display = 'none';
+            document.getElementById('edit-confirm-btn').style.display = 'none';
 
             try {
-                // Konvertiert das aktuelle SVG auf dem Canvas in ein XML-Snapshot
-                const svgData = new XMLSerializer().serializeToString(svgElement);
+                // Hier greifen wir auf deine bereits existierende svgToPngBase64-Funktion zurück,
+                // damit Gemini ein valides PNG (statt image/svg+xml) erhält und Render.com fehlerfrei läuft.
+                const converted = await svgToPngBase64(svgElement, 2048);
+                const nodesPayload = currentNodes.map(n => ({ id: n.id, uniqueId: n.uniqueId, name: n.name, birth: n.birth, death: n.death }));
 
-                statusTxt.textContent = 'Verbindung zum Live-Server wird aufgebaut...';
-
-                // API Request an dein sicheres Render-Backend senden
-                const response = await fetch(`${BACKEND_URL}/api/transform-design`, {
+                statusTxt.textContent = 'Übertrage Daten an Render.com Creative Engine...';
+                const response = await fetch('https://heritageprint-backend.onrender.com/api/transform-design', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        prompt: promptValue,
-                        svgSnapshot: svgData
+                        image: `data:${converted.mimeType};base64,${converted.base64}`,
+                        stylePrompt: stylePrompt,
+                        boxW: currentBoxW,
+                        boxH: currentBoxH,
+                        nodes: nodesPayload
                     })
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Server-Fehler (${response.status}): ${errorText}`);
+                    const text = await response.text();
+                    throw new Error(text || 'Fehler beim Backend-Schnittstellenaufruf');
                 }
 
                 const data = await response.json();
-                
-                // Parsen der Gemini JSON-Antwort
-                if (!data.candidates || !data.candidates[0].content.parts[0].text) {
-                    throw new Error('Ungültiges Antwortformat der KI erhalten.');
-                }
+                const aiUrl = data.imageUrl;
+                const detection = data.detection;
 
-                // Extrahiere den reinen JSON-Text aus der Gemini-Antwort
-                let rawText = data.candidates[0].content.parts[0].text.trim();
-                
-                // Bereinige eventuelle Markdown-Codeblöcke (```json ... ```)
-                if (rawText.startsWith('```')) {
-                    rawText = rawText.replace(/^```json/, '').replace(/^```/, '').trim();
-                }
+                if (!aiUrl || !detection) throw new Error('Unvollständige Server-Antwort.');
 
-                const aiResponseJson = JSON.parse(rawText);
-                console.log("Erfolgreiche KI Transformation:", aiResponseJson);
+                statusTxt.textContent = 'Extrahiere Farbpaletten & berechne Satzspiegel...';
+                const tempImg = await svgToPngBase64(svgElement, 2048, true);
+                const colors = await extractDominantColors(tempImg, 5);
+                updateColorPalette(colors);
+                colorPaletteContainer.style.display = 'flex';
+                document.getElementById('apply-color-btn').style.display = 'block';
+                document.getElementById('apply-text-btn').style.display = 'block';
 
-                // Simulation des Compositing auf Basis der zurückgelieferten KI-Strukturdaten
-                statusTxt.textContent = 'Generierung abgeschlossen! Rendere finale Ansicht...';
-                loader.style.display = 'none';
-                closeBtn.style.display = 'block';
+                _lastRawAiUrl = aiUrl;
+                _lastDetection = detection;
 
-                // Hier wird das Ergebnis in der UI verarbeitet
-                // (Beispielhafter Fallback, falls das Bild als Base64-DataURL geliefert wird)
-                if (aiResponseJson.imageUrl || aiResponseJson.base64Image) {
-                    const srcUrl = aiResponseJson.imageUrl || `data:image/png;base64,${aiResponseJson.base64Image}`;
-                    aiImg.src = srcUrl;
-                    aiImg.style.display = 'block';
-                    
-                    // Speichere für das Checkout-System ab
-                    finalCompositedImage = srcUrl;
-                    
-                    // Extrahiere Farbpaletten
-                    aiImg.onload = async () => {
-                        const colors = await extractDominantColors(aiImg);
-                        updateColorPalette(colors);
-                        colorPaletteContainer.style.display = 'flex';
-                    };
-                } else {
-                    statusTxt.textContent = 'Design transformiert! Schließe das Fenster, um das Ergebnis zu sehen.';
-                }
-
+                const compositedUrl = await compositeTextIntoBoxes(aiUrl, detection.deduped, detection.aiW, detection.aiH);
+                showFinalResult(compositedUrl);
             } catch (err) {
-                console.error("Fehler im Design Studio:", err);
+                console.error(err);
                 loader.style.display = 'none';
                 statusTxt.textContent = `Fehler bei der KI-Transformation: ${err.message}. Stelle sicher, dass das Backend auf Render aktiv ist.`;
                 closeBtn.style.display = 'block';
+            }
+        };
+
+        document.getElementById('apply-color-btn').addEventListener('click', async () => {
+            if (!_lastRawAiUrl || !_lastDetection) return;
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+            const compositedUrl = await compositeTextIntoBoxes(_lastRawAiUrl, _lastDetection.deduped, _lastDetection.aiW, _lastDetection.aiH);
+            showFinalResult(compositedUrl);
+        });
+
+        document.getElementById('apply-text-btn').addEventListener('click', async () => {
+            if (!_lastRawAiUrl || !_lastDetection) return;
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+            const compositedUrl = await compositeTextIntoBoxes(_lastRawAiUrl, _lastDetection.deduped, _lastDetection.aiW, _lastDetection.aiH);
+            showFinalResult(compositedUrl);
+        });
+
+        document.getElementById('edit-btn').addEventListener('click', () => {
+            document.getElementById('edit-area').style.display = 'flex';
+            document.getElementById('edit-confirm-btn').style.display = 'block';
+            document.getElementById('edit-btn').style.display = 'none';
+        });
+
+        document.getElementById('edit-confirm-btn').addEventListener('click', async () => {
+            const editPrompt = document.getElementById('edit-prompt').value.trim();
+            if (!editPrompt) { alert('Bitte geben Sie Änderungswünsche ein.'); return; }
+            if (!_lastRawAiUrl || !_lastDetection) return;
+
+            const loader = document.getElementById('loader');
+            const statusTxt = document.getElementById('ai-status');
+            const resultImg = document.getElementById('ai-image-result');
+            const closeBtn = document.getElementById('close-overlay');
+
+            loader.style.display = 'block';
+            statusTxt.textContent = 'Berechne differentielle Änderungen via Creative Engine...';
+            resultImg.style.display = 'none';
+            closeBtn.style.display = 'none';
+            document.getElementById('download-btn').style.display = 'none';
+            document.getElementById('edit-confirm-btn').style.display = 'none';
+            document.getElementById('edit-area').style.display = 'none';
+
+            try {
+                const response = await fetch('https://heritageprint-backend.onrender.com/api/edit-design', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        imageUrl: _lastRawAiUrl,
+                        prompt: editPrompt
+                    })
+                });
+
+                if (!response.ok) throw new Error('Differentieller Bearbeitungsfehler im Cluster.');
+                const data = await response.json();
+                const aiUrl = data.imageUrl;
+                const detection = _lastDetection;
+
+                _lastRawAiUrl = aiUrl; _lastDetection = detection;
+                const compositedUrl = await compositeTextIntoBoxes(_lastRawAiUrl, _lastDetection.deduped, _lastDetection.aiW, _lastDetection.aiH);
+                showFinalResult(compositedUrl);
+            } catch (err) {
+                loader.style.display = 'none'; statusTxt.textContent = 'Verbindungsfehler zur Creative Engine.'; closeBtn.style.display = 'block';
             }
         });
 
@@ -1171,20 +1294,25 @@
             try {
                 const { base64, mimeType } = await svgToPngBase64(svgElement, 2048, false);
                 const link = document.createElement('a'); link.href = `data:${mimeType};base64,${base64}`; link.download = 'stammbaum.png'; link.click();
-            } catch (e) { alert('Export fehlgeschlagen.'); }
+            } catch (e) { alert('Export failed.'); }
         };
 
-        // KAUFEN-BUTTON EVENT HANDLER (CHECKOUT INTEGRATION)
+        // HIER IST DIE FUNKTION FÜR DEN KAUFEN-BUTTON
         document.getElementById('checkout-btn').onclick = () => {
+            // Prüfen, ob der Nutzer überhaupt schon ein KI-Bild generiert hat
             if (!finalCompositedImage) {
                 alert('Bitte transformiere zuerst dein Design mit der KI (Schritt 3), um es kaufen zu können!');
                 return;
             }
+
+            // Das fertige KI-Bild im Speicher des Browsers sichern
             localStorage.setItem('finalTreeImage', finalCompositedImage);
+
+            // Den User zur Checkout-Seite weiterleiten
             window.location.href = 'checkout.html';
         };
 
-        updateRulers();
+        updateTransform();
     });
     </script>
 </body>
