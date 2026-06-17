@@ -23,34 +23,34 @@
             --border-color: #e2e8f0;
             --input-bg: #f8fafc;
             --parchment: #fdfbf7;
-            
+
             --font-title: 'Cinzel', serif;
             --font-body: 'Plus Jakarta Sans', sans-serif;
             --font-canvas: 'EB Garamond', serif;
         }
 
-        body { 
-            margin: 0; 
-            font-family: var(--font-body); 
+        body {
+            margin: 0;
+            font-family: var(--font-body);
             color: var(--text-main);
-            display: flex; 
-            height: 100vh; 
-            background-color: var(--bg-main); 
-            overflow: hidden; 
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-main);
+            overflow: hidden;
         }
 
         /* --- SIDEBAR LAYOUT (DESKTOP) --- */
         #sidebar {
-            width: 360px; 
+            width: 360px;
             min-width: 360px;
-            background-color: var(--sidebar-bg); 
+            background-color: var(--sidebar-bg);
             border-right: 1px solid var(--border-color);
             padding: 24px;
-            box-shadow: 4px 0 24px rgba(15, 23, 42, 0.05); 
-            z-index: 20; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 20px; 
+            box-shadow: 4px 0 24px rgba(15, 23, 42, 0.05);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             overflow-y: auto;
             box-sizing: border-box;
         }
@@ -118,8 +118,8 @@
             background-color: var(--input-bg); color: var(--text-main); font-size: 0.9rem; transition: all 0.2s;
             font-family: inherit;
         }
-        input:focus, select:focus { 
-            border-color: var(--accent); 
+        input:focus, select:focus {
+            border-color: var(--accent);
             background-color: #fff;
             outline: none;
             box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
@@ -276,7 +276,7 @@
                 padding: 12px 16px;
                 font-size: 1rem;
             }
-            
+
             /* AI Overlay für kleine Screens anpassen */
             #ai-image-result {
                 max-width: 95%;
@@ -383,7 +383,7 @@
                 <button class="secondary" id="export-png">Bild (PNG)</button>
                 <button class="secondary" id="export-svg">Vektor (SVG)</button>
             </div>
-            
+
             <!-- Der neue, prominente Kaufen-Button -->
             <button class="main" id="checkout-btn" style="background-color: #10b981; width: 100%;">
                 🛒 Stammbaum drucken / kaufen
@@ -408,21 +408,21 @@
         <div id="ai-overlay">
             <div id="loader"></div>
             <div id="ai-status">Generiere historisches Meisterwerk...</div>
-            
+
             <img id="ai-debug-result" src="" alt="Erkannte Layout-Knoten" style="display:none; max-width:85%; max-height:55%; border:3px solid #22c55e; border-radius:8px;" />
             <div id="debug-info" style="display:none; color:#22c55e; font-size:0.85rem; font-family:monospace; margin-bottom: 12px;"></div>
-            
+
             <img id="ai-image-result" src="" alt="KI-generierter Stammbaum" />
-            
+
             <div id="color-palette-container" style="display:none; flex-direction:column; gap:8px; align-items:center; margin-top: 16px;">
                 <label style="color:white; font-size:0.9rem;">Farbschema anpassen (aus Ihrem Bild extrahiert)</label>
                 <div class="color-palette" id="color-palette"></div>
             </div>
-            
+
             <div id="edit-area" style="display:none; width:100%; max-width:600px; flex-direction:column; gap:8px; margin-top: 16px;">
                 <textarea id="edit-prompt" rows="2" placeholder="Was soll geändert werden? z.B.: 'Füge unten eine historische Ansicht von Regensburg hinzu'" style="width:100%; box-sizing:border-box; padding:12px; background:#1e293b; color:white; border:1px solid var(--accent-ai); border-radius:8px; font-size:0.9rem; font-family: inherit; resize:none;"></textarea>
             </div>
-            
+
             <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top: 20px;">
                 <button class="close-btn" id="apply-text-btn" style="display:none; background:#22c55e;">✏️ Texte in Boxen schreiben</button>
                 <button class="close-btn" id="apply-color-btn" style="display:none; background:#3b82f6;">🎨 Farbe anwenden</button>
@@ -434,7 +434,6 @@
         </div>
     </div>
 
-    <!-- CORE LOGIC EMBEDDED DIRECTLY FROM ORIGINAL SCHEMATICS -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         let rawData = { individuals: {}, families: {} };
@@ -449,7 +448,7 @@
 
         // Dynamic setup for mobile screens right on load
         if (window.innerWidth <= 768) {
-            scale = 0.35; // zoom out slightly so the tree is immediately visible on phone screens
+            scale = 0.35;
             pX = 20;
             pY = 40;
         }
@@ -602,7 +601,7 @@
         });
 
         function updateRulers() {
-            if (window.innerWidth <= 768) return; // Do not calculate or draw rulers on mobile viewport
+            if (window.innerWidth <= 768) return;
             const topRuler = document.getElementById('top-ruler');
             const leftRuler = document.getElementById('left-ruler');
             topRuler.innerHTML = ''; leftRuler.innerHTML = '';
@@ -911,7 +910,6 @@
                 }
             });
 
-            // Recenter view based on viewport mode on manual regeneration
             if (window.innerWidth <= 768) {
                 pX = (workspace.offsetWidth - sW * scale) / 2;
                 pY = 30;
@@ -928,7 +926,6 @@
             updateRulers();
         }
 
-        // Supporting touch pinch gestures on mobile browsers
         let initialTouchDist = null;
         let initialTouchScale = null;
 
@@ -970,8 +967,7 @@
         }, { passive: false });
 
         let isDrag = false; let startX, startY;
-        
-        // Unifying desktop mouse tracking and mobile single-finger pan gestures
+
         const dragStart = (clientX, clientY) => {
             isDrag = true; startX = clientX - pX; startY = clientY - pY;
         };
@@ -1314,22 +1310,19 @@
             });
         }
 
-        const GEMINI_API_KEY = 'AQ.Ab8RN6LPWOlFGDm4h_r5u-SBViCpWpDlEsPDgwGC7qW4-e_TVw';
-        const GEMINI_ENDPOINT = (key) => `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=${encodeURIComponent(key)}`;
+        let _lastRawAiUrl = null;
+        let _lastDetection = null;
 
-        let _lastRawAiUrl = null; let _lastDetection = null;
-
-        async function callGemini(prompt, imageBase64, imageMime) {
-            const body = {
-                contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: imageMime, data: imageBase64 } }] }],
-                generationConfig: { responseModalities: ['IMAGE', 'TEXT'], temperature: 1 }
-            };
-            const res = await fetch(GEMINI_ENDPOINT(GEMINI_API_KEY), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-            const data = await res.json();
-            if (!res.ok) throw new Error('KI temporär ausgelastet.');
-            const parts = data?.candidates?.[0]?.content?.parts;
-            const imgPart = parts?.find(p => p.inlineData?.mimeType?.startsWith('image/'));
-            if (!imgPart) throw new Error('Designumwandlung unvollständig.');
+        async function callBackendGemini(prompt, imageBase64, imageMime) {
+            const response = await fetch('/api/transform-design', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt, svgSnapshot: imageBase64 })
+            });
+            if (!response.ok) throw new Error('Backend-KI-Transformation fehlgeschlagen.');
+            const data = await response.json();
+            const imgPart = data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.mimeType?.startsWith('image/'));
+            if (!imgPart) throw new Error('Kein Bild in der Antwort.');
             return `data:${imgPart.inlineData.mimeType};base64,${imgPart.inlineData.data}`;
         }
 
@@ -1396,13 +1389,14 @@
                 statusTxt.textContent = 'Berechne neue Stil-Instruktionen...';
 
                 try {
-                    const b64resp = await fetch(_lastRawAiUrl); const blob = await b64resp.blob();
+                    const b64resp = await fetch(_lastRawAiUrl);
+                    const blob = await b64resp.blob();
                     const base64 = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.readAsDataURL(blob); });
                     const editPromptFull = `${userPrompt}. Important: paint the interior fill of EVERY rectangular box in the family tree with solid pure red color #FF0000 (RGB 255,0,0) — no text or patterns inside the boxes, only solid red fill. Keep all box positions and sizes unchanged.`;
 
-                    let newAiUrl = await callGemini(editPromptFull, base64, blob.type || 'image/png');
+                    let newAiUrl = await callBackendGemini(editPromptFull, base64, blob.type || 'image/png');
                     let detection = await detectRedBoxes(newAiUrl);
-                    
+
                     _lastRawAiUrl = newAiUrl; _lastDetection = detection;
                     loader.style.display = 'none';
                     const compositedUrl = await compositeTextIntoBoxes(_lastRawAiUrl, _lastDetection.deduped, _lastDetection.aiW, _lastDetection.aiH);
@@ -1443,8 +1437,8 @@
                 const finalPrompt = `${stylePrompt}. The image shows a family tree with rectangular boxes connected by lines. Apply the artistic style to the ENTIRE image — background, borders, connecting lines, decorations. IMPORTANT: paint the interior fill of EVERY rectangular box with solid pure red color #FF0000 (RGB 255,0,0). Do NOT put any text, patterns, or other colors inside the boxes — only solid #FF0000 fill inside each box interior. Keep all box positions and sizes unchanged. Output a high quality image.`;
 
                 statusTxt.textContent = 'Malerische Rekonstruktion via KI wird ausgeführt...';
-                const aiUrl = await callGemini(finalPrompt, imgBase64, imgMimeType);
-                
+                const aiUrl = await callBackendGemini(finalPrompt, imgBase64, imgMimeType);
+
                 statusTxt.textContent = 'Richte Textebenen mathematisch aus...';
                 const detection = await detectRedBoxes(aiUrl);
                 const validation = validateDetectedBoxes(detection.deduped);
@@ -1479,22 +1473,15 @@
             } catch (e) { alert('Export fehlgeschlagen.'); }
         };
 
-        // HIER IST DIE NEUE FUNKTION FÜR DEN KAUFEN-BUTTON
         document.getElementById('checkout-btn').onclick = () => {
-            // Prüfen, ob der Nutzer überhaupt schon ein KI-Bild generiert hat
             if (!finalCompositedImage) {
                 alert('Bitte transformiere zuerst dein Design mit der KI (Schritt 3), um es kaufen zu können!');
                 return;
             }
-
-            // Das fertige KI-Bild im Speicher des Browsers sichern
             localStorage.setItem('finalTreeImage', finalCompositedImage);
-
-            // Den User zur Checkout-Seite weiterleiten
             window.location.href = 'checkout.html';
         };
 
-        // Das ist die allerletzte Zeile in deiner index.html (drüber einfügen!)
         updateT();
     });
     </script>
