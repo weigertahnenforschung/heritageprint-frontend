@@ -989,7 +989,7 @@
             return new Promise((resolve, reject) => {
                 const origW = parseInt(svgEl.getAttribute('width')) || 800;
                 const origH = parseInt(svgEl.getAttribute('height')) || 600;
-
+        
                 let outW, outH;
                 if (origW >= origH) {
                     outW = Math.min(origW, maxPx);
@@ -998,47 +998,62 @@
                     outH = Math.min(origH, maxPx);
                     outW = Math.round(outH * origW / origH);
                 }
-
+        
                 const clone = svgEl.cloneNode(true);
                 clone.querySelectorAll('path').forEach(path => {
                     path.setAttribute('stroke-width', '6px');
                     path.setAttribute('stroke', '#000000');
                 });
-
+        
                 clone.querySelectorAll('.node-box').forEach(box => {
                     box.setAttribute('stroke-width', '4px');
                     box.setAttribute('fill', '#eeeeee');
                 });
-
+        
                 if (stripNodeText) {
                     clone.querySelectorAll('.node-text').forEach(el => el.remove());
                 }
-
+        
                 const ns = 'http://www.w3.org/2000/svg';
                 const bgRect = document.createElementNS(ns, 'rect');
-                bgRect.setAttribute('width', origW); bgRect.setAttribute('height', origH);
+                bgRect.setAttribute('width', origW);
+                bgRect.setAttribute('height', origH);
                 bgRect.setAttribute('fill', '#ffffff');
                 clone.insertBefore(bgRect, clone.firstChild);
-
+        
                 const svgStr = new XMLSerializer().serializeToString(clone);
                 const blob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
                 const blobUrl = URL.createObjectURL(blob);
-
+        
                 const img = new Image();
                 img.onload = () => {
                     const tmpCanvas = document.createElement('canvas');
-                    tmpCanvas.width = outW; tmpCanvas.height = outH;
+                    tmpCanvas.width = outW;
+                    tmpCanvas.height = outH;
                     const ctx = tmpCanvas.getContext('2d');
                     ctx.fillStyle = '#ffffff';
                     ctx.fillRect(0, 0, outW, outH);
                     ctx.drawImage(img, 0, 0, outW, outH);
                     URL.revokeObjectURL(blobUrl);
                     try {
-                        const dataUrl = tmpCanvas.toDataURL('image/jpeg', 0.75);
-                        resolve({ base64: dataUrl.split(',')[1], mimeType: 'image/jpeg', origW, origH, outW, outH });
-                    } catch(e) { reject(new Error('Rendering failed: ' + e.message)); }
+                        // Convert canvas to PNG base64
+                        const pngBase64 = tmpCanvas.toDataURL('image/png').split(',')[1];
+                        resolve({
+                            base64: pngBase64,
+                            mimeType: 'image/png',
+                            origW,
+                            origH,
+                            outW,
+                            outH
+                        });
+                    } catch (e) {
+                        reject(new Error('Failed to convert SVG to PNG: ' + e.message));
+                    }
                 };
-                img.onerror = () => { URL.revokeObjectURL(blobUrl); reject(new Error('SVG data corruption.')); };
+                img.onerror = () => {
+                    URL.revokeObjectURL(blobUrl);
+                    reject(new Error('Failed to load SVG as image.'));
+                };
                 img.src = blobUrl;
             });
         }
