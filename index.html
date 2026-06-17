@@ -1330,7 +1330,6 @@
 
         async function callBackendGemini(prompt, imageBase64, imageMime) {
             try {
-                // Use the full Render backend URL
                 const backendUrl = 'https://heritageprint-backend.onrender.com/api/transform-design';
         
                 const response = await fetch(backendUrl, {
@@ -1338,7 +1337,9 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         prompt: prompt,
-                        svgSnapshot: imageBase64
+                        // Send as PNG base64
+                        imageBase64: imageBase64,
+                        mimeType: imageMime
                     })
                 });
         
@@ -1361,7 +1362,7 @@
                 throw error;
             }
         }
-
+        
         function showFinalResult(compositedUrl) {
             const statusTxt = document.getElementById('ai-status');
             const imgResult = document.getElementById('ai-image-result');
