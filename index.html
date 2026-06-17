@@ -1,4 +1,4 @@
-123<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -228,63 +228,19 @@
         .color-option.selected { border-color: #fff; box-shadow: 0 0 0 2px var(--accent-ai); transform: scale(1.05); }
 
         /* -----------------------------------------
-           📱 MOBILE & TABLET OPTIMIZATIONS (MEDIA QUERY)
+           📱 MOBILE & TABLET OPTIMIZATIONS
            ----------------------------------------- */
         @media (max-width: 768px) {
-            body {
-                flex-direction: column; /* Stapelt Elemente vertikal */
-            }
-
-            /* Stammbaum wandert nach Oben */
-            #viewport-container {
-                height: 45vh; /* Nimmt 45% des Bildschirms ein */
-                width: 100%;
-                flex-grow: 0;
-                border-bottom: 2px solid var(--border-color);
-            }
-
-            /* Lineale auf Mobile ausblenden für mehr Platz */
-            #top-ruler, #left-ruler {
-                display: none !important;
-            }
-            #main-area {
-                height: 100%;
-            }
-
-            /* Einstellungs-Optionen wandern nach Unten */
-            #sidebar {
-                width: 100%;
-                height: 55vh; /* Nimmt restliche 55% ein */
-                border-right: none;
-                border-top: 1px solid var(--border-color);
-                box-shadow: 0 -4px 24px rgba(15, 23, 42, 0.05);
-                padding: 16px;
-                gap: 16px;
-            }
-
-            .logo-area {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid var(--border-color);
-                padding-bottom: 8px;
-            }
+            body { flex-direction: column; }
+            #viewport-container { height: 45vh; width: 100%; flex-grow: 0; border-bottom: 2px solid var(--border-color); }
+            #top-ruler, #left-ruler { display: none !important; }
+            #main-area { height: 100%; }
+            #sidebar { width: 100%; height: 55vh; border-right: none; border-top: 1px solid var(--border-color); box-shadow: 0 -4px 24px rgba(15, 23, 42, 0.05); padding: 16px; gap: 16px; }
+            .logo-area { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
             .logo-area p { margin: 0; }
-
-            /* Buttons und Inputs für Touch-Bedienung optimieren */
-            button, input[type="text"], input[type="number"], select {
-                padding: 12px 16px;
-                font-size: 1rem;
-            }
-            
-            /* AI Overlay für kleine Screens anpassen */
-            #ai-image-result {
-                max-width: 95%;
-                max-height: 40%;
-            }
-            #ai-status {
-                font-size: 1rem;
-            }
+            button, input[type="text"], input[type="number"], select { padding: 12px 16px; font-size: 1rem; }
+            #ai-image-result { max-width: 95%; max-height: 40%; }
+            #ai-status { font-size: 1rem; }
         }
     </style>
 </head>
