@@ -330,11 +330,10 @@
         }
 
         // --- 3. STRIPE INITIALISIERUNG ---
-        // 🔑 HINWEIS: Ersetze dies durch deinen echten Public-Key (pk_test_...) aus deinem Stripe Dashboard!
         const stripe = Stripe('pk_test_51Tj7xkIevlrrI6BDTkT27AV4NlhFcCjN4991bB0isXfY4cnQ4m6FhhjNzR1d6evTISD8gQP9BO5ky6KgqFykGmxX00JfOF1q0z'); 
         const elements = stripe.elements();
 
-        // Style für das Stripe Kreditkarten-Eingabefeld (damit es zum restlichen CSS passt)
+        // Style für das Stripe Kreditkarten-Eingabefeld
         const style = {
             base: {
                 color: '#0f172a',
@@ -374,12 +373,19 @@
             payButton.disabled = true;
             payButton.textContent = "Verarbeite Zahlung...";
 
+            // 🌲 WICHTIG: Die eingefrorene Konfigurations-ID aus dem user.html-Schritt holen!
+            const currentTreeId = localStorage.getItem('currentTreeId');
+
             try {
-                // SCHRITT A: Sende Request an dein Live Render-Backend
+                // SCHRITT A: Sende Request an dein Live Render-Backend inklusive treeId
                 const backendResponse = await fetch('https://heritageprint-backend.onrender.com/api/create-payment-intent', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: 2500, email: emailInput }) 
+                    body: JSON.stringify({ 
+                        amount: 2500, 
+                        email: emailInput,
+                        treeId: currentTreeId // <--- Hier wird sie mitgeschickt!
+                    }) 
                 });
                 
                 if (!backendResponse.ok) {
@@ -403,7 +409,7 @@
                 });
 
                 if (result.error) {
-                    // Fehler beim Bezahlen (z.B. Karte abgelehnt)
+                    // Fehler beim Bezahlen
                     document.getElementById('card-errors').textContent = result.error.message;
                     payButton.disabled = false;
                     payButton.textContent = "Jetzt sicher bezahlen (25,00 €)";
@@ -411,7 +417,7 @@
                     if (result.paymentIntent.status === 'succeeded') {
                         // ERFOLG! 
                         alert('Zahlung erfolgreich! Ihr Stammbaum wird jetzt per KI hochskaliert und per E-Mail gesendet.');
-                        window.location.href = "/erfolg.html"; // Weiterleitung zur Danke-Seite
+                        window.location.href = "erfolg.html"; // Weiterleitung zur Danke-Seite
                     }
                 }
             } catch (err) {
