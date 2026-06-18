@@ -1521,7 +1521,7 @@
         
             try {
                 // Wir senden die Rohdaten an das Backend, um sie für den Webhook einzufrieren
-                const response = await fetch('https://genealogie-pro-backend.onrender.com/api/save-tree-config', {
+                const response = await fetch('https://heritageprint-backend.onrender.com/api/save-tree-config', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
