@@ -1,7 +1,7 @@
 [
   {
     "name": "Mittelalter",
-    "prompt": "Transform this family tree into an illuminated medieval manuscript illustration. The background should resemble aged parchment with warm golden-brown tones, decorated with intricate Celtic knotwork borders in deep red and gold leaf. Connecting lines between boxes should become ornate vine tendrils with small leaves and acanthus scrolls. Decorative miniature illustrations of castles, heraldic shields, fleur-de-lis, and ravens fill the margins. The overall palette is warm ochre, vermillion, ultramarine, and burnished gold, as if painted by a 13th-century monk in a Benedictine scriptorium. Slightly worn and aged appearance with visible parchment texture"
+    "prompt": "Transform this family tree into a medieval manuscript illustration. The background should resemble aged parchment with warm brown tones, decorated with simple knotwork borders in red and gold. Connecting lines should be subtle vine tendrils with small leaves. Decorative elements include small heraldic shields and simple floral motifs in the margins. The palette uses earthy tones: ochre, red, and gold, with a natural, hand-drawn appearance and visible parchment texture"
   },
   {
     "name": "Barock",
@@ -20,7 +20,27 @@
     "prompt": "Transform this family tree into a classical Greco-Roman stone inscription relief. The background resembles aged white marble with subtle grey veining and carved texture. Connecting lines become carved stone borders and classical meander (Greek key) patterns etched in relief. The borders are adorned with carved laurel wreaths, Roman eagles, ionic column capitals, and amphora motifs. Decorative elements include Greek pottery-style red and black figure illustrations in the margins. The overall aesthetic is a monumental marble stele or triumphal arch inscription panel. Slight weathering and patina on the stone surface. Color palette: marble white, travertine cream, terracotta red, and verdigris bronze"
   },
   {
-    "name": "1930er Jahre Art Déco",
-    "prompt": "Transform this family tree into a sleek Art Déco graphic composition from the 1930s. The background features bold geometric patterns — sunburst rays, chevron stripes, and stepped pyramid shapes in deep charcoal, gold, and ivory. Connecting lines become precise geometric angular pathways with small diamond and triangle accents. The borders are strong symmetrical Art Déco frames with stylized eagle motifs, zigzag lightning bolt ornaments, and chrome-like metallic sheen. Influenced by Chrysler Building architectural details and WPA poster design. The color palette is sophisticated and bold: jet black, burnished gold, ivory white, and deep teal, with sharp high-contrast graphic lines and a printed lithograph quality"
+    "name": "Minimalistisch",
+    "prompt": "Transform this family tree into a clean, minimalist design. The background is plain white or light grey. Connecting lines are thin, straight, and unobtrusive, with subtle rounded corners. The boxes are simple rectangles with a thin border and no shadows. The color palette is monochromatic: black text on white or light grey background, with a single accent color (e.g., soft blue or green) for highlights. The layout is spacious, with ample white space and a modern, uncluttered aesthetic"
+  },
+  {
+    "name": "Japanisch / Ukiyo-e",
+    "prompt": "Transform this family tree into a traditional Japanese woodblock print (Ukiyo-e). The background features a textured paper with subtle woodgrain. Connecting lines are delicate, flowing lines reminiscent of calligraphic brushstrokes. The boxes are designed as floating scrolls or lanterns, with Japanese characters for names. Decorative elements include cherry blossoms, waves, and cranes. The color palette is traditional: indigo, crimson, gold, and black, with a hand-printed aesthetic"
+  },
+  {
+    "name": "Futuristisch",
+    "prompt": "Transform this family tree into a futuristic holographic display. The background is a dark, gradient mesh with a subtle grid or particle effect. Connecting lines are glowing neon tubes or light trails, with nodes as floating holographic panels. The boxes are translucent glass-like panels with digital text. Decorative elements include geometric patterns, data streams, and glowing orbs. The color palette is vibrant neon: electric blue, magenta, cyan, and white, with a high-tech, sci-fi aesthetic"
+  },
+  {
+    "name": "Skizze / Bleistift",
+    "prompt": "Transform this family tree into a hand-drawn pencil sketch. The background is plain white or lightly textured paper. Connecting lines are rough, sketchy pencil lines with visible strokes. The boxes are simple, hand-drawn rectangles with shaded edges. Decorative elements include cross-hatching, smudges, and eraser marks. The color palette is monochromatic: various shades of grey and black, with a raw, unfinished look"
+  },
+  {
+    "name": "Renaissance",
+    "prompt": "Transform this family tree into a Renaissance-style fresco or illuminated manuscript. The background resembles aged plaster or vellum with a warm, creamy tone. Connecting lines are elegant, flowing ribbons or gold leaf filigree. The boxes are designed as ornate cartouches or architectural frames, with Latin-inspired typography. Decorative elements include cherubs, grotesque masks, acanthus scrolls, and classical columns. The color palette is rich and balanced: deep blues, terracotta, gold, and olive green, evoking the works of Botticelli or Michelangelo. Subtle cracking and aging effects add authenticity"
+  },
+  {
+    "name": "19th Century Romanticism",
+    "prompt": "Transform this family tree into a Romantic-era painting, inspired by the works of Caspar David Friedrich or J.M.W. Turner. The background is a dramatic, atmospheric landscape with misty mountains, stormy skies, or a serene forest. Connecting lines are organic, almost like winding rivers or tree branches. The boxes are integrated as stone tablets, ancient ruins, or floating parchment scrolls. The color palette is moody and expressive: deep greens, stormy grays, warm browns, and golden highlights. The overall mood is emotional, mysterious, and sublime, with a focus on nature and the sublime"
   }
 ]
