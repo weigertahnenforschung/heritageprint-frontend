@@ -1247,7 +1247,7 @@
                         const fCtx = finalCanvas.getContext('2d');
                         fCtx.drawImage(img, 0, 0);
 
-                        const ERASE_RADIUS = 10;
+                        const ERASE_RADIUS = 4;
                         for (const det of deduped) {
                             const rx1 = Math.max(0, Math.floor(det.x - ERASE_RADIUS));
                             const ry1 = Math.max(0, Math.floor(det.y - ERASE_RADIUS));
