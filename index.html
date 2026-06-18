@@ -1510,13 +1510,40 @@
             } catch (e) { alert('Export fehlgeschlagen.'); }
         };
 
-        document.getElementById('checkout-btn').onclick = () => {
-            if (!finalCompositedImage) {
+        document.getElementById('checkout-btn').onclick = async () => {
+            if (!finalCompositedImage || !_lastRawAiUrl || !_lastDetection) {
                 alert('Bitte transformiere zuerst dein Design mit der KI (Schritt 3), um es kaufen zu können!');
                 return;
             }
-            localStorage.setItem('finalTreeImage', finalCompositedImage);
-            window.location.href = 'checkout.html';
+        
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = 'Bereite Checkout vor...';
+        
+            try {
+                // Wir senden die Rohdaten an das Backend, um sie für den Webhook einzufrieren
+                const response = await fetch('https://genealogie-pro-backend.onrender.com/api/save-tree-config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        rawAiImageUrl: _lastRawAiUrl, // Das reine KI-Bild ohne Text
+                        detection: _lastDetection,    // Die Koordinaten der Boxen
+                        currentNodes: currentNodes,    // Die Stammbaum-Texte (Namen, Daten)
+                        selectedBoxColor: selectedBoxColor,
+                        boxScale: parseFloat(boxScaleSlider.value)
+                    })
+                });
+        
+                if (!response.ok) throw new Error('Fehler beim Sichern der Baum-Konfiguration.');
+                const data = await response.json();
+        
+                // treeId im Speicher sichern und weiterleiten
+                localStorage.setItem('currentTreeId', data.treeId);
+                window.location.href = 'checkout.html';
+        
+            } catch (err) {
+                alert('Checkout-Fehler: ' + err.message);
+                statusEl.textContent = 'Bereit.';
+            }
         };
 
         updateT();
