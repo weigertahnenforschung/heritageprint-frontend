@@ -1243,83 +1243,27 @@
                     try {
                         const showDates = document.getElementById('show-dates').checked;
                         const finalCanvas = document.createElement('canvas');
-                        finalCanvas.width = aiW;
-                        finalCanvas.height = aiH;
+                        finalCanvas.width = aiW; finalCanvas.height = aiH;
                         const fCtx = finalCanvas.getContext('2d');
                         fCtx.drawImage(img, 0, 0);
-        
-                        // Gradient parameters
-                        const MAX_DISTANCE = 20; // Pixels: Max distance for gradient effect
-                        const GRADIENT_STRENGTH = 1.0; // 0-1: Strength of the gradient (1 = full white at edge, 0 = no effect)
-        
-                        // Precompute distance transform for red boxes
-                        const distanceMap = new Float64Array(aiW * aiH).fill(Infinity);
+
+                        const ERASE_RADIUS = 10;
                         for (const det of deduped) {
-                            // Expand the box slightly to cover edges
-                            const x1 = Math.max(0, det.x - 2);
-                            const y1 = Math.max(0, det.y - 2);
-                            const x2 = Math.min(aiW - 1, det.x + det.w + 2);
-                            const y2 = Math.min(aiH - 1, det.y + det.h + 2);
-        
-                            // For each pixel in the expanded box, set distance to 0
-                            for (let y = y1; y <= y2; y++) {
-                                for (let x = x1; x <= x2; x++) {
-                                    const idx = y * aiW + x;
-                                    distanceMap[idx] = 0;
+                            const rx1 = Math.max(0, Math.floor(det.x - ERASE_RADIUS));
+                            const ry1 = Math.max(0, Math.floor(det.y - ERASE_RADIUS));
+                            const rx2 = Math.min(aiW - 1, Math.ceil(det.x + det.w + ERASE_RADIUS));
+                            const ry2 = Math.min(aiH - 1, Math.ceil(det.y + det.h + ERASE_RADIUS));
+                            const regionData = fCtx.getImageData(rx1, ry1, rx2 - rx1 + 1, ry2 - ry1 + 1);
+                            const px = regionData.data;
+
+                            for (let i = 0; i < px.length; i += 4) {
+                                if (px[i] > 150 && px[i+1] < 100 && px[i+2] < 100) {
+                                    px[i] = 255; px[i+1] = 255; px[i+2] = 255;
                                 }
                             }
+                            fCtx.putImageData(regionData, rx1, ry1);
                         }
-        
-                        // Compute distance transform (Euclidean distance to nearest red box)
-                        for (let y = 0; y < aiH; y++) {
-                            for (let x = 0; x < aiW; x++) {
-                                const idx = y * aiW + x;
-                                if (distanceMap[idx] === 0) continue; // Already a red box pixel
-        
-                                // Check 8-connected neighbors
-                                let minDist = Infinity;
-                                for (let dy = -1; dy <= 1; dy++) {
-                                    for (let dx = -1; dx <= 1; dx++) {
-                                        const nx = x + dx;
-                                        const ny = y + dy;
-                                        if (nx >= 0 && nx < aiW && ny >= 0 && ny < aiH) {
-                                            const nIdx = ny * aiW + nx;
-                                            if (distanceMap[nIdx] < minDist) {
-                                                minDist = distanceMap[nIdx] + Math.sqrt(dx * dx + dy * dy);
-                                            }
-                                        }
-                                    }
-                                }
-                                distanceMap[idx] = minDist;
-                            }
-                        }
-        
-                        // Apply gradient-based white coverage
-                        const imageData = fCtx.getImageData(0, 0, aiW, aiH);
-                        const px = imageData.data;
-                        for (let i = 0; i < px.length; i += 4) {
-                            const idx = Math.floor(i / 4);
-                            const y = Math.floor(idx / aiW);
-                            const x = idx % aiW;
-                            const dist = distanceMap[idx];
-        
-                            // Only apply to red-ish pixels (or nearby)
-                            if (px[i] > 150 && px[i + 1] < 100 && px[i + 2] < 100) {
-                                // Inside or very close to a red box: full white
-                                px[i] = 255;
-                                px[i + 1] = 255;
-                                px[i + 2] = 255;
-                            } else if (dist <= MAX_DISTANCE) {
-                                // Gradient: blend to white based on distance
-                                const alpha = GRADIENT_STRENGTH * (1 - dist / MAX_DISTANCE);
-                                px[i] = Math.min(255, px[i] + (255 - px[i]) * alpha);
-                                px[i + 1] = Math.min(255, px[i + 1] + (255 - px[i + 1]) * alpha);
-                                px[i + 2] = Math.min(255, px[i + 2] + (255 - px[i + 2]) * alpha);
-                            }
-                        }
-                        fCtx.putImageData(imageData, 0, 0);
-        
-                        // Draw text into boxes (unchanged)
+
                         const EXPAND = 3;
                         const detRows = clusterDetectedBoxesIntoRows(deduped);
                         const nodesByDepth = {};
@@ -1327,42 +1271,25 @@
                             if (!nodesByDepth[n.depth]) nodesByDepth[n.depth] = [];
                             nodesByDepth[n.depth].push(n);
                         }
-                        const nodeRows = Object.keys(nodesByDepth)
-                            .map(Number)
-                            .sort((a, b) => a - b)
-                            .map(depth => {
-                                const row = nodesByDepth[depth];
-                                row.sort((a, b) => a.svgX - b.svgX);
-                                return row;
-                            });
-        
-                        if (document.getElementById('lineage-mode').value === 'ancestors') {
-                            nodeRows.reverse();
-                        }
-        
+                        const nodeRows = Object.keys(nodesByDepth).map(Number).sort((a, b) => a - b).map(depth => {
+                            const row = nodesByDepth[depth]; row.sort((a, b) => a.svgX - b.svgX); return row;
+                        });
+
+                        if (document.getElementById('lineage-mode').value === 'ancestors') nodeRows.reverse();
+
                         for (let gi = 0; gi < detRows.length; gi++) {
-                            const detBoxes = detRows[gi].boxes;
-                            const svgGen = nodeRows[gi];
+                            const detBoxes = detRows[gi].boxes; const svgGen = nodeRows[gi];
                             if (!svgGen) break;
                             for (let bi = 0; bi < detBoxes.length; bi++) {
-                                const det = detBoxes[bi];
-                                const node = svgGen[bi];
+                                const det = detBoxes[bi]; const node = svgGen[bi];
                                 if (!node) break;
                                 fCtx.fillStyle = '#ffffff';
-                                fCtx.fillRect(
-                                    det.x - EXPAND,
-                                    det.y - EXPAND,
-                                    det.w + EXPAND * 2,
-                                    det.h + EXPAND * 2
-                                );
+                                fCtx.fillRect(det.x - EXPAND, det.y - EXPAND, det.w + EXPAND*2, det.h + EXPAND*2);
                                 drawNodeTextToCanvas(fCtx, det, node.data, showDates);
                             }
                         }
-        
                         resolve(finalCanvas.toDataURL('image/png'));
-                    } catch (err) {
-                        reject(err);
-                    }
+                    } catch (err) { reject(err); }
                 };
                 img.src = aiUrl;
             });
