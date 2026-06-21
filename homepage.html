@@ -3,206 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LineageCanvas — Turn Your Family History Into Museum-Grade Art</title>
+    <title>LineageCanvas — Turn Your Family History Into Fine Art</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
                     },
                     colors: {
-                        slate: {
-                            900: '#0f172a',
-                            800: '#1e293b',
-                            700: '#334155',
-                        },
-                        amber: {
-                            600: '#d97706',
-                            700: '#b45309',
-                        },
-                        parchment: {
-                            50: '#fdfcf7',
-                            100: '#fcfaf2',
-                            200: '#f5f0e1',
-                            300: '#ebdcb9',
+                        apple: {
+                            gray: {
+                                50: '#f5f5f7',
+                                100: '#e8e8ed',
+                                200: '#d2d2d7',
+                                400: '#86868b',
+                                800: '#1d1d1f',
+                                900: '#000000'
+                            },
+                            blue: '#0066cc',
+                            blueHover: '#0077ed'
                         }
                     }
                 }
             }
         }
     </script>
-    <style>
-        /* Custom premium UI styling overrides */
-        .text-serif-vintage {
-            font-family: 'Playfair Display', serif;
-        }
-        .parchment-glow {
-            box-shadow: 0 20px 40px -15px rgba(235, 220, 185, 0.3);
-        }
-    </style>
 </head>
-<body class="bg-[#faf9f6] text-slate-800 font-sans selection:bg-amber-600 selection:text-white antialiased">
+<body class="bg-white text-apple-gray-800 font-sans antialiased selection:bg-apple-blue selection:text-white">
 
-    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="#" class="flex items-center space-x-3 group">
-                <div class="w-9 h-9 border border-amber-600 flex items-center justify-center rounded-sm rotate-45 group-hover:rotate-90 transition-transform duration-500 bg-slate-900">
-                    <span class="text-serif-vintage text-amber-600 font-bold -rotate-45 group-hover:-rotate-90 transition-transform duration-500 text-sm">LC</span>
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-apple-gray-100 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-2.5 group">
+                <div class="w-7 h-7 bg-apple-blue flex items-center justify-center rounded-lg shadow-sm group-hover:scale-105 transition-transform duration-300">
+                    <span class="text-white font-bold text-xs tracking-tight">LC</span>
                 </div>
-                <span class="text-serif-vintage text-xl font-semibold tracking-wide bg-gradient-to-r from-white via-parchment-200 to-amber-600 bg-clip-text text-transparent">LineageCanvas</span>
+                <span class="text-apple-gray-900 text-lg font-semibold tracking-tight">LineageCanvas</span>
             </a>
 
-            <nav class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-slate-300">
-                <a href="#wizard-preview" class="hover:text-amber-600 transition-colors duration-200">Create Tree</a>
-                <a href="#benefits" class="hover:text-amber-600 transition-colors duration-200">How it Works</a>
-                <a href="#gedcom-guide" class="hover:text-amber-600 transition-colors duration-200">GEDCOM Export Guide</a>
-                <a href="#products" class="hover:text-amber-600 transition-colors duration-200">Our Products</a>
-                <a href="#products" class="hover:text-amber-600 transition-colors duration-200">Pricing</a>
+            <nav class="hidden md:flex space-x-8 text-[13px] font-medium text-apple-gray-400">
+                <a href="#how-it-works" class="hover:text-apple-gray-900 transition-colors duration-200">How it Works</a>
+                <a href="#gedcom-guide" class="hover:text-apple-gray-900 transition-colors duration-200">GEDCOM Export</a>
+                <a href="#products" class="hover:text-apple-gray-900 transition-colors duration-200">Pricing</a>
             </nav>
 
             <div class="flex items-center space-x-4">
-                <a href="#wizard-preview" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-xs uppercase tracking-widest font-semibold border border-amber-600 bg-amber-600 text-slate-900 hover:bg-transparent hover:text-amber-600 rounded-sm transition-all duration-300 shadow-lg shadow-amber-600/10">
+                <a href="#upload-section" class="hidden sm:inline-flex items-center justify-center px-4 py-1.5 text-xs font-medium bg-apple-blue text-white rounded-full hover:bg-apple-blueHover transition-all duration-200 shadow-xs">
                     Start Building
                 </a>
-                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-400 hover:text-white" aria-label="Toggle Navigation">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-apple-gray-400 hover:text-apple-gray-900" aria-label="Toggle Navigation">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3">
-            <a href="#wizard-preview" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-amber-600 text-sm">Create Tree</a>
-            <a href="#benefits" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-amber-600 text-sm">How it Works</a>
-            <a href="#gedcom-guide" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-amber-600 text-sm">GEDCOM Export Guide</a>
-            <a href="#products" onclick="toggleMobileMenu()" class="block py-2 text-slate-300 hover:text-amber-600 text-sm">Our Products</a>
-            <a href="#wizard-preview" onclick="toggleMobileMenu()" class="block w-full text-center py-2.5 mt-2 text-xs uppercase tracking-widest bg-amber-600 text-slate-900 font-bold">Start Building</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-apple-gray-100 px-6 py-4 space-y-3">
+            <a href="#how-it-works" onclick="toggleMobileMenu()" class="block py-2 text-apple-gray-400 hover:text-apple-gray-900 text-sm">How it Works</a>
+            <a href="#gedcom-guide" onclick="toggleMobileMenu()" class="block py-2 text-apple-gray-400 hover:text-apple-gray-900 text-sm">GEDCOM Export Guide</a>
+            <a href="#products" onclick="toggleMobileMenu()" class="block py-2 text-apple-gray-400 hover:text-apple-gray-900 text-sm">Pricing</a>
+            <a href="#upload-section" onclick="toggleMobileMenu()" class="block w-full text-center py-2 text-sm bg-apple-blue text-white font-medium rounded-lg">Start Building</a>
         </div>
     </header>
 
-    <section class="relative bg-slate-900 text-white overflow-hidden py-20 lg:py-32 border-b border-slate-800">
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d97706_1px,transparent_1px)] [background-size:16px_16px]"></div>
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-amber-600/10 blur-[120px] rounded-full"></div>
-
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
-                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-amber-600 tracking-wider font-semibold uppercase">
-                    <span>⚡ AI Generative Layout Meets Traditional Archival Craft</span>
+    <section class="relative bg-gradient-to-b from-apple-gray-50 via-white to-white overflow-hidden py-16 lg:py-28">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-5 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-apple-gray-100 text-[11px] text-apple-gray-400 font-medium tracking-wide">
+                    <span>Beautiful Family Tree Compositions</span>
                 </div>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl text-serif-vintage font-bold tracking-tight leading-[1.1] text-white">
-                    Turn Your Family History Into <span class="italic text-transparent bg-clip-text bg-gradient-to-r from-parchment-300 via-amber-600 to-amber-700">Museum-Grade Art</span>
+                <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-apple-gray-900 leading-[1.15]">
+                    Turn your family history into <span class="text-apple-blue">museum-grade art</span>.
                 </h1>
-                <p class="text-slate-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
-                    Upload your raw GEDCOM file, automatically compile beautifully structural layouts via our intuitive 3-Step Wizard, and serialize a stunning heirloom print.
+                <p class="text-apple-gray-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                    Upload your GEDCOM data and instantly generate elegant, structured lineage layouts crafted for heirloom print clarity.
                 </p>
-                <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                    <a href="#wizard-preview" class="w-full sm:w-auto px-8 py-4 bg-amber-600 text-slate-900 font-bold uppercase text-xs tracking-widest hover:bg-amber-700 transition-all rounded-sm shadow-xl shadow-amber-600/20 text-center">
+                <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+                    <a href="#upload-section" class="w-full sm:w-auto px-6 py-3 bg-apple-blue text-white font-medium text-sm hover:bg-apple-blueHover transition-all rounded-xl shadow-xs text-center">
                         Upload GEDCOM Data
                     </a>
-                    <a href="#products" class="w-full sm:w-auto px-8 py-4 bg-transparent border border-slate-700 hover:border-slate-500 text-slate-300 font-bold uppercase text-xs tracking-widest transition-all rounded-sm text-center">
-                        See Examples
+                    <a href="#products" class="w-full sm:w-auto px-6 py-3 bg-apple-gray-50 hover:bg-apple-gray-100 text-apple-gray-800 font-medium text-sm transition-all rounded-xl text-center">
+                        See Pricing
                     </a>
                 </div>
             </div>
 
-            <div class="lg:col-span-6 flex justify-center">
-                <div class="relative max-w-full lg:max-w-xl w-full aspect-[4/3] bg-slate-800 border border-slate-700 p-3 sm:p-4 rounded-sm shadow-2xl overflow-hidden group">
-                    <div class="w-full h-full bg-[#ebdcb9] relative flex flex-col items-center justify-center px-4 overflow-hidden rounded-xs border-2 border-[#c2b080]">
-                        <div class="absolute inset-0 opacity-[0.04] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:12px_12px]"></div>
-                        <div class="relative w-full text-center space-y-4 select-none opacity-85">
-                            <h4 class="text-serif-vintage text-slate-900 text-xl font-bold tracking-wide border-b border-slate-900/20 pb-2 max-w-xs mx-auto">The Chronicle of Lineage</h4>
-                            
-                            <div class="flex justify-center space-x-6 text-[8px] tracking-tighter text-slate-700">
-                                <div class="border border-slate-900/50 p-1.5 bg-white/40 rounded-xs min-w-[50px]">
-                                    <div class="font-bold">A. Harrison</div>
-                                    <div>1824 - 1891</div>
-                                </div>
-                                <div class="border border-slate-900/50 p-1.5 bg-white/40 rounded-xs min-w-[50px]">
-                                    <div class="font-bold">E. Sterling</div>
-                                    <div>1831 - 1905</div>
-                                </div>
-                            </div>
-                            
-                            <div class="w-24 h-4 border-t border-x border-slate-900/40 mx-auto -mt-2"></div>
-                            
-                            <div class="flex justify-center space-x-4 text-[7px] text-slate-800">
-                                <div class="border border-slate-900/60 p-1 bg-white/70 rounded-xs font-bold shadow-xs">Thomas Harrison<br><span class="text-slate-500 font-normal">1860 - 1932</span></div>
-                                <div class="border border-slate-900/60 p-1 bg-white/70 rounded-xs font-bold shadow-xs">Martha Harrison<br><span class="text-slate-500 font-normal">1865 - 1941</span></div>
-                                <div class="border border-slate-900/60 p-1 bg-white/70 rounded-xs font-bold shadow-xs">James Harrison<br><span class="text-slate-500 font-normal">1869 - 1918</span></div>
-                            </div>
+            <div class="lg:col-span-7 flex justify-center">
+                <div class="w-full max-w-2xl bg-white p-2 rounded-2xl border border-apple-gray-100 shadow-xl shadow-apple-gray-100/50 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80" alt="Lineage Tree Layout Engine Canvas View" class="w-full h-auto aspect-[4/3] object-cover rounded-xl bg-apple-gray-50" />
+                </div>
+            </div>
 
-                            <div class="w-10 h-10 border border-amber-700/30 rounded-full mx-auto flex items-center justify-center opacity-40">
-                                <span class="text-serif-vintage font-bold text-slate-800 text-[10px]">⚜</span>
-                            </div>
-                            <p class="text-serif-vintage text-[9px] italic text-slate-600 tracking-widest">Custom Panorama Archetype — 110cm x 40cm</p>
-                        </div>
-                    </div>
-                    <div class="absolute inset-0 pointer-events-none border border-white/5 shadow-inner"></div>
+        </div>
+    </section>
+
+    <section id="upload-section" class="py-12 bg-white border-t border-apple-gray-50">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <div class="bg-apple-gray-50 rounded-2xl p-8 sm:p-12 border border-apple-gray-100">
+                <span class="text-3xl block mb-3">📁</span>
+                <h3 class="text-apple-gray-900 text-xl font-semibold tracking-tight mb-2">Build Your Layout Instantly</h3>
+                <p class="text-apple-gray-400 text-sm max-w-md mx-auto mb-6">
+                    Drop your family database file straight into the portal window below to parse structural generation layer lines.
+                </p>
+                <div class="border-2 border-dashed border-apple-gray-200 bg-white rounded-xl p-8 text-center cursor-pointer hover:border-apple-blue transition-colors group">
+                    <span class="text-sm text-apple-gray-400 group-hover:text-apple-blue transition-colors font-medium block">
+                        📥 Drag & drop your .ged file here, or browse files
+                    </span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="benefits" class="py-20 lg:py-32 bg-[#f4f2ea]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto space-y-4">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-amber-600">Engineering Excellence</h2>
-                <p class="text-3xl sm:text-4xl text-serif-vintage font-bold tracking-tight text-slate-900">
-                    The Synthesis of Ancestral Heritage and Advanced Cloud Scalability
+    <section id="how-it-works" class="py-16 lg:py-24 bg-apple-gray-50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">Product Benefits</h2>
+                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">
+                    The intersection of deep lineage structures and modern design.
                 </p>
-                <div class="w-12 h-[2px] bg-amber-600 mx-auto mt-4"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pt-16">
-                <div class="bg-white p-8 border border-slate-200/80 rounded-sm shadow-xs hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between">
                     <div class="space-y-4">
-                        <div class="w-10 h-10 bg-slate-900 flex items-center justify-center rounded-xs text-amber-600">
+                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-slate-900 tracking-tight">Instant GEDCOM Parsing</h3>
-                        <p class="text-slate-600 text-sm font-light leading-relaxed">
-                            Drop your family raw database exports straight from Ancestry, MyHeritage, or FamilySearch. Our advanced cloud logic parses and aligns generational layers instantly.
+                        <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Instant GEDCOM Parsing</h3>
+                        <p class="text-apple-gray-400 text-sm font-normal leading-relaxed">
+                            Drop data records from Ancestry or MyHeritage. Our parser connects generational timelines fluidly.
                         </p>
                     </div>
                 </div>
 
-                <div class="bg-white p-8 border border-slate-200/80 rounded-sm shadow-xs hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
+                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between">
                     <div class="space-y-4">
-                        <div class="w-10 h-10 bg-slate-900 flex items-center justify-center rounded-xs text-amber-600">
+                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-slate-900 tracking-tight">AI Visual Personalization</h3>
-                        <p class="text-slate-600 text-sm font-light leading-relaxed">
-                            Infuse tailored background vectors dynamically via English keywords. Seamlessly generate historical styles, landmarks, regional coat of arms, or seasonal themes.
+                        <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Visual Personalization</h3>
+                        <p class="text-apple-gray-400 text-sm font-normal leading-relaxed">
+                            Select minimalist palettes, refined layouts, and balance configurations directly inside the responsive app matrix.
                         </p>
                     </div>
                 </div>
 
-                <div class="bg-white p-8 border border-slate-200/80 rounded-sm shadow-xs hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
+                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between">
                     <div class="space-y-4">
-                        <div class="w-10 h-10 bg-slate-900 flex items-center justify-center rounded-xs text-amber-600">
+                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-slate-900 tracking-tight">High-End Fine Art Prints</h3>
-                        <p class="text-slate-600 text-sm font-light leading-relaxed">
-                            Printed on extreme landscape panorama formats utilizing reflex-free, heavy 200+ gsm Fine Art paper stocks handled via premium global API fulfillment hubs.
+                        <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Museum Fine Art Prints</h3>
+                        <p class="text-apple-gray-400 text-sm font-normal leading-relaxed">
+                            Printed on heavy, glare-free matte museum papers using durable, conservation-safe archival ink setups.
                         </p>
                     </div>
                 </div>
 
-                <div class="bg-white p-8 border border-slate-200/80 rounded-sm shadow-xs hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
+                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between">
                     <div class="space-y-4">
-                        <div class="w-10 h-10 bg-slate-900 flex items-center justify-center rounded-xs text-amber-600">
+                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                         </div>
-                        <h3 class="text-lg font-semibold text-slate-900 tracking-tight">Razor-Sharp Up-scaling</h3>
-                        <p class="text-slate-600 text-sm font-light leading-relaxed">
-                            Following verification, high-resolution models upscale backgrounds while text nodes are laid vectorially onto canvas parameters, guaranteeing pristine clarity.
+                        <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Razor-Sharp Vectors</h3>
+                        <p class="text-apple-gray-400 text-sm font-normal leading-relaxed">
+                            All text nodes use vectorial layouts ensuring infinite scaling, printing text and lines with absolute micro-clarity.
                         </p>
                     </div>
                 </div>
@@ -210,245 +179,116 @@
         </div>
     </section>
 
-    <section id="wizard-preview" class="py-20 lg:py-32 bg-slate-900 text-white relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
-                <span class="text-xs font-bold text-amber-600 uppercase tracking-widest block">Interactive Workflow Simulator</span>
-                <h2 class="text-3xl sm:text-4xl text-serif-vintage font-bold text-white">Experience the 3-Step Creation Suite</h2>
-                <p class="text-slate-400 text-sm font-light">Craft your custom archive using our responsive control board configuration below.</p>
+    <section id="gedcom-guide" class="py-16 lg:py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+                <h2 class="text-2xl sm:text-3xl font-bold text-apple-gray-900 tracking-tight">Download Your Family Data</h2>
+                <p class="text-apple-gray-400 text-sm font-normal">Extract structural profile data components quickly from standard historical search portals.</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                <div class="lg:col-span-4 bg-slate-800 border border-slate-700 rounded-sm p-6 flex flex-col justify-between space-y-6">
-                    <div class="space-y-6">
-                        <div id="step-card-1" class="p-4 rounded-sm border border-amber-600/30 bg-slate-900 transition-all duration-300">
-                            <div class="flex items-center space-x-3">
-                                <span class="w-6 h-6 rounded-full bg-amber-600 text-slate-900 font-bold flex items-center justify-center text-xs">1</span>
-                                <h4 class="font-medium text-white text-sm tracking-wide">Data Core Node Upload</h4>
-                            </div>
-                            <div class="mt-3 text-xs text-slate-400 space-y-2">
-                                <p>Select your native file schema to construct automatic connections.</p>
-                                <div class="border border-dashed border-slate-700 bg-slate-800/50 rounded-sm p-3 text-center cursor-pointer hover:border-slate-500 transition-colors">
-                                    <span class="text-[11px] text-slate-300 block font-medium">📥 Click to drag & drop `.ged` file</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="step-card-2" class="p-4 rounded-sm border border-slate-700/80 bg-slate-900/30 opacity-60 transition-all duration-300">
-                            <div class="flex items-center space-x-3">
-                                <span class="w-6 h-6 rounded-full bg-slate-700 text-slate-300 font-bold flex items-center justify-center text-xs">2</span>
-                                <h4 class="font-medium text-slate-400 text-sm tracking-wide">Architectural Layout</h4>
-                            </div>
-                            <div class="mt-3 text-xs text-slate-500 space-y-2 hidden" id="step-2-detail">
-                                <label class="block text-[11px] text-slate-300 font-medium mb-1">Canvas Proportions Profile</label>
-                                <select class="w-full bg-slate-800 border border-slate-700 rounded-xs p-2 text-slate-300 outline-none text-xs">
-                                    <option>Panorama Pro Extended (110cm x 40cm)</option>
-                                    <option>Standard Wide Aspect (80cm x 40cm)</option>
-                                    <option>Grand Archive Portrait (60cm x 90cm)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="step-card-3" class="p-4 rounded-sm border border-slate-700/80 bg-slate-900/30 opacity-60 transition-all duration-300">
-                            <div class="flex items-center space-x-3">
-                                <span class="w-6 h-6 rounded-full bg-slate-700 text-slate-300 font-bold flex items-center justify-center text-xs">3</span>
-                                <h4 class="font-medium text-slate-400 text-sm tracking-wide">Visual Personalization</h4>
-                            </div>
-                            <div class="mt-3 text-xs text-slate-500 space-y-3 hidden" id="step-3-detail">
-                                <div>
-                                    <label class="block text-[11px] text-slate-300 font-medium mb-1">Theme Prompt Keywords</label>
-                                    <input type="text" placeholder="e.g., Autumn leaves, Munich silhouettes..." class="w-full bg-slate-800 border border-slate-700 rounded-xs p-2 text-slate-300 text-xs outline-none focus:border-amber-600">
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] text-slate-300 font-medium mb-1">Parchment Style Profile</label>
-                                    <div class="flex space-x-2 pt-1">
-                                        <button class="w-5 h-5 rounded-full bg-[#ebdcb9] border-2 border-amber-600 cursor-pointer" title="Vintage Gold"></button>
-                                        <button class="w-5 h-5 rounded-full bg-[#f4f0e6] border border-slate-600 cursor-pointer" title="Classic Pale"></button>
-                                        <button class="w-5 h-5 rounded-full bg-[#dfdcd3] border border-slate-600 cursor-pointer" title="Museum Grey"></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pt-4 border-t border-slate-700 flex items-center justify-between">
-                        <button onclick="navigateWizardStep(-1)" id="prev-step-btn" class="px-4 py-2 text-xs bg-slate-700 hover:bg-slate-600 font-medium uppercase text-slate-300 tracking-wider disabled:opacity-30 disabled:cursor-not-allowed" disabled>
-                            Back
-                        </button>
-                        <button onclick="navigateWizardStep(1)" id="next-step-btn" class="px-4 py-2 text-xs bg-amber-600 hover:bg-amber-700 font-medium uppercase text-slate-900 tracking-wider transition-colors">
-                            Next Step
-                        </button>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-8 bg-slate-950 border border-slate-800 rounded-sm p-4 sm:p-8 flex flex-col justify-between items-center relative min-h-[400px]">
-                    <div class="absolute top-4 left-4 text-[10px] tracking-widest text-slate-500 font-mono uppercase bg-slate-900 px-2 py-1 rounded-sm border border-slate-800">
-                        🖥️ Live Render Engine Sandbox Area
-                    </div>
-                    
-                    <div class="w-full my-auto py-10 flex items-center justify-center">
-                        <div id="interactive-render-canvas" class="w-full max-w-2xl bg-[#ebdcb9] text-slate-900 p-8 text-center rounded-xs transition-all duration-500 shadow-2xl border-4 border-[#c2b080]">
-                            <div id="canvas-state-content" class="space-y-4">
-                                <span class="text-3xl block">📁</span>
-                                <h3 class="text-serif-vintage text-xl font-semibold text-slate-900">Awaiting Data Architecture Stream</h3>
-                                <p class="text-xs text-slate-600 max-w-sm mx-auto font-light leading-relaxed">
-                                    Drop a GEDCOM record or step through the mock pipeline to simulate how high-resolution layout logic automatically shapes custom typography components.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="w-full flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-900 text-slate-500 text-[11px] gap-2">
-                        <div>Resolution Status: <span class="text-slate-400 font-mono">Vector Master Grid Enabled</span></div>
-                        <div class="flex items-center space-x-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span>Connected directly to generative backend engine cloud</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="gedcom-guide" class="py-20 lg:py-32 bg-white">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto space-y-4 mb-12">
-                <h2 class="text-3xl text-serif-vintage font-bold text-slate-900 tracking-tight">How to Download Your Family Data</h2>
-                <p class="text-slate-600 text-sm font-light">Follow these short guidelines to extract your structural data files in seconds from any of the standard platforms.</p>
-            </div>
-
-            <div class="border-b border-slate-200">
+            <div class="border-b border-apple-gray-100">
                 <div class="flex justify-center space-x-2 sm:space-x-8" role="tablist">
-                    <button onclick="switchGedcomTab('ancestry')" id="tab-btn-ancestry" class="border-b-2 border-amber-600 px-4 pb-4 text-sm font-medium text-slate-900 tracking-wide outline-none transition-all" role="tab">
+                    <button onclick="switchGedcomTab('ancestry')" id="tab-btn-ancestry" class="border-b-2 border-apple-blue px-4 pb-3 text-sm font-medium text-apple-gray-900 outline-none transition-all" role="tab">
                         Ancestry.com
                     </button>
-                    <button onclick="switchGedcomTab('myheritage')" id="tab-btn-myheritage" class="border-b-2 border-transparent px-4 pb-4 text-sm font-medium text-slate-500 hover:text-slate-900 hover:border-slate-300 tracking-wide outline-none transition-all" role="tab">
+                    <button onclick="switchGedcomTab('myheritage')" id="tab-btn-myheritage" class="border-b-2 border-transparent px-4 pb-3 text-sm font-medium text-apple-gray-400 hover:text-apple-gray-900 tracking-wide outline-none transition-all" role="tab">
                         MyHeritage
                     </button>
-                    <button onclick="switchGedcomTab('familysearch')" id="tab-btn-familysearch" class="border-b-2 border-transparent px-4 pb-4 text-sm font-medium text-slate-500 hover:text-slate-900 hover:border-slate-300 tracking-wide outline-none transition-all" role="tab">
+                    <button onclick="switchGedcomTab('familysearch')" id="tab-btn-familysearch" class="border-b-2 border-transparent px-4 pb-3 text-sm font-medium text-apple-gray-400 hover:text-apple-gray-900 tracking-wide outline-none transition-all" role="tab">
                         FamilySearch
                     </button>
                 </div>
             </div>
 
-            <div class="mt-8 bg-[#faf9f6] border border-slate-200/80 p-6 sm:p-8 rounded-sm">
+            <div class="mt-8 bg-apple-gray-50 border border-apple-gray-100 p-6 sm:p-8 rounded-2xl">
                 <div id="tab-content-ancestry" class="space-y-4 transition-opacity duration-300">
-                    <h3 class="text-base font-semibold text-slate-900">Export Steps for Ancestry.com</h3>
-                    <ol class="space-y-3 text-sm text-slate-600 font-light list-decimal list-inside">
-                        <li>Log in to your master database portal on <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">Ancestry.com</code> and choose your tree.</li>
-                        <li>Navigate directly into the upper dropdown interface menu and trigger <strong class="font-medium text-slate-950">Tree Settings</strong>.</li>
-                        <li>Locate the right sidebar panel module option marked explicitly as <strong class="font-medium text-slate-950">Export Tree</strong>.</li>
-                        <li>Allow the system compilation queue line to complete, then hit the highlight link <span class="text-amber-700 underline font-medium">Download your GEDCOM file</span>.</li>
+                    <h3 class="text-sm font-semibold text-apple-gray-900">Export Steps for Ancestry.com</h3>
+                    <ol class="space-y-3 text-sm text-apple-gray-400 font-normal list-decimal list-inside">
+                        <li>Log into your database tree page dashboard on <code class="bg-white border border-apple-gray-100 px-1 py-0.5 rounded text-xs text-apple-gray-800">Ancestry.com</code>.</li>
+                        <li>Open your tree drop menu array setup controls and click on <strong class="font-medium text-apple-gray-900">Tree Settings</strong>.</li>
+                        <li>Locate the panel configuration option marked explicitly as <strong class="font-medium text-apple-gray-900">Export Tree</strong>.</li>
+                        <li>Allow processing to finalize, then hit the link <span class="text-apple-blue underline font-medium">Download your GEDCOM file</span>.</li>
                     </ol>
                 </div>
 
                 <div id="tab-content-myheritage" class="space-y-4 hidden transition-opacity duration-300">
-                    <h3 class="text-base font-semibold text-slate-900">Export Steps for MyHeritage</h3>
-                    <ol class="space-y-3 text-sm text-slate-600 font-light list-decimal list-inside">
-                        <li>Open up your private family dashboard on the main portal header menu space.</li>
-                        <li>Hover mouse path directly over the primary navigation link element labeled <strong class="font-medium text-slate-950">Family Tree</strong>.</li>
-                        <li>Click on the specific submenu control endpoint link item titled <strong class="font-medium text-slate-950">Manage Trees</strong>.</li>
-                        <li>Look to the right side action menu controls alignment block and press the option labelled <span class="text-amber-700 underline font-medium">Export to GEDCOM</span>.</li>
+                    <h3 class="text-sm font-semibold text-apple-gray-900">Export Steps for MyHeritage</h3>
+                    <ol class="space-y-3 text-sm text-apple-gray-400 font-normal list-decimal list-inside">
+                        <li>Open up your family workspace layout view on the primary site dashboard.</li>
+                        <li>Hover path maps directly over the secondary nav anchor item labeled <strong class="font-medium text-apple-gray-900">Family Tree</strong>.</li>
+                        <li>Click on the specific submenu control layer line link item titled <strong class="font-medium text-apple-gray-900">Manage Trees</strong>.</li>
+                        <li>Look across the configuration list and trigger the action titled <span class="text-apple-blue underline font-medium">Export to GEDCOM</span>.</li>
                     </ol>
                 </div>
 
                 <div id="tab-content-familysearch" class="space-y-4 hidden transition-opacity duration-300">
-                    <h3 class="text-base font-semibold text-slate-900">Export Steps for FamilySearch</h3>
-                    <ol class="space-y-3 text-sm text-slate-600 font-light list-decimal list-inside">
-                        <li>As FamilySearch functions as a collaborative global unified cloud tree system, direct raw exports require specialized browser extensions or partner connections.</li>
-                        <li>Alternatively, access your ancestral profile settings page via the main tree view panels architecture layout.</li>
-                        <li>Utilize a certified free export partner tool link or synchronization app feature to automatically export structural branch configurations into a standalone <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">.ged</code> file container.</li>
+                    <h3 class="text-sm font-semibold text-apple-gray-900">Export Steps for FamilySearch</h3>
+                    <ol class="space-y-3 text-sm text-apple-gray-400 font-normal list-decimal list-inside">
+                        <li>Because FamilySearch uses a single unified tree system structure, direct export files require specialized configurations.</li>
+                        <li>Access your profile dashboard parameters screen layout within the main interactive window interface view.</li>
+                        <li>Use an authorized platform synchronization extension app tool to extract structural generation data branches into a single <code class="bg-white border border-apple-gray-100 px-1 py-0.5 rounded text-xs text-apple-gray-800">.ged</code> archive package.</li>
                     </ol>
                 </div>
-
-                <div class="mt-8 pt-6 border-t border-slate-200 flex justify-center sm:justify-start">
-                    <a href="#wizard-preview" class="inline-flex items-center text-xs font-bold uppercase tracking-widest text-amber-700 hover:text-amber-800 group">
-                        Got your file? Let's build your tree now <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
-                </div>
             </div>
         </div>
     </section>
 
-    <section id="products" class="py-20 lg:py-32 bg-[#f4f2ea] border-t border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-amber-600">Select Architecture Format Tier</h2>
-                <p class="text-3xl sm:text-4xl text-serif-vintage font-bold tracking-tight text-slate-900">Premium Artifact Packages</p>
-                <p class="text-slate-600 text-sm font-light">Whether you want immediate high-definition files or heavy museum printing, choose a format built for longevity.</p>
+    <section id="products" class="py-16 lg:py-24 bg-apple-gray-50 border-t border-apple-gray-100">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">Simple Pricing</h2>
+                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Premium Artifact Packages</p>
+                <p class="text-apple-gray-400 text-sm">Whether you want clean high-definition layout vector prints or local system access files, select your file scope map scale.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto items-stretch">
-                <div class="bg-white border border-slate-200/80 p-8 sm:p-10 rounded-sm flex flex-col justify-between shadow-xs relative overflow-hidden group hover:border-slate-300 transition-all">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
+                <div class="bg-white border border-apple-gray-100 p-8 sm:p-10 rounded-2xl flex flex-col justify-between shadow-xs hover:shadow-md transition-all duration-300">
                     <div class="space-y-6">
                         <div class="flex justify-between items-start">
                             <div>
-                                <span class="text-xs font-bold tracking-widest text-slate-400 uppercase block mb-1">Instant Access</span>
-                                <h3 class="text-serif-vintage text-2xl font-bold text-slate-900">The Digital Heirloom</h3>
+                                <span class="text-[10px] font-bold tracking-widest text-apple-gray-400 uppercase block mb-1">Instant Digital</span>
+                                <h3 class="text-xl font-bold text-apple-gray-900">The Digital Heirloom</h3>
                             </div>
                             <div class="text-right">
-                                <span class="text-3xl text-serif-vintage font-bold text-slate-900">€25</span>
-                                <span class="text-[10px] text-slate-400 block uppercase font-medium">One-Time Fee</span>
+                                <span class="text-2xl font-bold text-apple-gray-900">€25</span>
+                                <span class="text-[10px] text-apple-gray-400 block uppercase font-medium mt-0.5">Vector File</span>
                             </div>
                         </div>
-                        <div class="w-full h-[1px] bg-slate-100"></div>
-                        <p class="text-slate-600 text-sm font-light leading-relaxed">
-                            Perfect for immediate processing. Your generation layout maps onto cloud-upscaling frameworks to produce a super high-resolution file directly to your mailbox container.
+                        <div class="w-full h-[1px] bg-apple-gray-100"></div>
+                        <p class="text-apple-gray-400 text-sm font-normal leading-relaxed">
+                            Perfect for local viewing and printing on your own terms. Your generation layout maps directly into scalable vector PDF master profiles instantly.
                         </p>
-                        <ul class="space-y-3 text-xs text-slate-600 font-light">
-                            <li class="flex items-center space-x-2">
-                                <span class="text-amber-600">✓</span> <span>Crisp 300 DPI high-definition image matrix file</span>
-                            </li>
-                            <li class="flex items-center space-x-2">
-                                <span class="text-amber-600">✓</span> <span>Delivered automatically via verified email link structures</span>
-                            </li>
-                            <li class="flex items-center space-x-2">
-                                <span class="text-amber-600">✓</span> <span>Full license rights allocated for self-managed custom prints</span>
-                            </li>
-                        </ul>
                     </div>
                     <div class="pt-8">
-                        <a href="#wizard-preview" class="block w-full text-center py-3.5 border border-slate-900 bg-slate-900 text-white hover:bg-transparent hover:text-slate-900 text-xs uppercase tracking-widest font-bold transition-all rounded-sm">
-                            Generate Digital Blueprint
+                        <a href="#upload-section" class="block w-full text-center px-4 py-2.5 text-xs font-medium bg-apple-gray-50 text-apple-gray-800 rounded-xl hover:bg-apple-gray-100 transition-all">
+                            Choose Digital File Layout
                         </a>
                     </div>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800 p-8 sm:p-10 rounded-sm flex flex-col justify-between shadow-2xl relative text-white overflow-hidden group">
-                    <div class="absolute top-0 right-0 bg-amber-600 text-slate-900 text-[10px] uppercase font-bold tracking-widest py-1 px-4 transform rotate-0 rounded-bl-sm">
-                        Heirloom Quality
+                <div class="bg-white border-2 border-apple-blue p-8 sm:p-10 rounded-2xl flex flex-col justify-between shadow-sm relative">
+                    <div class="absolute top-0 right-8 transform -translate-y-1/2 bg-apple-blue text-white px-2.5 py-0.5 text-[10px] font-bold tracking-wider rounded-full uppercase">
+                        Most Popular
                     </div>
-                    
                     <div class="space-y-6">
                         <div class="flex justify-between items-start">
                             <div>
-                                <span class="text-xs font-bold tracking-widest text-amber-600 uppercase block mb-1">Archival Craft</span>
-                                <h3 class="text-serif-vintage text-2xl font-bold text-white">The Museum Print</h3>
+                                <span class="text-[10px] font-bold tracking-widest text-apple-blue uppercase block mb-1">Archival Craft Print</span>
+                                <h3 class="text-xl font-bold text-apple-gray-900">The Master Canvas</h3>
                             </div>
                             <div class="text-right">
-                                <span class="text-xs text-slate-400 block uppercase font-medium">Custom Sizing From</span>
-                                <span class="text-3xl text-serif-vintage font-bold text-amber-600">Premium</span>
+                                <span class="text-2xl font-bold text-apple-gray-900">€75</span>
+                                <span class="text-[10px] text-apple-gray-400 block uppercase font-medium mt-0.5">Printed + Shipped</span>
                             </div>
                         </div>
-                        <div class="w-full h-[1px] bg-slate-800"></div>
-                        <p class="text-slate-300 text-sm font-light leading-relaxed">
-                            Tailored explicitly for massive panorama alignments. Printed via specialized international Fine Art networks on museum-certified thick, reflex-free art canvas textures.
+                        <div class="w-full h-[1px] bg-apple-gray-100"></div>
+                        <p class="text-apple-gray-400 text-sm font-normal leading-relaxed">
+                            Premium heavy landscape fine art prints handled through global API fulfillment channels. Delivered straight to your door in custom secure casing boxes.
                         </p>
-                        <ul class="space-y-3 text-xs text-slate-400 font-light">
-                            <li class="flex items-center space-x-2">
-                                <span class="text-amber-600">✓</span> <span>Heavy 200+ gsm Fine Art matte poster paper stock</span>
-                            </li>
-                            <li class="flex items-center space-x-2">
-                                <span class="text-amber-600">✓</span> <span>Packaged inside reinforced heavy poster rolls for absolute security</span>
-                            </li>
-                            <li class="flex items-center space-x-2">
-                                <span class="text-amber-600">✓</span> <span>Tracked doorstep delivery across EU and Global logistics nets</span>
-                            </li>
-                        </ul>
                     </div>
                     <div class="pt-8">
-                        <a href="#wizard-preview" class="block w-full text-center py-3.5 border border-amber-600 bg-amber-600 text-slate-900 hover:bg-transparent hover:text-amber-600 text-xs uppercase tracking-widest font-bold transition-all rounded-sm shadow-lg shadow-amber-600/10">
-                            Order Custom Gallery Print
+                        <a href="#upload-section" class="block w-full text-center px-4 py-2.5 text-xs font-medium bg-apple-blue text-white rounded-xl hover:bg-apple-blueHover transition-all shadow-xs">
+                            Order Premium Print
                         </a>
                     </div>
                 </div>
@@ -456,172 +296,42 @@
         </div>
     </section>
 
-    <footer class="bg-slate-950 text-white border-t border-slate-900 py-12 lg:py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-                <div class="md:col-span-4 space-y-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-7 h-7 border border-amber-600 flex items-center justify-center rounded-sm rotate-45 bg-slate-900">
-                            <span class="text-serif-vintage text-amber-600 font-bold -rotate-45 text-xs">LC</span>
-                        </div>
-                        <span class="text-serif-vintage text-lg font-semibold tracking-wide text-white">LineageCanvas</span>
-                    </div>
-                    <p class="text-slate-500 text-xs font-light max-w-xs leading-relaxed">
-                        Transforming structural family history architectures into timeless museum-grade heritage art objects dynamically driven by cloud rendering algorithms.
-                    </p>
-                </div>
-
-                <div class="md:col-span-5 grid grid-cols-2 gap-4">
-                    <div class="space-y-3">
-                        <h4 class="text-xs uppercase tracking-widest font-semibold text-slate-400">Creation Workspace</h4>
-                        <nav class="flex flex-col space-y-2 text-xs text-slate-500 font-light">
-                            <a href="#wizard-preview" class="hover:text-white transition-colors">Start Design Sandbox</a>
-                            <a href="#gedcom-guide" class="hover:text-white transition-colors">GEDCOM Export Portal</a>
-                            <a href="#benefits" class="hover:text-white transition-colors">Fulfillment Infrastructure</a>
-                        </nav>
-                    </div>
-                    <div class="space-y-3">
-                        <h4 class="text-xs uppercase tracking-widest font-semibold text-slate-400">Legal & Core channels</h4>
-                        <nav class="flex flex-col space-y-2 text-xs text-slate-500 font-light">
-                            <a href="#" class="hover:text-white transition-colors">Privacy Specifications</a>
-                            <a href="#" class="hover:text-white transition-colors">Terms of Operations</a>
-                            <a href="#" class="hover:text-white transition-colors">Support Center Help Desk</a>
-                        </nav>
-                    </div>
-                </div>
-
-                <div class="md:col-span-3 space-y-4 text-left md:text-right">
-                    <h4 class="text-xs uppercase tracking-widest font-semibold text-slate-400">Payment Security</h4>
-                    <div class="inline-flex items-center space-x-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xs">
-                        <span class="text-[10px] font-mono tracking-wider text-slate-400 uppercase">Stripe Verified Connection</span>
-                        <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
-                    </div>
-                    <div class="text-[10px] text-slate-600 block font-light leading-normal">
-                        All transaction parameters are encrypted end-to-end securely via merchant protocol layers.
-                    </div>
-                </div>
+    <footer class="bg-white text-apple-gray-400 py-12 border-t border-apple-gray-50 text-xs">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div>
+                <p class="font-medium text-apple-gray-900 mb-1">© 2026 LineageCanvas Inc.</p>
+                <p class="font-normal text-apple-gray-400">All rights reserved. Transforming data exports into premium design artifacts.</p>
             </div>
-
-            <div class="border-t border-slate-900 pt-8 flex flex-col sm:flex-row items-center justify-between text-slate-600 text-xs font-light gap-4">
-                <div>&copy; 2026 LineageCanvas Studio Network Inc. All design models reserved internationally.</div>
-                <div class="flex space-x-4">
-                    <span class="hover:text-slate-400 cursor-pointer">English (UK)</span>
-                    <span class="hover:text-slate-400 cursor-pointer">Deutsch (DE)</span>
-                    <span class="hover:text-slate-400 cursor-pointer">Français (FR)</span>
-                </div>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-apple-gray-900 transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-apple-gray-900 transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-apple-gray-900 transition-colors">Contact Support</a>
             </div>
         </div>
     </footer>
 
-
     <script>
-        // Toggle mobile hamburger overlay menu system block
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
-        // GEDCOM instruction guide tab toggle router engine matrix array
         function switchGedcomTab(platformId) {
             const tabs = ['ancestry', 'myheritage', 'familysearch'];
-            
             tabs.forEach(tab => {
                 const button = document.getElementById(`tab-btn-${tab}`);
-                const layer = document.getElementById(`tab-content-${tab}`);
+                const content = document.getElementById(`tab-content-${tab}`);
                 
                 if (tab === platformId) {
-                    button.classList.add('border-amber-600', 'text-slate-900');
-                    button.classList.remove('border-transparent', 'text-slate-500');
-                    layer.classList.remove('hidden');
+                    button.classList.remove('border-transparent', 'text-apple-gray-400');
+                    button.classList.add('border-apple-blue', 'text-apple-gray-900');
+                    content.classList.remove('hidden');
                 } else {
-                    button.classList.remove('border-amber-600', 'text-slate-900');
-                    button.classList.add('border-transparent', 'text-slate-500');
-                    layer.classList.add('hidden');
+                    button.classList.remove('border-apple-blue', 'text-apple-gray-900');
+                    button.classList.add('border-transparent', 'text-apple-gray-400');
+                    content.classList.add('hidden');
                 }
             });
-        }
-
-        // Interactive Creation Wizard Sidebar flow timeline simulation configuration logic
-        let activeWizardStep = 1;
-        const totalWizardSteps = 3;
-
-        function navigateWizardStep(directionIndex) {
-            const tentativeNext = activeWizardStep + directionIndex;
-            if (tentativeNext < 1 || tentativeNext > totalWizardSteps) return;
-
-            activeWizardStep = tentativeNext;
-            updateWizardUIVisualState();
-        }
-
-        function updateWizardUIVisualState() {
-            const nextBtn = document.getElementById('next-step-btn');
-            const prevBtn = document.getElementById('prev-step-btn');
-            const canvasWorkspace = document.getElementById('interactive-render-canvas');
-            const contentBox = document.getElementById('canvas-state-content');
-
-            // Manage navigation button attribute properties conditions
-            prevBtn.disabled = (activeWizardStep === 1);
-            if (activeWizardStep === totalWizardSteps) {
-                nextBtn.innerText = "Complete Setup";
-                nextBtn.classList.remove('bg-amber-600');
-                nextBtn.classList.add('bg-emerald-600', 'text-white');
-            } else {
-                nextBtn.innerText = "Next Step";
-                nextBtn.classList.remove('bg-emerald-600', 'text-white');
-                nextBtn.classList.add('bg-amber-600', 'text-slate-900');
-            }
-
-            // Sync visual styles of left controls cards array components elements
-            for (let i = 1; i <= 3; i++) {
-                const card = document.getElementById(`step-card-${i}`);
-                const detail = document.getElementById(`step-${i}-detail`);
-                
-                if (i === activeWizardStep) {
-                    card.classList.add('border-amber-600/30', 'bg-slate-900');
-                    card.classList.remove('opacity-60', 'bg-slate-900/30', 'border-slate-700/80');
-                    if (detail) detail.classList.remove('hidden');
-                } else {
-                    card.classList.remove('border-amber-600/30', 'bg-slate-900');
-                    card.classList.add('opacity-60', 'bg-slate-900/30', 'border-slate-700/80');
-                    if (detail) detail.classList.add('hidden');
-                }
-            }
-
-            // Dynamically alter live layout render blueprint canvas mockup states for user feedback preview
-            if (activeWizardStep === 1) {
-                canvasWorkspace.style.backgroundColor = "#ebdcb9";
-                contentBox.innerHTML = `
-                    <span class="text-3xl block">📁</span>
-                    <h3 class="text-serif-vintage text-xl font-semibold text-slate-900">Awaiting Data Architecture Stream</h3>
-                    <p class="text-xs text-slate-600 max-w-sm mx-auto font-light leading-relaxed">
-                        Drop a GEDCOM record or step through the mock pipeline to simulate how high-resolution layout logic automatically shapes custom typography components.
-                    </p>
-                `;
-            } else if (activeWizardStep === 2) {
-                canvasWorkspace.style.backgroundColor = "#ebdcb9";
-                contentBox.innerHTML = `
-                    <span class="text-3xl block">📐</span>
-                    <h3 class="text-serif-vintage text-xl font-semibold text-slate-900">Compiling Layout Dimensions Matrix</h3>
-                    <p class="text-xs text-slate-700 max-w-md mx-auto font-mono tracking-tight bg-white/40 p-3 rounded border border-slate-900/10">
-                        [SUCCESS] 142 Generational Nodes Discovered.<br>
-                        [CALCULATING] Structuring 4 distinct horizontal layers...<br>
-                        [OPTIMIZED] Panorama Pro Extended 110x40cm chosen.
-                    </p>
-                `;
-            } else if (activeWizardStep === 3) {
-                // Apply subtle theme shift visualization simulations
-                canvasWorkspace.style.backgroundColor = "#f5f0e1";
-                contentBox.innerHTML = `
-                    <div class="animate-pulse space-y-3">
-                        <span class="text-3xl block">🎨</span>
-                        <h3 class="text-serif-vintage text-xl font-semibold text-slate-900">Personalizing Artistic Overlays</h3>
-                        <p class="text-xs text-slate-600 max-w-sm mx-auto font-light">
-                            Injecting background vectors ("Autumn leaves theme profile") into the master image canvas layers stack...
-                        </p>
-                        <div class="w-24 h-1 bg-amber-600 mx-auto rounded-full mt-2"></div>
-                    </div>
-                `;
-            }
         }
     </script>
 </body>
