@@ -3,13 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heritage Print – Checkout</title>
+    <title>HeritagePrint – Checkout</title>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    },
+                    colors: {
+                        apple: {
+                            gray: {
+                                50: '#f5f5f7',
+                                100: '#e8e8ed',
+                                200: '#d2d2d7',
+                                400: '#86868b',
+                                800: '#1d1d1f',
+                                900: '#000000'
+                            },
+                            blue: '#0066cc',
+                            blueHover: '#0077ed'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
-
         :root {
             --primary: #1e293b;
             --primary-light: #334155;
@@ -22,19 +49,26 @@
             --border-color: #e2e8f0;
             --input-bg: #f8fafc;
             --parchment: #fdfbf7;
-            
+
             --font-title: 'Cinzel', serif;
             --font-body: 'Plus Jakarta Sans', sans-serif;
         }
 
-        body { 
-            margin: 0; 
-            font-family: var(--font-body); 
+        body {
+            margin: 0;
+            font-family: var(--font-body);
             color: var(--text-main);
-            display: flex; 
-            height: 100vh; 
-            background-color: var(--bg-main); 
-            overflow: hidden; 
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-main);
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        #main-content {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
         }
 
         /* --- LINKS: STAMMBAUM PREVIEW AREA --- */
@@ -57,8 +91,8 @@
             box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
             border: 1px solid #94a3b8;
             border-radius: 4px;
-            width: 85%;
-            height: 75%;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -66,8 +100,8 @@
         }
 
         #preview-canvas img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
 
@@ -143,10 +177,10 @@
             box-sizing: border-box;
         }
         .accordion-content.open {
-            max-height: 800px; /* Groß genug für das Stripe Formular */
+            max-height: 800px;
             padding: 20px;
             border: 1px solid var(--border-color);
-            margin-top: -12px; /* Schmiegt sich an die Kachel an */
+            margin-top: -12px;
         }
 
         /* --- KI INFORMATION BOX --- */
@@ -224,7 +258,7 @@
 
         /* 📱 RESPONSIVE DESIGN FOR MOBILE CHECKOUT */
         @media (max-width: 768px) {
-            body {
+            #main-content {
                 flex-direction: column;
                 overflow-y: auto;
                 height: auto;
@@ -236,8 +270,8 @@
                 padding: 16px 0;
             }
             #preview-canvas {
-                width: 90%;
-                height: 90%;
+                width: 100%;
+                height: 100%;
             }
             #checkout-container {
                 width: 100%;
@@ -248,92 +282,104 @@
     </style>
 </head>
 <body>
+    <!-- Include the universal header -->
+    <div id="header-placeholder"></div>
 
-    <div id="preview-sidebar">
-        <div id="preview-canvas">
-            <img id="checkout-tree-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><rect width='100' height='100' fill='%23fdfbf7'/><text x='50' y='55' font-family='sans-serif' font-size='10' text-anchor='middle' fill='%2364748b'>Stammbaum Vorschau</text></svg>" alt="Dein Stammbaum Design">
-        </div>
-    </div>
-
-    <div id="checkout-container">
-        <div class="header-area">
-            <h1>Bestellung abschließen</h1>
-            <p>Wähle deine bevorzugte Ausführung deines historischen Stammbaums.</p>
-        </div>
-
-        <div class="option-card" id="opt-digital" onclick="selectOption('digital')">
-            <div class="option-info">
-                <h3>Digitale Premium-Kopie</h3>
-                <p>Ultra-hochauflösende Datei (PDF/PNG) perfekt zum Selbstdrucken.</p>
+    <div id="main-content">
+        <div id="preview-sidebar">
+            <div id="preview-canvas">
+                <img id="checkout-tree-img" src="" alt="Dein Stammbaum Design">
             </div>
-            <div class="option-price">25,00 €</div>
         </div>
 
-        <div class="accordion-content" id="content-digital">
-            <div class="ai-info-badge">
-                <span>✨</span>
-                <div>
-                    <strong>High-Quality KI-Upscaling inklusive:</strong> Nach dem Kauf wird Ihre Grafik von unserer Creative Engine verlustfrei hochskaliert und gestochen scharf berechnet. Die Lieferung erfolgt direkt per E-Mail.
+        <div id="checkout-container">
+            <div class="header-area">
+                <h1>Bestellung abschließen</h1>
+                <p>Wähle deine bevorzugte Ausführung deines historischen Stammbaums.</p>
+            </div>
+
+            <div class="option-card" id="opt-digital" onclick="selectOption('digital')">
+                <div class="option-info">
+                    <h3>Digitale Premium-Kopie</h3>
+                    <p>Ultra-hochauflösende Datei (PDF/PNG) perfekt zum Selbstdrucken.</p>
                 </div>
+                <div class="option-price">25,00 €</div>
             </div>
 
-            <form id="payment-form">
-                <div class="form-group">
-                    <label for="email">E-Mail-Adresse für die Lieferung</label>
-                    <input type="email" id="email" required placeholder="name@beispiel.de">
+            <div class="accordion-content" id="content-digital">
+                <div class="ai-info-badge">
+                    <span>✨</span>
+                    <div>
+                        <strong>High-Quality KI-Upscaling inklusive:</strong> Nach dem Kauf wird Ihre Grafik von unserer Creative Engine verlustfrei hochskaliert und gestochen scharf berechnet. Die Lieferung erfolgt direkt per E-Mail.
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="card-element">Kreditkarte oder Debitkarte</label>
-                    <div id="card-element"></div>
-                    <div id="card-errors" role="alert"></div>
+                <form id="payment-form">
+                    <div class="form-group">
+                        <label for="email">E-Mail-Adresse für die Lieferung</label>
+                        <input type="email" id="email" required placeholder="name@beispiel.de">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-element">Kreditkarte oder Debitkarte</label>
+                        <div id="card-element"></div>
+                        <div id="card-errors" role="alert"></div>
+                    </div>
+
+                    <button class="pay-btn" id="submit-payment">Jetzt sicher bezahlen (25,00 €)</button>
+                </form>
+            </div>
+
+            <div class="option-card" id="opt-print" onclick="selectOption('print')">
+                <div class="option-info">
+                    <h3>Edler Galerie-Kunstdruck</h3>
+                    <p>Maßgeschneidertes Riesen-Poster auf schwerem Fine-Art-Papier.</p>
                 </div>
-
-                <button class="pay-btn" id="submit-payment">Jetzt sicher bezahlen (25,00 €)</button>
-            </form>
-        </div>
-
-        <div class="option-card" id="opt-print" onclick="selectOption('print')">
-            <div class="option-info">
-                <h3>Edler Galerie-Kunstdruck</h3>
-                <p>Maßgeschneidertes Riesen-Poster auf schwerem Fine-Art-Papier.</p>
+                <div class="option-price">Variabel</div>
             </div>
-            <div class="option-price">Variabel</div>
-        </div>
 
-        <div class="accordion-content" id="content-print">
-            <div style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 10px 0;">
-                📦 <em>Hier wird sich gleich die Druckerei-API für Maße und Versandadresse öffnen...</em>
+            <div class="accordion-content" id="content-print">
+                <div style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 10px 0;">
+                    📦 <em>Hier wird sich gleich die Druckerei-API für Maße und Versandadresse öffnen...</em>
+                </div>
             </div>
         </div>
-
     </div>
 
     <script>
+        // Load the universal header
+        fetch('header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-placeholder').innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Failed to load header:', err);
+            });
+
         // --- 1. ACCORDION LOGIK ---
         function selectOption(type) {
-            // Alle Kacheln zurücksetzen
             document.getElementById('opt-digital').classList.remove('selected');
             document.getElementById('opt-print').classList.remove('selected');
             document.getElementById('content-digital').classList.remove('open');
             document.getElementById('content-print').classList.remove('open');
 
-            // Gewählte Kachel aktivieren und Accordion öffnen
             document.getElementById('opt-' + type).classList.add('selected');
             document.getElementById('content-' + type).classList.add('open');
         }
 
         // --- 2. BILD AUS LOCALSTORAGE LADEN ---
-        const savedImage = localStorage.getItem('finalTreeImage');
+        const savedImage = localStorage.getItem('finalCompositedImage');
         if (savedImage) {
             document.getElementById('checkout-tree-img').src = savedImage;
+        } else {
+            document.getElementById('checkout-tree-img').src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'><rect width='400' height='300' fill='%23fdfbf7'/><text x='200' y='150' font-family='sans-serif' font-size='16' text-anchor='middle' fill='%2364748b'>Kein Bild gefunden</text></svg>";
         }
 
         // --- 3. STRIPE INITIALISIERUNG ---
-        const stripe = Stripe('pk_test_51Tj7xkIevlrrI6BDTkT27AV4NlhFcCjN4991bB0isXfY4cnQ4m6FhhjNzR1d6evTISD8gQP9BO5ky6KgqFykGmxX00JfOF1q0z'); 
+        const stripe = Stripe('pk_test_51Tj7xkIevlrrI6BDTkT27AV4NlhFcCjN4991bB0isXfY4cnQ4m6FhhjNzR1d6evTISD8gQP9BO5ky6KgqFykGmxX00JfOF1q0z');
         const elements = stripe.elements();
 
-        // Style für das Stripe Kreditkarten-Eingabefeld
         const style = {
             base: {
                 color: '#0f172a',
@@ -353,7 +399,6 @@
         const card = elements.create('card', { style: style });
         card.mount('#card-element');
 
-        // Echtzeit-Validierungsfehler anzeigen
         card.on('change', ({error}) => {
             const displayError = document.getElementById('card-errors');
             if (error) {
@@ -363,31 +408,29 @@
             }
         });
 
-        // --- 4. ZAHLUNGSABWICKLUNG (Verbunden mit Render-Backend) ---
+        // --- 4. ZAHLUNGSABWICKLUNG ---
         const form = document.getElementById('payment-form');
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-            
+
             const emailInput = document.getElementById('email').value;
             const payButton = document.getElementById('submit-payment');
             payButton.disabled = true;
             payButton.textContent = "Verarbeite Zahlung...";
 
-            // 🌲 WICHTIG: Die eingefrorene Konfigurations-ID aus dem user.html-Schritt holen!
             const currentTreeId = localStorage.getItem('currentTreeId');
 
             try {
-                // SCHRITT A: Sende Request an dein Live Render-Backend inklusive treeId
                 const backendResponse = await fetch('https://heritageprint-backend.onrender.com/api/create-payment-intent', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        amount: 2500, 
+                    body: JSON.stringify({
+                        amount: 2500,
                         email: emailInput,
-                        treeId: currentTreeId // <--- Hier wird sie mitgeschickt!
-                    }) 
+                        treeId: currentTreeId
+                    })
                 });
-                
+
                 if (!backendResponse.ok) {
                     const errText = await backendResponse.text();
                     throw new Error(`Server meldet Fehler: ${errText}`);
@@ -400,7 +443,6 @@
                     throw new Error('Kein Client Secret vom Server erhalten.');
                 }
 
-                // SCHRITT B: Stripe übernimmt die eigentliche sichere Abbuchung
                 const result = await stripe.confirmCardPayment(clientSecret, {
                     payment_method: {
                         card: card,
@@ -409,20 +451,18 @@
                 });
 
                 if (result.error) {
-                    // Fehler beim Bezahlen
                     document.getElementById('card-errors').textContent = result.error.message;
                     payButton.disabled = false;
                     payButton.textContent = "Jetzt sicher bezahlen (25,00 €)";
                 } else {
                     if (result.paymentIntent.status === 'succeeded') {
-                        // ERFOLG! 
                         alert('Zahlung erfolgreich! Ihr Stammbaum wird jetzt per KI hochskaliert und per E-Mail gesendet.');
-                        window.location.href = "erfolg.html"; // Weiterleitung zur Danke-Seite
+                        window.location.href = "erfolg.html";
                     }
                 }
             } catch (err) {
                 console.error("Zahlungsfehler:", err);
-                document.getElementById('card-errors').textContent = `Verbindungsfehler: ${err.message}. Stelle sicher, dass das Backend auf Render aktiv ist.`;
+                document.getElementById('card-errors').textContent = `Verbindungsfehler: ${err.message}.`;
                 payButton.disabled = false;
                 payButton.textContent = "Jetzt sicher bezahlen (25,00 €)";
             }
