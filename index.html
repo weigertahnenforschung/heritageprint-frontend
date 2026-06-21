@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genealogie Pro – Ihr KI-Stammbaum Studio</title>
+    <title>HeritagePrint</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
     <style>
@@ -224,11 +224,12 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 20;
+            z-index: 18;
             display: none;
             background: linear-gradient(45deg, rgba(124, 58, 237, 0.1), rgba(217, 119, 6, 0.1), rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1));
             background-size: 400% 400%;
             animation: waveGradient 3s ease infinite;
+            border-radius: 4px;
         }
 
         @keyframes waveGradient {
@@ -323,8 +324,7 @@
 
     <div id="sidebar">
         <div class="logo-area">
-            <h1>Genealogie Pro</h1>
-            <p>KI-Stammbaum Studio</p>
+            <h1>HeritagePrint</h1>
         </div>
 
         <!-- STEP 1: DATA IMPORT -->
@@ -384,17 +384,17 @@
             <input type="hidden" id="sheet-h" value="21.0">
         </div>
 
-        <!-- STEP 3: AI STYLING -->
+        <!-- STEP 3: DESIGN -->
         <div class="step-card">
-            <h2><span>3</span> KI Design Studio</h2>
+            <h2><span>3</span> Design</h2>
             <div class="control-group">
-                <label>Künstlerischer Kunststil</label>
-                <input type="text" id="style-search" placeholder="Historischer Stil suchen..." autocomplete="off" readonly>
-                <div id="style-results"></div>
+                <label>Kunststil</label>
+                <select id="style-search" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-main); font-size: 0.9rem; font-family: inherit;">
+                    <option value="" disabled selected>Wählen Sie einen Stil</option>
+                </select>
                 <input type="hidden" id="selected-style-prompt">
-                <div id="style-load-info"></div>
             </div>
-            <button class="ai-btn" id="design-btn">🎨 Design transformieren (KI)</button>
+            <button class="ai-btn" id="design-btn">Generieren</button>
         </div>
 
         <!-- CHECKOUT BUTTON -->
@@ -412,9 +412,9 @@
             <div id="workspace">
                 <div id="a4-canvas">
                     <svg id="tree-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+                    <div id="wave-overlay"></div>
                 </div>
                 <div id="ai-image-container"></div>
-                <div id="wave-overlay"></div>
                 <div id="canvas-ui">
                     <button class="close-btn" id="apply-color-btn" style="display:none; background:#3b82f6;">🎨 Farbe anwenden</button>
                 </div>
@@ -475,6 +475,8 @@
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmYes = document.getElementById('confirm-yes');
         const confirmNo = document.getElementById('confirm-no');
+        const styleSearch = document.getElementById('style-search');
+        const hiddenStylePrompt = document.getElementById('selected-style-prompt');
 
         // Settings change listeners
         document.getElementById('doc-title-input').addEventListener('input', triggerSettingsChange);
@@ -574,16 +576,29 @@
                     return '#ffffff';
                 });
 
-                const filteredColors = hexColors.filter(color => color.toLowerCase() !== '#ff0000');
+                // Filter out red and empty/invalid colors
+                const filteredColors = hexColors.filter(color => {
+                    const lowerColor = color.toLowerCase();
+                    return lowerColor !== '#ff0000' && lowerColor !== '#ffffff' && lowerColor !== '';
+                });
+
                 resolve(filteredColors);
             });
         }
 
         function updateColorPalette(colors) {
             dominantColors = colors;
+            // Clear existing palette
+            const existingPalette = document.querySelector('#canvas-ui .color-palette');
+            if (existingPalette) {
+                existingPalette.remove();
+            }
+
+            if (colors.length === 0) return;
+
             const colorPalette = document.createElement('div');
             colorPalette.className = 'color-palette';
-            dominantColors.forEach(color => {
+            colors.forEach(color => {
                 const option = document.createElement('div');
                 option.className = 'color-option';
                 option.style.backgroundColor = color;
@@ -602,44 +617,31 @@
         }
 
         let stylesDB = [];
-        const styleSearch = document.getElementById('style-search');
-        const styleResults = document.getElementById('style-results');
-        const hiddenStylePrompt = document.getElementById('selected-style-prompt');
-        const styleLoadInfo = document.getElementById('style-load-info');
 
         fetch('stile.json')
             .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
             .then(data => {
                 if (!Array.isArray(data) || data.length === 0) throw new Error('Datei leer');
                 stylesDB = data;
-                styleSearch.readOnly = false;
-                styleSearch.placeholder = `Aus ${stylesDB.length} Stilen wählen...`;
+                // Populate the dropdown
+                const styleSelect = document.getElementById('style-search');
+                styleSelect.innerHTML = '<option value="" disabled selected>Wählen Sie einen Stil</option>';
+                stylesDB.forEach(style => {
+                    const option = document.createElement('option');
+                    option.value = style.prompt;
+                    option.textContent = style.name;
+                    styleSelect.appendChild(option);
+                });
+                styleSelect.addEventListener('change', () => {
+                    hiddenStylePrompt.value = styleSelect.value;
+                });
             })
             .catch(err => {
                 stylesDB = [];
-                styleSearch.readOnly = true;
-                styleSearch.placeholder = 'Alternative Engine geladen';
+                const styleSelect = document.getElementById('style-search');
+                styleSelect.innerHTML = '<option value="" disabled selected>Keine Stile verfügbar</option>';
+                styleSelect.disabled = true;
             });
-
-        styleSearch.addEventListener('input', (e) => {
-            if (stylesDB.length === 0) return;
-            const val = e.target.value.toLowerCase().trim();
-            styleResults.innerHTML = '';
-            const matches = val.length === 0 ? stylesDB : stylesDB.filter(s => s.name.toLowerCase().includes(val));
-            if (matches.length === 0) { styleResults.style.display = 'none'; return; }
-            matches.forEach(m => {
-                const item = document.createElement('div'); item.className = 'style-item';
-                item.innerHTML = `<span>🎨 <strong>${m.name}</strong></span>`;
-                item.onclick = () => { styleSearch.value = m.name; hiddenStylePrompt.value = m.prompt; styleResults.style.display = 'none'; };
-                styleResults.appendChild(item);
-            });
-            styleResults.style.display = 'block';
-        });
-        styleSearch.addEventListener('focus', () => { if (stylesDB.length > 0) styleSearch.dispatchEvent(new Event('input')); });
-        document.addEventListener('click', (e) => {
-            if (e.target !== styleSearch) styleResults.style.display = 'none';
-            if (e.target !== searchInput) resultsDiv.style.display = 'none';
-        });
 
         function updateRulers() {
             if (window.innerWidth <= 768) return;
@@ -1451,7 +1453,7 @@
         designBtn.addEventListener('click', async () => {
             if (activeDescendants.length === 0) { alert('Bitte wählen Sie zuerst eine Person aus.'); return; }
             const stylePrompt = hiddenStylePrompt.value.trim();
-            if (!stylePrompt) { alert('Bitte wählen Sie einen Designstil in Schritt 3.'); return; }
+            if (!stylePrompt) { alert('Bitte wählen Sie einen Kunststil aus.'); return; }
 
             const now = Date.now();
             if (isGenerating || now - lastGenerationTime < GENERATION_COOLDOWN) {
@@ -1496,7 +1498,7 @@
 
         checkoutBtn.addEventListener('click', async () => {
             if (!finalCompositedImage || !_lastRawAiUrl || !_lastDetection) {
-                alert('Bitte transformieren Sie zuerst Ihr Design mit der KI (Schritt 3), um weiterzumachen!');
+                alert('Bitte generieren Sie zuerst ein Design mit der KI (Schritt 3), um weiterzumachen!');
                 return;
             }
 
