@@ -321,7 +321,7 @@
     </style>
 </head>
 <body>
-
+    <div id="header-placeholder"></div>
     <div id="sidebar">
         <div class="logo-area">
             <h1>HeritagePrint</h1>
@@ -1528,5 +1528,16 @@
         updateT();
     });
     </script>
+    <script>
+    // Load the universal header
+    fetch('header.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('header-placeholder').innerHTML = html;
+        })
+        .catch(err => {
+            console.error('Failed to load header:', err);
+        });
+</script>
 </body>
 </html>
