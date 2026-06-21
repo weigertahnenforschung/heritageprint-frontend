@@ -146,21 +146,6 @@
         .file-upload-text { font-size: 0.85rem; color: var(--text-muted); }
         .file-upload-text strong { color: var(--accent); }
 
-        /* Sliders */
-        .slider-container { display: flex; flex-direction: column; gap: 4px; }
-        .slider-row { display: flex; align-items: center; gap: 12px; }
-        input[type="range"] {
-            flex: 1; accent-color: var(--accent); height: 6px; border-radius: 3px; background: var(--border-color); cursor: pointer;
-        }
-        .slider-value { font-size: 0.8rem; color: var(--accent); min-width: 32px; font-weight: 600; text-align: right; }
-
-        /* Checkboxes */
-        .checkbox-row { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
-        .checkbox-row input[type="checkbox"] {
-            width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; margin: 0;
-        }
-        .checkbox-row label { font-size: 0.85rem; color: var(--primary-light); cursor: pointer; font-weight: normal; }
-
         /* Search Results Popovers */
         #search-results, #style-results {
             position: absolute; top: 100%; left: 0; right: 0; background: #ffffff;
@@ -204,20 +189,6 @@
         .ruler-tick { position: absolute; font-size: 9px; color: #64748b; border-left: 1px solid #cbd5e1; height: 100%; padding-left: 3px; pointer-events: none; }
         .ruler-tick-v { position: absolute; font-size: 9px; color: #64748b; border-top: 1px solid #cbd5e1; width: 100%; padding-top: 3px; pointer-events: none; }
 
-        /* --- MODAL OVERLAYS --- */
-        #ai-overlay {
-            display: none; position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
-            z-index: 1000; align-items: center; justify-content: center; flex-direction: column; padding: 24px; box-sizing: border-box;
-        }
-        #ai-image-result { max-width: 85%; max-height: 55%; border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); display: none; }
-        .close-btn { padding: 12px 24px; background: var(--primary-light); color: white; border: none; cursor: pointer; font-weight: 600; border-radius: 8px; display: none; }
-        .close-btn:hover { background: var(--primary); }
-        #loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent-ai); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        #ai-status { color: white; font-size: 1.25rem; font-family: var(--font-body); font-weight: 400; text-align: center; max-width: 600px; margin-bottom: 10px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        #style-load-info { font-size: 0.75rem; margin-top: 4px; font-weight: 500; }
-
         /* Color Palette Engine */
         .color-palette { display: flex; gap: 10px; margin-top: 4px; justify-content: center;}
         .color-option {
@@ -226,6 +197,23 @@
         }
         .color-option:hover { transform: scale(1.1); }
         .color-option.selected { border-color: #fff; box-shadow: 0 0 0 2px var(--accent-ai); transform: scale(1.05); }
+
+        /* Canvas UI Buttons */
+        #canvas-ui {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            z-index: 25;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
 
         /* -----------------------------------------
            📱 MOBILE & TABLET OPTIMIZATIONS (MEDIA QUERY)
@@ -273,21 +261,11 @@
                 font-size: 1rem;
             }
 
-            #ai-image-result {
-                max-width: 95%;
-                max-height: 40%;
+            #canvas-ui {
+                bottom: 10px;
+                flex-direction: column;
+                align-items: center;
             }
-            #ai-status {
-                font-size: 1rem;
-            }
-        }
-
-        /* AI Image Container */
-        #ai-image-container {
-            position: absolute;
-            transform-origin: 0 0;
-            pointer-events: none;
-            z-index: 15;
         }
     </style>
 </head>
@@ -302,10 +280,6 @@
         <!-- STEP 1: DATA IMPORT -->
         <div class="step-card">
             <h2><span>1</span> Datenquelle</h2>
-            <div class="control-group">
-                <label>Dokumententitel</label>
-                <input type="text" id="doc-title-input" placeholder="z.B. Chronik der Familie Maier">
-            </div>
             <div class="control-group">
                 <label>GEDCOM-Datei hochladen</label>
                 <div class="file-upload-wrapper">
@@ -324,6 +298,10 @@
         <!-- STEP 2: TREE ARCHITECTURE -->
         <div class="step-card">
             <h2><span>2</span> Struktur & Layout</h2>
+            <div class="control-group">
+                <label>Dokumententitel</label>
+                <input type="text" id="doc-title-input" placeholder="z.B. Chronik der Familie Maier">
+            </div>
             <div class="row">
                 <div>
                     <label>Generationen</label>
@@ -346,14 +324,6 @@
                 </select>
             </div>
 
-            <div class="slider-container">
-                <label>Box- & Schriftgröße</label>
-                <div class="slider-row">
-                    <input type="range" id="box-scale" min="0.5" max="3.5" step="0.1" value="1.0">
-                    <span class="slider-value" id="box-scale-value">1.0×</span>
-                </div>
-            </div>
-
             <div class="checkbox-row">
                 <input type="checkbox" id="show-dates" checked>
                 <label for="show-dates">Lebensdaten anzeigen (* / †)</label>
@@ -362,8 +332,6 @@
             <input type="hidden" id="format-preset" value="optimal">
             <input type="hidden" id="sheet-w" value="29.7">
             <input type="hidden" id="sheet-h" value="21.0">
-
-            <button class="main" id="generate-btn"> Stammbaum generieren</button>
         </div>
 
         <!-- STEP 3: AI STYLING -->
@@ -396,37 +364,19 @@
                     <svg id="tree-svg" xmlns="http://www.w3.org/2000/svg"></svg>
                 </div>
                 <div id="ai-image-container"></div>
+                <div id="canvas-ui">
+                    <button class="close-btn" id="apply-color-btn" style="display:none; background:#3b82f6;">🎨 Farbe anwenden</button>
+                    <button class="close-btn" id="download-btn" style="display:none; background:#0284c7;">⬇️ Design herunterladen</button>
+                    <button class="close-btn" id="edit-btn" style="display:none; background:var(--accent-ai);">✏️ Per KI anpassen</button>
+                    <button class="close-btn" id="edit-confirm-btn" style="display:none; background:var(--accent);">🚀 Änderungen berechnen</button>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- MODAL SYSTEM -->
-        <div id="ai-overlay">
-            <div id="loader"></div>
-            <div id="ai-status">Generiere historisches Meisterwerk...</div>
-
-            <img id="ai-debug-result" src="" alt="Erkannte Layout-Knoten" style="display:none; max-width:85%; max-height:55%; border:3px solid #22c55e; border-radius:8px;" />
-            <div id="debug-info" style="display:none; color:#22c55e; font-size:0.85rem; font-family:monospace; margin-bottom: 12px;"></div>
-
-            <img id="ai-image-result" src="" alt="KI-generierter Stammbaum" />
-
-            <div id="color-palette-container" style="display:none; flex-direction:column; gap:8px; align-items:center; margin-top: 16px;">
-                <label style="color:white; font-size:0.9rem;">Farbschema anpassen (aus Ihrem Bild extrahiert)</label>
-                <div class="color-palette" id="color-palette"></div>
-            </div>
-
-            <div id="edit-area" style="display:none; width:100%; max-width:600px; flex-direction:column; gap:8px; margin-top: 16px;">
-                <textarea id="edit-prompt" rows="2" placeholder="Was soll geändert werden? z.B.: 'Füge unten eine historische Ansicht von Regensburg hinzu'" style="width:100%; box-sizing:border-box; padding:12px; background:#1e293b; color:white; border:1px solid var(--accent-ai); border-radius:8px; font-size:0.9rem; font-family: inherit; resize:none;"></textarea>
-            </div>
-
-            <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top: 20px;">
-                <button class="close-btn" id="apply-text-btn" style="display:none; background:#22c55e;">✏️ Texte in Boxen schreiben</button>
-                <button class="close-btn" id="apply-color-btn" style="display:none; background:#3b82f6;">🎨 Farbe anwenden</button>
-                <button class="close-btn" id="download-btn" style="display:none; background:#0284c7;">⬇️ Design herunterladen</button>
-                <button class="close-btn" id="edit-btn" style="display:none; background:var(--accent-ai);">✏️ Per KI anpassen</button>
-                <button class="close-btn" id="edit-confirm-btn" style="display:none; background:var(--accent);">🚀 Änderungen berechnen</button>
-                <button class="close-btn" id="close-overlay" style="display:none;">Zurück zum Editor</button>
-            </div>
-        </div>
+    <div id="edit-area" style="display:none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 600px; flex-direction: column; gap: 8px; z-index: 30; background: rgba(30, 41, 59, 0.95); padding: 16px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);">
+        <textarea id="edit-prompt" rows="2" placeholder="Was soll geändert werden? z.B.: 'Füge unten eine historische Ansicht von Regensburg hinzu'" style="width:100%; box-sizing:border-box; padding:12px; background:#1e293b; color:white; border:1px solid var(--accent-ai); border-radius:8px; font-size:0.9rem; font-family: inherit; resize:none;"></textarea>
+        <button class="close-btn" id="edit-cancel-btn" style="background: var(--primary-light);">Abbrechen</button>
     </div>
 
     <script>
@@ -462,16 +412,15 @@
         const workspace = document.getElementById('workspace');
         const svgElement = document.getElementById('tree-svg');
         const svg = d3.select("#tree-svg");
-        const statusEl = document.getElementById('status');
-        const colorPalette = document.getElementById('color-palette');
-        const colorPaletteContainer = document.getElementById('color-palette-container');
+        const canvasUI = document.getElementById('canvas-ui');
+        const applyColorBtn = document.getElementById('apply-color-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const editBtn = document.getElementById('edit-btn');
+        const editConfirmBtn = document.getElementById('edit-confirm-btn');
+        const editArea = document.getElementById('edit-area');
+        const editPrompt = document.getElementById('edit-prompt');
+        const editCancelBtn = document.getElementById('edit-cancel-btn');
 
-        const boxScaleSlider = document.getElementById('box-scale');
-        const boxScaleValue = document.getElementById('box-scale-value');
-        boxScaleSlider.addEventListener('input', () => {
-            boxScaleValue.textContent = parseFloat(boxScaleSlider.value).toFixed(1) + '×';
-            if (hiddenIdInput.value) renderTree();
-        });
         document.getElementById('show-dates').addEventListener('change', () => {
             if (hiddenIdInput.value) renderTree();
         });
@@ -535,7 +484,8 @@
 
         function updateColorPalette(colors) {
             dominantColors = colors;
-            colorPalette.innerHTML = '';
+            const colorPalette = document.createElement('div');
+            colorPalette.className = 'color-palette';
             dominantColors.forEach(color => {
                 const option = document.createElement('div');
                 option.className = 'color-option';
@@ -551,6 +501,7 @@
                 colorPalette.children[0].classList.add('selected');
                 selectedBoxColor = dominantColors[0];
             }
+            canvasUI.insertBefore(colorPalette, canvasUI.firstChild);
         }
 
         let stylesDB = [];
@@ -674,7 +625,12 @@
             matches.forEach(m => {
                 const item = document.createElement('div'); item.className = 'search-item';
                 item.innerHTML = `<span><strong>${m.name}</strong></span> <small>ID: ${m.id}</small>`;
-                item.onclick = () => { searchInput.value = m.name; hiddenIdInput.value = m.id; resultsDiv.style.display = 'none'; };
+                item.onclick = () => {
+                    searchInput.value = m.name;
+                    hiddenIdInput.value = m.id;
+                    resultsDiv.style.display = 'none';
+                    renderTree();
+                };
                 resultsDiv.appendChild(item);
             });
             resultsDiv.style.display = 'block';
@@ -740,19 +696,16 @@
             return { name: p.name, birth: p.birth, death: p.death, children: children.length > 0 ? children : null };
         }
 
-        document.getElementById('generate-btn').addEventListener('click', () => {
-            if (hiddenIdInput.value) renderTree();
-            else alert('Bitte wählen Sie im 1. Schritt eine Person aus.');
-        });
-
         function renderTree() {
             const startId = hiddenIdInput.value;
+            if (!startId) return;
+
             const data = buildHierarchy(startId, 0, parseInt(document.getElementById('gen-depth').value), document.getElementById('lineage-mode').value);
             const showDates = document.getElementById('show-dates').checked;
 
             svg.selectAll('*').remove();
-            const boxScale = parseFloat(document.getElementById('box-scale').value);
 
+            const boxScale = 1.0;
             const nameFontSize = Math.round(13 * boxScale);
             const dateFontSize = Math.round(10 * boxScale);
             const PAD_H = Math.round(10 * boxScale);
@@ -1126,16 +1079,7 @@
                             return areaOk && aspectOk;
                         });
 
-                        const dbgCanvas = document.createElement('canvas');
-                        dbgCanvas.width = aiW; dbgCanvas.height = aiH;
-                        const dbgCtx = dbgCanvas.getContext('2d');
-                        dbgCtx.drawImage(aiImg, 0, 0);
-                        dbgCtx.strokeStyle = '#00ff00';
-                        dbgCtx.lineWidth = Math.max(2, Math.round(aiW / 500));
-                        for (const r of filteredBoxes) { dbgCtx.strokeRect(r.x, r.y, r.w, r.h); }
-
                         resolve({
-                            debugDataUrl: dbgCanvas.toDataURL('image/png'),
                             deduped: filteredBoxes,
                             aiW, aiH
                         });
@@ -1356,27 +1300,8 @@
         }
 
         function showFinalResult(compositedUrl) {
-            const statusTxt = document.getElementById('ai-status');
-            const imgResult = document.getElementById('ai-image-result');
-            const debugImg = document.getElementById('ai-debug-result');
-            const debugInfo = document.getElementById('debug-info');
-            const loader = document.getElementById('loader');
-            const applyBtn = document.getElementById('apply-text-btn');
-            const applyColorBtn = document.getElementById('apply-color-btn');
-            const dlBtn = document.getElementById('download-btn');
-            const editBtn = document.getElementById('edit-btn');
-            const editCfm = document.getElementById('edit-confirm-btn');
-            const editArea = document.getElementById('edit-area');
-            const closeBtn = document.getElementById('close-overlay');
-            const colorPaletteContainer = document.getElementById('color-palette-container');
-
-            loader.style.display = 'none'; debugImg.style.display = 'none'; debugInfo.style.display = 'none';
-            applyBtn.style.display = 'none'; editCfm.style.display = 'none'; editArea.style.display = 'none';
-
-            imgResult.src = compositedUrl; imgResult.style.display = 'block';
             finalCompositedImage = compositedUrl;
 
-            // Display the AI image in the workspace
             if (!aiImageElement) {
                 aiImageElement = document.createElement('img');
                 aiImageElement.id = 'ai-image-workspace';
@@ -1391,128 +1316,118 @@
             aiImageElement.style.height = canvas.style.height;
             aiImageElement.style.transform = `translate(${pX}px, ${pY}px) scale(${scale})`;
 
-            statusTxt.textContent = 'Extrahiere Farbprofile...';
+            applyColorBtn.style.display = 'block';
+            downloadBtn.style.display = 'block';
+            editBtn.style.display = 'block';
+
             const img = new Image();
             img.onload = async () => {
                 try {
                     dominantColors = await extractDominantColors(img, 5);
                     updateColorPalette(dominantColors);
-                    colorPaletteContainer.style.display = 'flex';
-                    statusTxt.textContent = 'Ihr historisches Meisterwerk ist fertig!';
-                    applyColorBtn.style.display = 'block'; dlBtn.style.display = 'block';
-                    editBtn.style.display = 'block'; closeBtn.style.display = 'block';
                 } catch (err) {
-                    dlBtn.style.display = 'block'; closeBtn.style.display = 'block';
+                    console.error(err);
                 }
             };
             img.src = compositedUrl;
 
             applyColorBtn.onclick = async () => {
-                applyColorBtn.style.display = 'none'; loader.style.display = 'block';
-                statusTxt.textContent = 'Farbe wird auf Layout übertragen...';
+                applyColorBtn.style.display = 'none';
                 try {
                     const coloredImageUrl = await applyColorToBoxes(finalCompositedImage, selectedBoxColor);
                     finalCompositedImage = coloredImageUrl;
-                    imgResult.src = coloredImageUrl;
                     aiImageElement.src = coloredImageUrl;
-                    loader.style.display = 'none'; statusTxt.textContent = 'Farben erfolgreich harmonisiert!';
-                    dlBtn.style.display = 'block'; closeBtn.style.display = 'block';
+                    applyColorBtn.style.display = 'block';
                 } catch (err) {
-                    loader.style.display = 'none'; dlBtn.style.display = 'block'; closeBtn.style.display = 'block';
+                    console.error(err);
                 }
             };
 
-            dlBtn.onclick = () => { const a = document.createElement('a'); a.href = finalCompositedImage; a.download = 'stammbaum_studio.png'; a.click(); };
-            editBtn.onclick = () => { editArea.style.display = 'flex'; editCfm.style.display = 'block'; editBtn.style.display = 'none'; document.getElementById('edit-prompt').focus(); };
+            downloadBtn.onclick = () => {
+                const a = document.createElement('a');
+                a.href = finalCompositedImage;
+                a.download = 'stammbaum_studio.png';
+                a.click();
+            };
 
-            editCfm.onclick = async () => {
-                const userPrompt = document.getElementById('edit-prompt').value.trim();
+            editBtn.onclick = () => {
+                editArea.style.display = 'flex';
+                editBtn.style.display = 'none';
+                editPrompt.focus();
+            };
+
+            editConfirmBtn.onclick = async () => {
+                const userPrompt = editPrompt.value.trim();
                 if (!userPrompt) return;
 
-                editArea.style.display = 'none'; editCfm.style.display = 'none'; dlBtn.style.display = 'none';
-                editBtn.style.display = 'none'; closeBtn.style.display = 'none'; imgResult.style.display = 'none';
-                colorPaletteContainer.style.display = 'none'; loader.style.display = 'block';
-                statusTxt.textContent = 'Berechne neue Stil-Instruktionen...';
+                editArea.style.display = 'none';
+                editBtn.style.display = 'none';
+                downloadBtn.style.display = 'none';
+                applyColorBtn.style.display = 'none';
 
                 try {
                     const b64resp = await fetch(_lastRawAiUrl);
                     const blob = await b64resp.blob();
-                    const base64 = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.readAsDataURL(blob); });
+                    const base64 = await new Promise(res => {
+                        const r = new FileReader();
+                        r.onload = () => res(r.result.split(',')[1]);
+                        r.readAsDataURL(blob);
+                    });
                     const editPromptFull = `${userPrompt}. Important: paint the interior fill of EVERY rectangular box in the family tree with solid pure red color #FF0000 (RGB 255,0,0) — no text or patterns inside the boxes, only solid red fill. Keep all box positions and sizes unchanged.`;
 
                     let newAiUrl = await callBackendGemini(editPromptFull, base64, blob.type || 'image/png');
                     let detection = await detectRedBoxes(newAiUrl);
 
-                    _lastRawAiUrl = newAiUrl; _lastDetection = detection;
-                    loader.style.display = 'none';
+                    _lastRawAiUrl = newAiUrl;
+                    _lastDetection = detection;
+
                     const compositedUrl = await compositeTextIntoBoxes(_lastRawAiUrl, _lastDetection.deduped, _lastDetection.aiW, _lastDetection.aiH);
                     showFinalResult(compositedUrl);
                 } catch (err) {
-                    loader.style.display = 'none'; statusTxt.textContent = 'Änderung fehlgeschlagen.'; closeBtn.style.display = 'block';
+                    console.error(err);
+                    editBtn.style.display = 'block';
+                    downloadBtn.style.display = 'block';
+                    applyColorBtn.style.display = 'block';
                 }
+            };
+
+            editCancelBtn.onclick = () => {
+                editArea.style.display = 'none';
+                editBtn.style.display = 'block';
             };
         }
 
         document.getElementById('design-btn').addEventListener('click', async () => {
-            if (activeDescendants.length === 0) { alert('Bitte generieren Sie zuerst den Basis-Stammbaum (Schritt 2).'); return; }
+            if (activeDescendants.length === 0) { alert('Bitte wählen Sie zuerst eine Person aus.'); return; }
             const stylePrompt = hiddenStylePrompt.value.trim();
             if (!stylePrompt) { alert('Bitte wählen Sie einen Designstil in Schritt 3.'); return; }
 
-            const overlay = document.getElementById('ai-overlay');
-            const statusTxt = document.getElementById('ai-status');
-            const imgResult = document.getElementById('ai-image-result');
-            const debugImg = document.getElementById('ai-debug-result');
-            const debugInfo = document.getElementById('debug-info');
-            const loader = document.getElementById('loader');
-            const closeBtn = document.getElementById('close-overlay');
-            const applyBtn = document.getElementById('apply-text-btn');
-            const dlBtn = document.getElementById('download-btn');
-            const editBtn = document.getElementById('edit-btn');
-            const editCfm = document.getElementById('edit-confirm-btn');
-            const editArea = document.getElementById('edit-area');
-            const colorPaletteContainer = document.getElementById('color-palette-container');
-
-            overlay.style.display = 'flex'; imgResult.style.display = 'none'; debugImg.style.display = 'none';
-            debugInfo.style.display = 'none'; applyBtn.style.display = 'none'; dlBtn.style.display = 'none';
-            editBtn.style.display = 'none'; editCfm.style.display = 'none'; editArea.style.display = 'none';
-            colorPaletteContainer.style.display = 'none'; closeBtn.style.display = 'none'; loader.style.display = 'block';
-
             try {
-                statusTxt.textContent = 'Analysiere geometrische Struktur des Stammbaums...';
                 const { base64: imgBase64, mimeType: imgMimeType } = await svgToPngBase64(svgElement, 800, true);
                 const finalPrompt = `${stylePrompt}. The image shows a family tree with rectangular boxes connected by lines. Apply the artistic style to the ENTIRE image — background, borders, connecting lines, decorations. IMPORTANT: paint the interior fill of EVERY rectangular box with solid pure red color #FF0000 (RGB 255,0,0). Do NOT put any text, patterns, or other colors inside the boxes — only solid #FF0000 fill inside each box interior. Keep all box positions and sizes unchanged. Output a high quality image.`;
 
-                statusTxt.textContent = 'Malerische Rekonstruktion via KI wird ausgeführt...';
                 const aiUrl = await callBackendGemini(finalPrompt, imgBase64, imgMimeType);
 
-                statusTxt.textContent = 'Richte Textebenen mathematisch aus...';
                 const detection = await detectRedBoxes(aiUrl);
                 const validation = validateDetectedBoxes(detection.deduped);
 
                 if (!validation.valid) {
-                    loader.style.display = 'none'; statusTxt.textContent = 'Fehler beim Geometrie-Mapping. Bitte verändern Sie leicht die Skalierung.'; closeBtn.style.display = 'block'; return;
+                    alert('Fehler beim Geometrie-Mapping. Bitte verändern Sie leicht die Skalierung.');
+                    return;
                 }
 
-                _lastRawAiUrl = aiUrl; _lastDetection = detection;
+                _lastRawAiUrl = aiUrl;
+                _lastDetection = detection;
                 const compositedUrl = await compositeTextIntoBoxes(_lastRawAiUrl, _lastDetection.deduped, _lastDetection.aiW, _lastDetection.aiH);
                 showFinalResult(compositedUrl);
             } catch (err) {
-                loader.style.display = 'none'; statusTxt.textContent = 'Verbindungsfehler zur Creative Engine.'; closeBtn.style.display = 'block';
+                alert('Verbindungsfehler zur Creative Engine.');
             }
         });
 
-        document.getElementById('close-overlay').addEventListener('click', () => {
-            document.getElementById('ai-overlay').style.display = 'none';
-            if (aiImageElement) {
-                aiImageElement.remove();
-                aiImageElement = null;
-            }
-        });
-
-        // --- CHECKOUT ---
-        document.getElementById('checkout-btn').onclick = async () => {
+        document.getElementById('checkout-btn').addEventListener('click', async () => {
             if (!finalCompositedImage || !_lastRawAiUrl || !_lastDetection) {
-                alert('Bitte transformiere zuerst dein Design mit der KI (Schritt 3), um es kaufen zu können!');
+                alert('Bitte transformieren Sie zuerst Ihr Design mit der KI (Schritt 3), um es kaufen zu können!');
                 return;
             }
 
@@ -1524,8 +1439,7 @@
                         rawAiImageUrl: _lastRawAiUrl,
                         detection: _lastDetection,
                         currentNodes: currentNodes,
-                        selectedBoxColor: selectedBoxColor,
-                        boxScale: parseFloat(boxScaleSlider.value)
+                        selectedBoxColor: selectedBoxColor
                     })
                 });
 
@@ -1538,7 +1452,7 @@
             } catch (err) {
                 alert('Checkout-Fehler: ' + err.message);
             }
-        };
+        });
 
         updateT();
     });
