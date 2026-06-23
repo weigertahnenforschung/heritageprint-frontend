@@ -1501,7 +1501,10 @@
                 alert('Bitte generieren Sie zuerst ein Design mit der KI (Schritt 3), um weiterzumachen!');
                 return;
             }
-
+        
+            // 🔥 WICHTIG: Bild in localStorage speichern
+            localStorage.setItem('finalCompositedImage', finalCompositedImage);
+        
             try {
                 const response = await fetch('https://heritageprint-backend.onrender.com/api/save-tree-config', {
                     method: 'POST',
@@ -1513,13 +1516,12 @@
                         selectedBoxColor: selectedBoxColor
                     })
                 });
-
+        
                 if (!response.ok) throw new Error('Fehler beim Sichern der Baum-Konfiguration.');
                 const data = await response.json();
-
+        
                 localStorage.setItem('currentTreeId', data.treeId);
                 window.location.href = 'checkout.html';
-
             } catch (err) {
                 alert('Checkout-Fehler: ' + err.message);
             }
