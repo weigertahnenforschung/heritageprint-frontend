@@ -478,7 +478,6 @@
 
         // --- 3. STRIPE INITIALISIERUNG ---
         const stripe = Stripe('pk_test_51Tj7xkIevlrrI6BDTkT27AV4NlhFcCjN4991bB0isXfY4cnQ4m6FhhjNzR1d6evTISD8gQP9BO5ky6KgqFykGmxX00JfOF1q0z');
-        const elements = stripe.elements();
 
         const style = {
             base: {
@@ -496,11 +495,12 @@
             }
         };
 
-        // Stripe Card Element für digitale Lizenz
-        const card = elements.create('card', { style: style });
-        card.mount('#card-element');
+        // Erstelle separate elements-Objekte für digitale Lizenz und Druck
+        const elementsDigital = stripe.elements();
+        const cardDigital = elementsDigital.create('card', { style: style });
+        cardDigital.mount('#card-element');
 
-        card.on('change', ({error}) => {
+        cardDigital.on('change', ({error}) => {
             const displayError = document.getElementById('card-errors');
             if (error) {
                 displayError.textContent = error.message;
@@ -509,11 +509,11 @@
             }
         });
 
-        // Stripe Card Element für Druck
-        const printCard = elements.create('card', { style: style });
-        printCard.mount('#print-card-element');
+        const elementsPrint = stripe.elements();
+        const cardPrint = elementsPrint.create('card', { style: style });
+        cardPrint.mount('#print-card-element');
 
-        printCard.on('change', ({error}) => {
+        cardPrint.on('change', ({error}) => {
             const displayError = document.getElementById('print-card-errors');
             if (error) {
                 displayError.textContent = error.message;
@@ -559,7 +559,7 @@
 
                 const result = await stripe.confirmCardPayment(clientSecret, {
                     payment_method: {
-                        card: card,
+                        card: cardDigital,
                         billing_details: { email: emailInput }
                     }
                 });
@@ -633,7 +633,7 @@
                 // 2. Zahlung bestätigen
                 const result = await stripe.confirmCardPayment(clientSecret, {
                     payment_method: {
-                        card: printCard,
+                        card: cardPrint,
                         billing_details: { email: email }
                     }
                 });
