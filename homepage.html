@@ -130,12 +130,13 @@
                 <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-apple-gray-900">Style Examples</h2>
             </div>
 
-            <div class="space-y-16">
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Baroque</h3>
+            <div class="space-y-16 max-w-5xl mx-auto">
+                <div class="bg-apple-gray-50/60 rounded-3xl p-6 sm:p-8 border border-apple-gray-100 shadow-xs space-y-6">
+                    <div class="flex items-center justify-between border-b border-apple-gray-100 pb-4">
+                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Baroque Style Layout</h3>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-white text-apple-gray-400 rounded-full border border-apple-gray-100 uppercase tracking-wider">Interactive Preview</span>
                     </div>
-                    <div id="slider-baroque" class="relative w-full aspect-widescreen bg-apple-gray-50 rounded-2xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
+                    <div id="slider-baroque" class="relative w-full aspect-widescreen bg-white rounded-2xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
                         <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520147/Bildschirmfoto_2026-07-08_um_16.10.12_kelzx4.png" alt="Simple Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
                         
                         <div id="clip-baroque" class="slider-clip-path absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
@@ -150,11 +151,12 @@
                     </div>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Medieval</h3>
+                <div class="bg-apple-gray-50/60 rounded-3xl p-6 sm:p-8 border border-apple-gray-100 shadow-xs space-y-6">
+                    <div class="flex items-center justify-between border-b border-apple-gray-100 pb-4">
+                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Medieval Style Layout</h3>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-white text-apple-gray-400 rounded-full border border-apple-gray-100 uppercase tracking-wider">Interactive Preview</span>
                     </div>
-                    <div id="slider-medieval" class="relative w-full aspect-widescreen bg-apple-gray-50 rounded-2xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
+                    <div id="slider-medieval" class="relative w-full aspect-widescreen bg-white rounded-2xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
                         <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520147/Bildschirmfoto_2026-07-08_um_16.10.12_kelzx4.png" alt="Simple Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
                         
                         <div id="clip-medieval" class="slider-clip-path absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
@@ -172,19 +174,77 @@
         </div>
     </section>
 
-    <section id="how-it-works" class="py-16 lg:py-24 bg-white border-t border-apple-gray-100">
+    <section id="how-it-works" class="py-16 lg:py-24 bg-apple-gray-50 border-t border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">Product Benefits</h2>
-                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">
-                    The intersection of deep lineage structures and modern design.
-                </p>
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue mb-3">HOW IT WORKS</h2>
+                <p class="text-3xl font-bold tracking-tight text-apple-gray-900">Five simple steps to heirloom print generation.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 relative">
+                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
                     <div class="space-y-4">
-                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue">
+                        <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">1</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Add Initial Source Data</h3>
+                        <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
+                            Upload your existing GEDCOM database file to choose a starting point ancestor, or build a new layout from scratch right inside our application portal window.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
+                    <div class="space-y-4">
+                        <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">2</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Configure Scale Properties</h3>
+                        <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
+                            Specify total layout generation layers, framework layout direction scales, chart titles, and choose whether to append structural birth and death milestone properties.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
+                    <div class="space-y-4">
+                        <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">3</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Select Framework Style</h3>
+                        <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
+                            Choose between our elegant theme options like historical Baroque flow dynamics or fine-line structured Medieval arrangements to map lineage elements safely.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
+                    <div class="space-y-4">
+                        <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">4</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Apply Personalization</h3>
+                        <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
+                            Fine-tune remaining user choices by choosing custom graphic overlay details, layout borders, or historic verification insignias before firing the render layer.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border-2 border-apple-blue shadow-xs relative flex flex-col justify-between bg-gradient-to-b from-apple-blue/[0.02] to-transparent">
+                    <div class="space-y-4">
+                        <div class="w-10 h-10 bg-apple-blue rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-xs">5</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Instantly Ready!</h3>
+                        <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
+                            Simply hit the bright "Generate" button element action, watch the platform assemble structural layers, and your completed digital heirloom blueprint canvas is ready.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 lg:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">PRODUCT BENEFITS</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white p-8 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
+                    <div class="space-y-4">
+                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue border border-apple-gray-100">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
                         </div>
                         <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Unique Designs & Personalization</h3>
@@ -194,9 +254,9 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between">
+                <div class="bg-white p-8 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                     <div class="space-y-4">
-                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue">
+                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue border border-apple-gray-100">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
                         </div>
                         <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Adaptive Frameworks</h3>
@@ -206,9 +266,9 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between">
+                <div class="bg-white p-8 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                     <div class="space-y-4">
-                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue">
+                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue border border-apple-gray-100">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                         </div>
                         <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Data Security</h3>
@@ -218,9 +278,9 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between md:col-span-2 lg:col-span-3 lg:max-w-md lg:mx-auto w-full">
+                <div class="bg-white p-8 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                     <div class="space-y-4">
-                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue">
+                        <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue border border-apple-gray-100">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                         </div>
                         <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Trusted Fine Art Printing</h3>
@@ -233,7 +293,7 @@
         </div>
     </section>
 
-    <section id="gedcom-guide" class="py-16 lg:py-24 bg-apple-gray-50">
+    <section id="gedcom-guide" class="py-16 lg:py-24 bg-apple-gray-50 border-t border-b border-apple-gray-100">
         <div class="max-w-4xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
                 <h2 class="text-2xl sm:text-3xl font-bold text-apple-gray-900 tracking-tight">Download Your Family Data</h2>
@@ -287,7 +347,7 @@
         </div>
     </section>
 
-    <section id="products" class="py-16 lg:py-24 bg-white border-t border-apple-gray-100">
+    <section id="products" class="py-16 lg:py-24 bg-white">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">Simple Pricing</h2>
