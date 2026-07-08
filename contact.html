@@ -97,12 +97,11 @@
             statusPanel.classList.add('hidden');
 
             try {
-              // Post directly to your Render Node server instance
-              const response = await fetch('/contact-submit', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ email, message })
-              });
+             const response = await fetch('https://heritageprint-backend.onrender.com/contact-submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, message })
+            });
 
                 if (response.ok) {
                     statusPanel.className = "mt-6 text-sm text-center font-medium text-emerald-600 bg-emerald-50/50 border border-emerald-100 py-3 rounded-xl";
