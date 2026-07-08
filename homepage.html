@@ -56,6 +56,23 @@
             will-change: clip-path, left;
             transition: clip-path 0.05s linear, left 0.05s linear;
         }
+        
+        /* Step Highlight Animation Classes */
+        .step-box {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .step-box.active-highlight {
+            border-color: rgba(0, 102, 204, 0.5) !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 102, 204, 0.1), 0 8px 10px -6px rgba(0, 102, 204, 0.1) !important;
+            transform: translateY(-4px);
+        }
+        .step-badge {
+            transition: all 0.4s ease;
+        }
+        .step-box.active-highlight .step-badge {
+            background-color: #0066cc !important;
+            color: #ffffff !important;
+        }
     </style>
 </head>
 <body class="bg-white text-apple-gray-800 font-sans antialiased selection:bg-apple-blue selection:text-white">
@@ -131,10 +148,10 @@
                 <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Five simple steps</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 relative">
-                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
+            <div id="steps-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 relative">
+                <div data-step="1" class="step-box bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
                     <div class="space-y-4">
-                        <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">1</div>
+                        <div class="step-badge w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">1</div>
                         <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Add Data</h3>
                         <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
                             Upload your GEDCOM file and choose your starting person, or start building your family tree completely from scratch right on our website.
@@ -142,9 +159,9 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
+                <div data-step="2" class="step-box bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
                     <div class="space-y-4">
-                        <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">2</div>
+                        <div class="step-badge w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">2</div>
                         <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Choose Options</h3>
                         <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
                             Set your preferences like the number of generations, title, and family tree direction. Decide if you want to display additional data like birth and death dates.
@@ -152,9 +169,9 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
+                <div data-step="3" class="step-box bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
                     <div class="space-y-4">
-                        <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">3</div>
+                        <div class="step-badge w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">3</div>
                         <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Choose Style</h3>
                         <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
                             Select your preferred design framework, such as our historic Baroque layout or our Medieval theme.
@@ -162,9 +179,9 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
+                <div data-step="4" class="step-box bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
                     <div class="space-y-4">
-                        <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">4</div>
+                        <div class="step-badge w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">4</div>
                         <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Personalize</h3>
                         <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
                             If you want, add your own final touches to fine-tune the visuals.
@@ -172,9 +189,9 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border-2 border-apple-blue shadow-xs relative flex flex-col justify-between bg-gradient-to-b from-apple-blue/[0.02] to-transparent">
+                <div data-step="5" class="step-box bg-white p-6 rounded-2xl border border-apple-gray-100 shadow-xs relative flex flex-col justify-between group hover:border-apple-blue/30 transition-all">
                     <div class="space-y-4">
-                        <div class="w-10 h-10 bg-apple-blue rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-xs">5</div>
+                        <div class="step-badge w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">5</div>
                         <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Generate!</h3>
                         <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
                             Just click the "Generate" button. Our system will instantly process your choices and your high-resolution family tree layout is ready!
@@ -185,9 +202,9 @@
         </div>
     </section>
 
-    <section id="style-examples" class="py-8 lg:py-12 bg-white border-t border-apple-gray-100">
+    <section id="style-examples" class="py-16 lg:py-24 bg-white border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
                 <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Style Examples</h2>
             </div>
 
@@ -235,7 +252,7 @@
         </div>
     </section>
 
-    <section class="py-16 lg:py-24 bg-white">
+    <section class="py-16 lg:py-24 bg-apple-gray-50 border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-16">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">WHY CHOOSE US?</h2>
@@ -294,7 +311,7 @@
         </div>
     </section>
 
-    <section id="gedcom-guide" class="py-16 lg:py-24 bg-apple-gray-50 border-t border-b border-apple-gray-100">
+    <section id="gedcom-guide" class="py-16 lg:py-24 bg-white border-b border-apple-gray-100">
         <div class="max-w-4xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
                 <h2 class="text-2xl sm:text-3xl font-bold text-apple-gray-900 tracking-tight">Download Your Family Data</h2>
@@ -315,11 +332,11 @@
                 </div>
             </div>
 
-            <div class="mt-8 bg-white border border-apple-gray-100 p-6 sm:p-8 rounded-2xl">
+            <div class="mt-8 bg-apple-gray-50 border border-apple-gray-100 p-6 sm:p-8 rounded-2xl">
                 <div id="tab-content-ancestry" class="space-y-4 transition-opacity duration-300">
                     <h3 class="text-sm font-semibold text-apple-gray-900">Export Steps for Ancestry.com</h3>
                     <ol class="space-y-3 text-sm text-apple-gray-400 font-normal list-decimal list-inside">
-                        <li>Log into your database tree page dashboard on <code class="bg-apple-gray-50 border border-apple-gray-100 px-1 py-0.5 rounded text-xs text-apple-gray-800">Ancestry.com</code>.</li>
+                        <li>Log into your database tree page dashboard on <code class="bg-apple-gray-200 border border-apple-gray-100 px-1 py-0.5 rounded text-xs text-apple-gray-800">Ancestry.com</code>.</li>
                         <li>Open your tree drop menu array setup controls and click on <strong class="font-medium text-apple-gray-900">Tree Settings</strong>.</li>
                         <li>Locate the panel configuration option marked explicitly as <strong class="font-medium text-apple-gray-900">Export Tree</strong>.</li>
                         <li>Allow processing to finalize, then hit the link <span class="text-apple-blue underline font-medium">Download your GEDCOM file</span>.</li>
@@ -348,7 +365,7 @@
         </div>
     </section>
 
-    <section id="products" class="py-16 lg:py-24 bg-white">
+    <section id="products" class="py-16 lg:py-24 bg-apple-gray-50 border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">SIMPLE PRICING</h2>
@@ -398,12 +415,12 @@
                         </div>
                         <div class="w-full h-[1px] bg-apple-gray-100"></div>
                         <p class="text-apple-gray-400 text-sm font-normal leading-relaxed">
-                            Premium, heavy-duty fine art prints produced on gallery-quality paper. Carefully packaged and shipped directly to your door in a protective custom box.
+                            Museum-grade canvas production framed and protected securely over deep wood mounts. Handcrafted with precision details natively matching high definition vector assets perfectly.
                         </p>
                     </div>
                     <div class="pt-8">
                         <a href="https://heritageprint-frontend.vercel.app/" class="block w-full text-center px-4 py-2.5 text-xs font-medium bg-apple-blue text-white rounded-xl hover:bg-apple-blueHover transition-all shadow-xs">
-                            Order Premium Print
+                            Order Premium Canvas Setup
                         </a>
                     </div>
                 </div>
@@ -411,53 +428,74 @@
         </div>
     </section>
 
-    <footer class="bg-white text-apple-gray-400 py-12 border-t border-apple-gray-50 text-xs">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div>
-                <p class="font-medium text-apple-gray-900 mb-1">© 2026 HeritagePrint Inc.</p>
-                <p class="font-normal text-apple-gray-400">All rights reserved. Transforming data exports into premium design artifacts.</p>
-            </div>
-            <div class="flex space-x-6">
-                <a href="#" class="hover:text-apple-gray-900 transition-colors">Privacy Policy</a>
-                <a href="#" class="hover:text-apple-gray-900 transition-colors">Terms of Service</a>
-                <a href="#" class="hover:text-apple-gray-900 transition-colors">Contact Support</a>
-            </div>
-        </div>
-    </footer>
-
     <script>
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
-        function updateComparisonSlider(id, value) {
-            const clipLayer = document.getElementById(`clip-${id}`);
-            const line = document.getElementById(`line-${id}`);
-
-            requestAnimationFrame(() => {
-                clipLayer.style.clipPath = `inset(0 0 0 ${value}%)`;
-                line.style.left = `${value}%`;
-            });
-        }
-
-        function switchGedcomTab(platformId) {
-            const tabs = ['ancestry', 'myheritage', 'familysearch'];
-            tabs.forEach(tab => {
-                const button = document.getElementById(`tab-btn-${tab}`);
-                const content = document.getElementById(`tab-content-${tab}`);
-
-                if (tab === platformId) {
-                    button.classList.remove('border-transparent', 'text-apple-gray-400');
-                    button.classList.add('border-apple-blue', 'text-apple-gray-900');
+        function switchGedcomTab(platform) {
+            ['ancestry', 'myheritage', 'familysearch'].forEach(p => {
+                const btn = document.getElementById(`tab-btn-${p}`);
+                const content = document.getElementById(`tab-content-${p}`);
+                if (p === platform) {
+                    btn.classList.remove('border-transparent', 'text-apple-gray-400');
+                    btn.classList.add('border-apple-blue', 'text-apple-gray-900');
                     content.classList.remove('hidden');
                 } else {
-                    button.classList.remove('border-apple-blue', 'text-apple-gray-900');
-                    button.classList.add('border-transparent', 'text-apple-gray-400');
+                    btn.classList.remove('border-apple-blue', 'text-apple-gray-900');
+                    btn.classList.add('border-transparent', 'text-apple-gray-400');
                     content.classList.add('hidden');
                 }
             });
         }
+
+        function updateComparisonSlider(id, value) {
+            const clip = document.getElementById(`clip-${id}`);
+            const line = document.getElementById(`line-${id}`);
+            if(clip && line) {
+                clip.style.clipPath = `inset(0 0 0 ${value}%)`;
+                line.style.left = `${value}%`;
+            }
+        }
+
+        // Left-to-Right Non-Reversible Step Highlighting Animation Controlled by Scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const stepBoxes = Array.from(document.querySelectorAll('.step-box'));
+            let dynamicThresholds = [];
+
+            function calculateThresholds() {
+                const container = document.getElementById('how-it-works');
+                const containerTop = container.offsetTop;
+                const containerHeight = container.offsetHeight;
+                
+                // Create 5 progressive breakpoints along the section's scroll duration
+                dynamicThresholds = stepBoxes.map((_, index) => {
+                    return containerTop + (containerHeight * 0.15) + (index * (containerHeight * 0.12));
+                });
+            }
+
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY + (window.innerHeight * 0.55);
+
+                dynamicThresholds.forEach((threshold, index) => {
+                    // Check if scroll reached this trigger line and item is not yet highlighted
+                    if (scrollPosition >= threshold && !stepBoxes[index].classList.contains('active-highlight')) {
+                        // Highlight current index line asset
+                        stepBoxes[index].classList.add('active-highlight');
+                        
+                        // Clean up preceding boxes to balance highlight focus (keeps the active item prominent)
+                        if (index > 0) {
+                            stepBoxes[index - 1].classList.remove('active-highlight');
+                        }
+                    }
+                });
+            });
+
+            // Initial setup run
+            calculateThresholds();
+            window.addEventListener('resize', calculateThresholds);
+        });
     </script>
 </body>
 </html>
