@@ -95,7 +95,7 @@
         </div>
     </header>
 
-    <section class="relative bg-white overflow-hidden py-16 sm:py-24 lg:py-36 flex items-center min-h-[55vh]">
+    <section class="relative bg-white overflow-hidden pt-12 pb-6 sm:pt-16 sm:pb-8 lg:pt-24 lg:pb-12 flex items-center min-h-[45vh]">
         <div class="absolute inset-0 z-0 bg-[#fbfbfd]">
             <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783518639/Winsor_family_tree_idbxil.png" alt="Winsor Family Tree Widescreen Canvas" class="w-full h-full object-contain object-top" />
             <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 via-white/35 to-transparent"></div>
@@ -109,7 +109,7 @@
                         Turn your family history into <span class="text-apple-blue">museum-grade art</span>.
                     </h1>
                     <p class="text-apple-gray-800 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
-                        Upload your GEDCOM data and instantly generate elegant, structured lineage layouts crafted for heirloom print clarity.
+                        Upload your GEDCOM file to design elegant, custom family trees.
                     </p>
                     <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
                         <a href="https://heritageprint-frontend.vercel.app/" class="w-full sm:w-auto px-6 py-3 bg-apple-blue text-white font-medium text-sm hover:bg-apple-blueHover transition-all rounded-xl shadow-xs text-center">
@@ -124,19 +124,19 @@
         </div>
     </section>
 
-    <section id="style-examples" class="py-16 lg:py-24 bg-white border-t border-apple-gray-100">
+    <section id="style-examples" class="py-8 lg:py-12 bg-white border-t border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-apple-gray-900">Style Examples</h2>
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Style Examples</h2>
             </div>
 
-            <div class="space-y-16 max-w-5xl mx-auto">
-                <div class="bg-apple-gray-50/60 rounded-3xl p-6 sm:p-8 border border-apple-gray-100 shadow-xs space-y-6">
-                    <div class="flex items-center justify-between border-b border-apple-gray-100 pb-4">
-                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Baroque Style Layout</h3>
-                        <span class="text-xs font-semibold px-2.5 py-1 bg-white text-apple-gray-400 rounded-full border border-apple-gray-100 uppercase tracking-wider">Interactive Preview</span>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                <div class="bg-apple-gray-50/60 rounded-2xl p-4 border border-apple-gray-100 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between border-b border-apple-gray-100 pb-3">
+                        <h3 class="text-sm font-bold tracking-tight text-apple-gray-900">Baroque Style Layout</h3>
+                        <span class="text-[10px] font-semibold px-2 py-0.5 bg-white text-apple-gray-400 rounded-full border border-apple-gray-100 uppercase tracking-wider">Interactive</span>
                     </div>
-                    <div id="slider-baroque" class="relative w-full aspect-widescreen bg-white rounded-2xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
+                    <div id="slider-baroque" class="relative w-full aspect-widescreen bg-white rounded-xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
                         <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520147/Bildschirmfoto_2026-07-08_um_16.10.12_kelzx4.png" alt="Simple Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
                         
                         <div id="clip-baroque" class="slider-clip-path absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
@@ -144,19 +144,19 @@
                         </div>
 
                         <div id="line-baroque" class="slider-line absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] pointer-events-none z-20" style="left: 50%;">
-                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white text-apple-gray-900 rounded-full shadow-md flex items-center justify-center border border-apple-gray-100 text-xs font-bold">↔</div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white text-apple-gray-900 rounded-full shadow-md flex items-center justify-center border border-apple-gray-100 text-[10px] font-bold">↔</div>
                         </div>
 
                         <input type="range" min="0" max="100" value="50" step="0.1" oninput="updateComparisonSlider('baroque', this.value)" class="slider-input absolute inset-0 w-full h-full opacity-0 z-30 cursor-ew-resize appearance-none" aria-label="Baroque reveal slider" />
                     </div>
                 </div>
 
-                <div class="bg-apple-gray-50/60 rounded-3xl p-6 sm:p-8 border border-apple-gray-100 shadow-xs space-y-6">
-                    <div class="flex items-center justify-between border-b border-apple-gray-100 pb-4">
-                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Medieval Style Layout</h3>
-                        <span class="text-xs font-semibold px-2.5 py-1 bg-white text-apple-gray-400 rounded-full border border-apple-gray-100 uppercase tracking-wider">Interactive Preview</span>
+                <div class="bg-apple-gray-50/60 rounded-2xl p-4 border border-apple-gray-100 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between border-b border-apple-gray-100 pb-3">
+                        <h3 class="text-sm font-bold tracking-tight text-apple-gray-900">Medieval Style Layout</h3>
+                        <span class="text-[10px] font-semibold px-2 py-0.5 bg-white text-apple-gray-400 rounded-full border border-apple-gray-100 uppercase tracking-wider">Interactive</span>
                     </div>
-                    <div id="slider-medieval" class="relative w-full aspect-widescreen bg-white rounded-2xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
+                    <div id="slider-medieval" class="relative w-full aspect-widescreen bg-white rounded-xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
                         <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520147/Bildschirmfoto_2026-07-08_um_16.10.12_kelzx4.png" alt="Simple Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
                         
                         <div id="clip-medieval" class="slider-clip-path absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
@@ -164,7 +164,7 @@
                         </div>
 
                         <div id="line-medieval" class="slider-line absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] pointer-events-none z-20" style="left: 50%;">
-                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white text-apple-gray-900 rounded-full shadow-md flex items-center justify-center border border-apple-gray-100 text-xs font-bold">↔</div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white text-apple-gray-900 rounded-full shadow-md flex items-center justify-center border border-apple-gray-100 text-[10px] font-bold">↔</div>
                         </div>
 
                         <input type="range" min="0" max="100" value="50" step="0.1" oninput="updateComparisonSlider('medieval', this.value)" class="slider-input absolute inset-0 w-full h-full opacity-0 z-30 cursor-ew-resize appearance-none" aria-label="Medieval reveal slider" />
@@ -174,11 +174,11 @@
         </div>
     </section>
 
-    <section id="how-it-works" class="py-16 lg:py-24 bg-apple-gray-50 border-t border-b border-apple-gray-100">
+    <section id="how-it-works" class="py-12 lg:py-16 bg-apple-gray-50 border-t border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue mb-3">HOW IT WORKS</h2>
-                <p class="text-3xl font-bold tracking-tight text-apple-gray-900">Five simple steps to your custom print.</p>
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue mb-2">HOW IT WORKS</h2>
+                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Five simple steps to your custom print.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 relative">
@@ -207,7 +207,7 @@
                         <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">3</div>
                         <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Choose Style</h3>
                         <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
-                            Select your preferred design framework, such as our historic Baroque layout or the structured line aesthetics of our Medieval theme.
+                            Select your preferred design framework, such as our historic Baroque layout or our Medieval theme.
                         </p>
                     </div>
                 </div>
@@ -217,7 +217,7 @@
                         <div class="w-10 h-10 bg-apple-gray-50 rounded-xl flex items-center justify-center text-apple-blue font-bold text-sm border border-apple-gray-100 group-hover:bg-apple-blue group-hover:text-white transition-colors">4</div>
                         <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Personalize</h3>
                         <p class="text-apple-gray-400 text-xs font-normal leading-relaxed">
-                            If you want, add your own final touches to fine-tune the visuals, choose custom borders, or toggle layout elements exactly to your liking.
+                            If you want, add your own final touches to fine-tune the visuals.
                         </p>
                     </div>
                 </div>
@@ -351,7 +351,7 @@
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">SIMPLE PRICING</h2>
-                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Premium Artifact Packages</p>
+                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Premium Packages</p>
                 <p class="text-apple-gray-400 text-sm">Choose how you want to preserve your family history. Get instant digital access or order a professional museum-grade print.</p>
             </div>
 
@@ -361,7 +361,7 @@
                         <div class="flex justify-between items-start">
                             <div>
                                 <span class="text-[10px] font-bold tracking-widest text-apple-gray-400 uppercase block mb-1">INSTANT DIGITAL</span>
-                                <h3 class="text-xl font-bold text-apple-gray-900">The Digital Heirloom</h3>
+                                <h3 class="text-xl font-bold text-apple-gray-900">Digital Copy</h3>
                             </div>
                             <div class="text-right">
                                 <span class="text-2xl font-bold text-apple-gray-900">€25</span>
@@ -387,7 +387,7 @@
                     <div class="space-y-6">
                         <div class="flex justify-between items-start">
                             <div>
-                                <span class="text-[10px] font-bold tracking-widest text-apple-blue uppercase block mb-1">ARCHIVAL CRAFT PRINT</span>
+                                <span class="text-[10px] font-bold tracking-widest text-apple-blue uppercase block mb-1">PREMIUM PRINT</span>
                                 <h3 class="text-xl font-bold text-apple-gray-900">The Master Canvas</h3>
                             </div>
                             <div class="text-right">
