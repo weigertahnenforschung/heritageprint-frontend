@@ -37,21 +37,25 @@
         }
     </script>
     <style>
-        /* Hide default range slider styling for custom comparison bar tracking */
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 100%;
             cursor: ew-resize;
             background: transparent;
         }
         .slider-input::-moz-range-thumb {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 100%;
             cursor: ew-resize;
             background: transparent;
             border: none;
+        }
+        /* Hardware acceleration transitions for smooth line updates */
+        .slider-clip-path, .slider-line {
+            will-change: clip-path, left;
+            transition: clip-path 0.05s linear, left 0.05s linear;
         }
     </style>
 </head>
@@ -121,52 +125,51 @@
         </div>
     </section>
 
+    <!-- Clean Style Examples Section -->
     <section id="style-examples" class="py-16 lg:py-24 bg-white border-t border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+            <div class="text-center max-w-2xl mx-auto mb-16">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">Style Examples</h2>
-                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Choose Your Generation Aesthetic</p>
-                <p class="text-apple-gray-400 text-sm">Slide the interactive control handles back and forth to preview transformation clarity variations inside our canvas layouts.</p>
             </div>
 
             <div class="space-y-16">
+                <!-- Box One: Baroque -->
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Baroque Composition</h3>
-                        <span class="text-xs font-medium text-apple-gray-400 bg-apple-gray-50 px-2.5 py-1 rounded-full border border-apple-gray-100">Interactive Slider</span>
+                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Baroque</h3>
                     </div>
                     <div id="slider-baroque" class="relative w-full aspect-widescreen bg-apple-gray-50 rounded-2xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
                         <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520147/Bildschirmfoto_2026-07-08_um_16.10.12_kelzx4.png" alt="Simple Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
                         
-                        <div id="clip-baroque" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
+                        <div id="clip-baroque" class="slider-clip-path absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
                             <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520158/Bildschirmfoto_2026-07-08_um_16.14.53_xtg0u3.png" alt="Baroque Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
                         </div>
 
-                        <div id="line-baroque" class="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] pointer-events-none z-20" style="left: 50%;">
+                        <div id="line-baroque" class="slider-line absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] pointer-events-none z-20" style="left: 50%;">
                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white text-apple-gray-900 rounded-full shadow-md flex items-center justify-center border border-apple-gray-100 text-xs font-bold">↔</div>
                         </div>
 
-                        <input type="range" min="0" max="100" value="50" oninput="updateComparisonSlider('baroque', this.value)" class="slider-input absolute inset-0 w-full h-full opacity-0 z-30 cursor-ew-resize appearance-none" aria-label="Baroque style reveal ratio slider" />
+                        <input type="range" min="0" max="100" value="50" step="0.1" oninput="updateComparisonSlider('baroque', this.value)" class="slider-input absolute inset-0 w-full h-full opacity-0 z-30 cursor-ew-resize appearance-none" aria-label="Baroque reveal slider" />
                     </div>
                 </div>
 
+                <!-- Box Two: Medieval -->
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Medieval Composition</h3>
-                        <span class="text-xs font-medium text-apple-gray-400 bg-apple-gray-50 px-2.5 py-1 rounded-full border border-apple-gray-100">Interactive Slider</span>
+                        <h3 class="text-lg font-bold tracking-tight text-apple-gray-900">Medieval</h3>
                     </div>
                     <div id="slider-medieval" class="relative w-full aspect-widescreen bg-apple-gray-50 rounded-2xl overflow-hidden border border-apple-gray-100 shadow-xs select-none">
                         <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520147/Bildschirmfoto_2026-07-08_um_16.10.12_kelzx4.png" alt="Simple Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
                         
-                        <div id="clip-medieval" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
+                        <div id="clip-medieval" class="slider-clip-path absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
                             <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520159/Bildschirmfoto_2026-07-08_um_16.14.04_a7cpuf.png" alt="Medieval Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
                         </div>
 
-                        <div id="line-medieval" class="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] pointer-events-none z-20" style="left: 50%;">
+                        <div id="line-medieval" class="slider-line absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] pointer-events-none z-20" style="left: 50%;">
                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white text-apple-gray-900 rounded-full shadow-md flex items-center justify-center border border-apple-gray-100 text-xs font-bold">↔</div>
                         </div>
 
-                        <input type="range" min="0" max="100" value="50" oninput="updateComparisonSlider('medieval', this.value)" class="slider-input absolute inset-0 w-full h-full opacity-0 z-30 cursor-ew-resize appearance-none" aria-label="Medieval style reveal ratio slider" />
+                        <input type="range" min="0" max="100" value="50" step="0.1" oninput="updateComparisonSlider('medieval', this.value)" class="slider-input absolute inset-0 w-full h-full opacity-0 z-30 cursor-ew-resize appearance-none" aria-label="Medieval reveal slider" />
                     </div>
                 </div>
             </div>
@@ -392,11 +395,11 @@
             const clipLayer = document.getElementById(`clip-${id}`);
             const line = document.getElementById(`line-${id}`);
             
-            // Invert the calculation logic for standard clip-path right coordinate mechanics
-            const percentage = 100 - value;
-            
-            clipLayer.style.clipPath = `inset(0 0 0 ${value}%)`;
-            line.style.left = `${value}%`;
+            // Sub-pixel layout positioning logic to optimize refresh frequency metrics
+            requestAnimationFrame(() => {
+                clipLayer.style.clipPath = `inset(0 0 0 ${value}%)`;
+                line.style.left = `${value}%`;
+            });
         }
 
         function switchGedcomTab(platformId) {
