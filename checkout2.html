@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeritagePrint – Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #1e293b;
+            --primary-light: #334155;
+            --accent: #d97706;
+            --accent-hover: #b45309;
+            --bg-main: #f1f5f9;
+            --sidebar-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #f8fafc;
+            --parchment: #fdfbf7;
+            --font-title: 'Cinzel', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #main-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            gap: 32px;
+        }
+
+        #preview-area {
+            width: 100%;
+            background-color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background-image: radial-gradient(#94a3b8 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            padding: 40px 20px;
+        }
+
+        #preview-canvas {
+            background-color: var(--parchment);
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+            border: 1px solid #94a3b8;
+            border-radius: 4px;
+            width: 100%;
+            max-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #preview-canvas img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        #checkout-container {
+            width: 100%;
+            background-color: var(--sidebar-bg);
+            padding: 40px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            border: 1px solid var(--border-color);
+        }
+
+        .header-area h1 {
+            margin: 0;
+            font-family: var(--font-title);
+            font-size: 2rem;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+        .header-area p {
+            margin: 8px 0 0 0;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .order-summary {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .order-summary .row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+        .order-summary .row.total {
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+            margin-top: 4px;
+        }
+        .order-summary .row span:first-child { color: var(--text-muted); }
+        .order-summary .row.total span:first-child { color: var(--text-main); }
+        .edit-link {
+            font-size: 0.82rem;
+            color: var(--accent);
+            text-decoration: none;
+            align-self: flex-start;
+        }
+        .edit-link:hover { text-decoration: underline; }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        label {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        input[type="email"], input[type="text"] {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #ffffff;
+            font-size: 0.95rem;
+        }
+        input:focus { border-color: var(--accent); outline: none; }
+
+        #card-element {
+            background-color: #ffffff;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        button.pay-btn {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            background-color: var(--accent);
+            color: white;
+            width: 100%;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        button.pay-btn:hover { background-color: var(--accent-hover); }
+        button.pay-btn:disabled { background-color: #d6d3d1; cursor: not-allowed; }
+
+        #card-errors {
+            color: #dc2626;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .shipping-fields {
+            display: none;
+        }
+        .shipping-fields.active {
+            display: block;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 600px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div id="main-content">
+        <div id="preview-area">
+            <div id="preview-canvas">
+                <img id="checkout-tree-img" src="" alt="Dein Stammbaum Design">
+            </div>
+        </div>
+
+        <div id="checkout-container">
+            <div class="header-area">
+                <h1 id="checkout-title">Bestellung abschließen</h1>
+                <p id="checkout-subtitle">Gib deine Daten ein, um die Bestellung abzuschließen.</p>
+            </div>
+
+            <div class="order-summary">
+                <div class="row" id="summary-line-1"></div>
+                <div class="row" id="summary-line-2" style="display:none;"></div>
+                <div class="row" id="summary-line-3" style="display:none;"></div>
+                <div class="row total">
+                    <span>Gesamtbetrag</span>
+                    <span id="summary-total">–</span>
+                </div>
+                <a class="edit-link" href="konfigurator.html">← Auswahl ändern</a>
+            </div>
+
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="email">E-Mail-Adresse für die Lieferung</label>
+                    <input type="email" id="email" required placeholder="name@beispiel.de">
+                </div>
+
+                <div id="shipping-fields" class="shipping-fields">
+                    <div class="form-group">
+                        <label for="recipient-name">Empfängername</label>
+                        <input type="text" id="recipient-name" placeholder="Max Mustermann">
+                    </div>
+
+                    <div class="grid-3">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label for="shipping-street">Straße und Hausnummer</label>
+                            <input type="text" id="shipping-street" placeholder="Hauptstraße 12">
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-zip">PLZ</label>
+                            <input type="text" id="shipping-zip" placeholder="12345">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="shipping-city">Ort</label>
+                        <input type="text" id="shipping-city" placeholder="Musterstadt">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="card-element">Zahlungsdetails (Kredit- oder Debitkarte)</label>
+                    <div id="card-element"></div>
+                    <div id="card-errors" role="alert"></div>
+                </div>
+
+                <button class="pay-btn" id="submit-payment">Jetzt bezahlen</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        fetch('header.html')
+            .then(r => r.text())
+            .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
+            .catch(err => console.error('Failed to load header:', err));
+
+        const BACKEND = 'https://heritageprint-backend.onrender.com';
+
+        // --- 1. Modus & Bestelldaten aus dem Konfigurator laden ---
+        const mode = sessionStorage.getItem('checkoutMode') || 'digital';
+        const isPrint = mode === 'print';
+
+        const printSku = sessionStorage.getItem('printSku');
+        const printSizeLabel = sessionStorage.getItem('printSizeLabel');
+        const printPaperName = sessionStorage.getItem('printPaperName');
+        const printCountry = sessionStorage.getItem('printCountry') || 'DE';
+        const printQuoteTotal = parseFloat(sessionStorage.getItem('printQuoteTotal') || '25');
+
+        const titleEl = document.getElementById('checkout-title');
+        const subtitleEl = document.getElementById('checkout-subtitle');
+        const shippingFields = document.getElementById('shipping-fields');
+        const payBtn = document.getElementById('submit-payment');
+
+        const summaryLine1 = document.getElementById('summary-line-1');
+        const summaryLine2 = document.getElementById('summary-line-2');
+        const summaryLine3 = document.getElementById('summary-line-3');
+        const summaryTotal = document.getElementById('summary-total');
+
+        let currentTotal = 25;
+
+        if (isPrint && printSku) {
+            titleEl.textContent = 'Druckauftrag abschließen';
+            subtitleEl.textContent = 'Gib deine Lieferadresse und Zahlungsdetails ein, um deinen Kunstdruck zu bestellen.';
+            shippingFields.classList.add('active');
+            document.getElementById('recipient-name').required = true;
+            document.getElementById('shipping-street').required = true;
+            document.getElementById('shipping-zip').required = true;
+            document.getElementById('shipping-city').required = true;
+            payBtn.textContent = `Druckauftrag zahlungspflichtig bestellen (${printQuoteTotal.toFixed(2).replace('.', ',')} €)`;
+
+            summaryLine1.style.display = 'flex';
+            summaryLine1.innerHTML = `<span>Digitale Premium-Lizenz</span><span>25,00 €</span>`;
+            summaryLine2.style.display = 'flex';
+            summaryLine2.innerHTML = `<span>Kunstdruck (${printSizeLabel || ''}, ${printPaperName || ''})</span><span>${(printQuoteTotal - 25).toFixed(2).replace('.', ',')} €</span>`;
+            summaryLine3.style.display = 'flex';
+            summaryLine3.innerHTML = `<span>Lieferland</span><span>${printCountry}</span>`;
+            summaryTotal.textContent = printQuoteTotal.toFixed(2).replace('.', ',') + ' €';
+            currentTotal = printQuoteTotal;
+        } else {
+            titleEl.textContent = 'Digitale Lizenz abschließen';
+            subtitleEl.textContent = 'Erhalte dein Stammbaum-Design als hochauflösende, druckreife Datei per E-Mail.';
+            shippingFields.classList.remove('active');
+            payBtn.textContent = 'Digitale Lizenz sicher erwerben (25,00 €)';
+
+            summaryLine1.style.display = 'flex';
+            summaryLine1.innerHTML = `<span>Digitale Premium-Lizenz</span><span>25,00 €</span>`;
+            summaryTotal.textContent = '25,00 €';
+            currentTotal = 25;
+        }
+
+        // --- 2. Bild laden ---
+        const savedImage = localStorage.getItem('finalCompositedImage') || sessionStorage.getItem('finalCompositedImage');
+        const checkoutTreeImg = document.getElementById('checkout-tree-img');
+        if (savedImage) {
+            checkoutTreeImg.src = savedImage;
+        } else {
+            checkoutTreeImg.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300'><rect width='800' height='300' fill='%23fdfbf7'/><text x='400' y='150' font-family='sans-serif' font-size='16' text-anchor='middle' fill='%2364748b'>Kein Stammbaum-Design geladen</text></svg>";
+        }
+
+        // --- 3. Stripe Setup ---
+        const stripe = Stripe('pk_test_51Tj7xkIevlrrI6BDTkT27AV4NlhFcCjN4991bB0isXfY4cnQ4m6FhhjNzR1d6evTISD8gQP9BO5ky6KgqFykGmxX00JfOF1q0z');
+
+        const style = {
+            base: {
+                color: '#0f172a',
+                fontFamily: '"Plus Jakarta Sans", sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '15px',
+                '::placeholder': { color: '#64748b' }
+            },
+            invalid: { color: '#dc2626', iconColor: '#dc2626' }
+        };
+
+        const elements = stripe.elements();
+        const card = elements.create('card', { style: style });
+        card.mount('#card-element');
+
+        card.on('change', ({ error }) => {
+            document.getElementById('card-errors').textContent = error ? error.message : '';
+        });
+
+        // --- 4. Zahlungsabwicklung ---
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const currentTreeId = localStorage.getItem('currentTreeId');
+
+            payBtn.disabled = true;
+            const originalBtnText = payBtn.textContent;
+            payBtn.textContent = 'Verarbeite Zahlung...';
+
+            try {
+                let payload = {
+                    amount: Math.round(currentTotal * 100),
+                    email: email,
+                    treeId: currentTreeId
+                };
+
+                if (isPrint) {
+                    const recipientName = document.getElementById('recipient-name').value;
+                    const shippingStreet = document.getElementById('shipping-street').value;
+                    const shippingZip = document.getElementById('shipping-zip').value;
+                    const shippingCity = document.getElementById('shipping-city').value;
+
+                    if (!recipientName || !shippingStreet || !shippingZip || !shippingCity) {
+                        alert('Bitte füllen Sie alle Adressfelder aus.');
+                        payBtn.disabled = false;
+                        payBtn.textContent = originalBtnText;
+                        return;
+                    }
+
+                    payload = {
+                        ...payload,
+                        isPrintOrder: true,
+                        printSize: printSku,
+                        paperFinish: sessionStorage.getItem('printPaperCode') || 'FAP',
+                        shippingCountry: printCountry,
+                        recipientName,
+                        shippingStreet,
+                        shippingZip,
+                        shippingCity
+                    };
+                }
+
+                const backendResponse = await fetch(`${BACKEND}/api/create-payment-intent`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!backendResponse.ok) {
+                    const errText = await backendResponse.text();
+                    throw new Error(`Server meldet Fehler: ${errText}`);
+                }
+
+                const data = await backendResponse.json();
+                const clientSecret = data.clientSecret;
+                if (!clientSecret) throw new Error('Kein Client Secret vom Server erhalten.');
+
+                const result = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: card,
+                        billing_details: { email: email }
+                    }
+                });
+
+                if (result.error) {
+                    document.getElementById('card-errors').textContent = result.error.message;
+                    payBtn.disabled = false;
+                    payBtn.textContent = originalBtnText;
+                    return;
+                }
+
+                if (result.paymentIntent.status !== 'succeeded') {
+                    payBtn.disabled = false;
+                    payBtn.textContent = originalBtnText;
+                    return;
+                }
+
+                if (isPrint) {
+                    const prodigiResponse = await fetch(`${BACKEND}/api/create-prodigi-order`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            treeId: currentTreeId,
+                            email: email,
+                            printSize: printSku,
+                            paperFinish: sessionStorage.getItem('printPaperCode') || 'FAP',
+                            shippingCountry: printCountry,
+                            recipientName: document.getElementById('recipient-name').value,
+                            shippingStreet: document.getElementById('shipping-street').value,
+                            shippingZip: document.getElementById('shipping-zip').value,
+                            shippingCity: document.getElementById('shipping-city').value,
+                            paymentIntentId: result.paymentIntent.id
+                        })
+                    });
+
+                    if (!prodigiResponse.ok) {
+                        const errorData = await prodigiResponse.json();
+                        throw new Error(errorData.error || 'Fehler beim Erstellen des Druckauftrags.');
+                    }
+
+                    const prodigiData = await prodigiResponse.json();
+                    alert(`Zahlung erfolgreich! Ihr Druckauftrag wurde erstellt. Bestell-ID: ${prodigiData.orderId}`);
+                } else {
+                    alert('Zahlung erfolgreich! Ihr Stammbaum wird hochskaliert und per E-Mail gesendet.');
+                }
+
+                window.location.href = 'erfolg.html';
+            } catch (err) {
+                console.error('Zahlungsfehler:', err);
+                document.getElementById('card-errors').textContent = `Fehler: ${err.message}`;
+                payBtn.disabled = false;
+                payBtn.textContent = originalBtnText;
+            }
+        });
+    </script>
+</body>
+</html>
