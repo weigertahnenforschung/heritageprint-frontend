@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeritagePrint – Druck konfigurieren</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #1e293b;
+            --primary-light: #334155;
+            --accent: #d97706;
+            --accent-hover: #b45309;
+            --bg-main: #f1f5f9;
+            --sidebar-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #f8fafc;
+            --parchment: #fdfbf7;
+            --font-title: 'Cinzel', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #main-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            gap: 32px;
+        }
+
+        /* --- STAMMBAUM PREVIEW --- */
+        #preview-area {
+            width: 100%;
+            background-color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background-image: radial-gradient(#94a3b8 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            padding: 40px 20px;
+        }
+
+        #preview-canvas {
+            background-color: var(--parchment);
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+            border: 1px solid #94a3b8;
+            border-radius: 4px;
+            width: 100%;
+            max-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #preview-canvas img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* --- KONFIGURATOR CONTAINER --- */
+        #config-container {
+            width: 100%;
+            background-color: var(--sidebar-bg);
+            padding: 40px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            border: 1px solid var(--border-color);
+        }
+
+        .header-area h1 {
+            margin: 0;
+            font-family: var(--font-title);
+            font-size: 2rem;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+        .header-area p {
+            margin: 8px 0 0 0;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        label {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #ffffff;
+            font-size: 0.95rem;
+        }
+        select:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+        .field-hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 700px) {
+            .options-grid { grid-template-columns: 1fr; }
+        }
+
+        /* --- PAPER SWATCHES --- */
+        .paper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 14px;
+        }
+        .paper-card {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: #fff;
+        }
+        .paper-card:hover { border-color: var(--text-muted); }
+        .paper-card.selected {
+            border-color: var(--accent);
+            background: #fffdf9;
+            box-shadow: 0 3px 10px rgba(217, 119, 6, 0.1);
+        }
+        .paper-card h4 {
+            margin: 0 0 4px 0;
+            font-size: 0.95rem;
+            color: var(--primary);
+        }
+        .paper-card p {
+            margin: 0;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        .price-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px 24px;
+        }
+        .price-box .label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+        .price-box .value {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .price-box .value.loading {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        @media (min-width: 600px) {
+            .actions { flex-direction: row; }
+        }
+
+        button.btn {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 14px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        button.btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        button.btn-primary:hover { background-color: var(--accent-hover); }
+        button.btn-primary:disabled {
+            background-color: #d6d3d1;
+            cursor: not-allowed;
+        }
+        button.btn-secondary {
+            background-color: #ffffff;
+            color: var(--primary);
+            border: 1.5px solid var(--border-color);
+        }
+        button.btn-secondary:hover { border-color: var(--text-muted); }
+
+        #dimension-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: -8px;
+        }
+
+        #no-image-warning {
+            display: none;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div id="main-content">
+        <div id="preview-area">
+            <div id="preview-canvas">
+                <img id="config-tree-img" src="" alt="Dein Stammbaum Design">
+            </div>
+        </div>
+
+        <div id="config-container">
+            <div class="header-area">
+                <h1>Deinen Kunstdruck konfigurieren</h1>
+                <p>Wähle Größe und Papierart für deinen Stammbaum – oder entscheide dich für die digitale Kopie ohne Druck.</p>
+            </div>
+
+            <div id="no-image-warning">
+                Es wurde noch kein Stammbaum-Design gefunden. Bitte kehre zum Editor zurück und erstelle zuerst dein Design.
+            </div>
+
+            <div class="options-grid">
+                <div class="form-group">
+                    <label for="print-size">Format</label>
+                    <select id="print-size"></select>
+                    <span class="field-hint" id="dimension-note"></span>
+                </div>
+                <div class="form-group">
+                    <label for="shipping-country">Lieferland</label>
+                    <select id="shipping-country">
+                        <option value="DE">Deutschland</option>
+                        <option value="AT">Österreich</option>
+                        <option value="CH">Schweiz</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Papierart</label>
+                <div class="paper-grid" id="paper-grid"></div>
+            </div>
+
+            <div class="price-box">
+                <span class="label">Gesamtpreis (inkl. digitaler Lizenz &amp; Versand)</span>
+                <span class="value loading" id="total-price">Lädt...</span>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-secondary" id="digital-only-btn">Nur digitale Kopie kaufen (25,00 €)</button>
+                <button class="btn btn-primary" id="proceed-print-btn">Weiter zur Bezahlung (Druck)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        fetch('header.html')
+            .then(r => r.text())
+            .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
+            .catch(err => console.error('Failed to load header:', err));
+
+        const BACKEND = 'https://heritageprint-backend.onrender.com';
+
+        // --- Prodigi Papierarten (echte Substrate aus dem Prodigi-Katalog) ---
+        // "code" wird in das SKU-Muster GLOBAL-{code}-{WxH} eingesetzt.
+        const PAPER_TYPES = [
+            {
+                code: 'FAP',
+                name: 'Enhanced Matte Art',
+                desc: '200gsm, mattes Fine-Art-Papier – Bestseller, gestochen scharfe Details.'
+            },
+            {
+                code: 'SAP',
+                name: 'Smooth Art Paper',
+                desc: 'Feine Textur, seidenmatt – ideal für Illustrationen und feine Linien.'
+            },
+            {
+                code: 'MFAP',
+                name: 'Museum Fine Art',
+                desc: 'Archivfähiges Museumspapier ohne Kunststoff, für höchste Ansprüche.'
+            },
+            {
+                code: 'GLOSSY',
+                name: 'Fotopapier Glänzend',
+                desc: 'Brillante Farben mit glänzender Oberfläche, sehr kontrastreich.'
+            }
+        ];
+
+        // Standard-Zielgrößen in cm - werden nach Laden des Bildes anhand des
+        // Seitenverhältnisses gefiltert/beschriftet (keine hartkodierten Maße mehr,
+        // sondern an das jeweilige Bild angepasste Optionen).
+        const BASE_SIZES_CM = [
+            { code: '30X20', w: 30, h: 20, label: 'Klein' },
+            { code: '40X30', w: 40, h: 30, label: 'Mittel' },
+            { code: '60X40', w: 60, h: 40, label: 'Standard' },
+            { code: '90X60', w: 90, h: 60, label: 'Galerie' },
+            { code: '120X80', w: 120, h: 80, label: 'Museumsqualität' }
+        ];
+
+        let selectedPaper = PAPER_TYPES[0].code;
+        let imageAspect = null; // width / height
+        let quoteTimeout;
+
+        // --- 1. Bild laden & Abmessungen ermitteln ---
+        const savedImage = localStorage.getItem('finalCompositedImage') || sessionStorage.getItem('finalCompositedImage');
+        const imgEl = document.getElementById('config-tree-img');
+
+        function buildSizeOptions() {
+            const select = document.getElementById('print-size');
+            select.innerHTML = '';
+
+            BASE_SIZES_CM.forEach(size => {
+                // An das Seitenverhältnis des Bildes angepasste Höhe, damit die
+                // angebotenen Formate wirklich zum hochgeladenen Design passen.
+                let w = size.w;
+                let h = size.h;
+                if (imageAspect) {
+                    if (imageAspect >= 1) {
+                        h = Math.round((w / imageAspect) / 5) * 5 || w;
+                    } else {
+                        w = Math.round((h * imageAspect) / 5) * 5 || h;
+                    }
+                }
+                const opt = document.createElement('option');
+                opt.value = `${w}X${h}`;
+                opt.dataset.w = w;
+                opt.dataset.h = h;
+                opt.textContent = `${size.label}: ${w} × ${h} cm`;
+                select.appendChild(opt);
+            });
+
+            select.selectedIndex = Math.min(2, select.options.length - 1);
+            updateDimensionNote();
+        }
+
+        function updateDimensionNote() {
+            const select = document.getElementById('print-size');
+            const opt = select.options[select.selectedIndex];
+            if (!opt) return;
+            document.getElementById('dimension-note').textContent =
+                `Passend zugeschnitten auf das Seitenverhältnis deines Stammbaums (${opt.dataset.w} × ${opt.dataset.h} cm).`;
+        }
+
+        function buildPaperGrid() {
+            const grid = document.getElementById('paper-grid');
+            grid.innerHTML = '';
+            PAPER_TYPES.forEach((paper, idx) => {
+                const card = document.createElement('div');
+                card.className = 'paper-card' + (idx === 0 ? ' selected' : '');
+                card.dataset.code = paper.code;
+                card.innerHTML = `<h4>${paper.name}</h4><p>${paper.desc}</p>`;
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.paper-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedPaper = paper.code;
+                    updatePrintQuote();
+                });
+                grid.appendChild(card);
+            });
+        }
+
+        function getCurrentSku() {
+            const select = document.getElementById('print-size');
+            const opt = select.options[select.selectedIndex];
+            return `GLOBAL-${selectedPaper}-${opt.dataset.w}X${opt.dataset.h}`;
+        }
+
+        async function updatePrintQuote() {
+            clearTimeout(quoteTimeout);
+            const priceEl = document.getElementById('total-price');
+            priceEl.textContent = 'Lädt...';
+            priceEl.classList.add('loading');
+
+            quoteTimeout = setTimeout(async () => {
+                const sku = getCurrentSku();
+                const countryCode = document.getElementById('shipping-country').value;
+
+                try {
+                    const response = await fetch(`${BACKEND}/api/get-print-quote`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ sku, countryCode })
+                    });
+
+                    if (!response.ok) throw new Error('Fehler beim Abrufen des Preises');
+
+                    const data = await response.json();
+                    const total = 25 + (data.totalCost || 0); // 25€ Basis (digitale Lizenz) + Prodigi-Preis
+                    priceEl.textContent = total.toFixed(2).replace('.', ',') + ' €';
+                    priceEl.classList.remove('loading');
+
+                    // Für den Checkout-Schritt merken
+                    sessionStorage.setItem('printQuoteTotal', total.toFixed(2));
+                } catch (err) {
+                    console.error('Fehler beim Preisabruf:', err);
+                    priceEl.textContent = 'Preis nicht verfügbar';
+                    priceEl.classList.remove('loading');
+                }
+            }, 400);
+        }
+
+        if (savedImage) {
+            imgEl.src = savedImage;
+            const probe = new Image();
+            probe.onload = () => {
+                imageAspect = probe.naturalWidth / probe.naturalHeight;
+                buildSizeOptions();
+                updatePrintQuote();
+            };
+            probe.onerror = () => {
+                buildSizeOptions();
+                updatePrintQuote();
+            };
+            probe.src = savedImage;
+        } else {
+            imgEl.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300'><rect width='800' height='300' fill='%23fdfbf7'/><text x='400' y='150' font-family='sans-serif' font-size='16' text-anchor='middle' fill='%2364748b'>Kein Stammbaum-Design geladen</text></svg>";
+            document.getElementById('no-image-warning').style.display = 'block';
+            document.getElementById('proceed-print-btn').disabled = true;
+            document.getElementById('digital-only-btn').disabled = true;
+            buildSizeOptions();
+        }
+
+        buildPaperGrid();
+
+        document.getElementById('print-size').addEventListener('change', () => {
+            updateDimensionNote();
+            updatePrintQuote();
+        });
+        document.getElementById('shipping-country').addEventListener('change', updatePrintQuote);
+
+        // --- 2. Weiterleitung zum Checkout ---
+        document.getElementById('digital-only-btn').addEventListener('click', () => {
+            sessionStorage.setItem('checkoutMode', 'digital');
+            window.location.href = 'checkout.html';
+        });
+
+        document.getElementById('proceed-print-btn').addEventListener('click', () => {
+            const select = document.getElementById('print-size');
+            const opt = select.options[select.selectedIndex];
+            const paper = PAPER_TYPES.find(p => p.code === selectedPaper);
+
+            sessionStorage.setItem('checkoutMode', 'print');
+            sessionStorage.setItem('printSku', getCurrentSku());
+            sessionStorage.setItem('printSizeLabel', `${opt.dataset.w} × ${opt.dataset.h} cm`);
+            sessionStorage.setItem('printPaperName', paper.name);
+            sessionStorage.setItem('printPaperCode', paper.code);
+            sessionStorage.setItem('printCountry', document.getElementById('shipping-country').value);
+
+            window.location.href = 'checkout.html';
+        });
+    </script>
+</body>
+</html>
