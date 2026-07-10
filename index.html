@@ -1440,6 +1440,7 @@
             img.src = compositedUrl;
 
             applyColorBtn.onclick = async () => {
+                if (!finalCompositedImage) return;
                 applyColorBtn.style.display = 'none';
                 try {
                     const coloredImageUrl = await applyColorToBoxes(finalCompositedImage, selectedBoxColor);
@@ -1448,6 +1449,7 @@
                     applyColorBtn.style.display = 'block';
                 } catch (err) {
                     console.error(err);
+                    applyColorBtn.style.display = 'block';
                 }
             };
         }
