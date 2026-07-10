@@ -586,6 +586,7 @@
             });
         }
 
+        // --- REPLACE THE EXISTING updateColorPalette FUNCTION ---
         function updateColorPalette(colors) {
             dominantColors = colors;
             // Clear existing palette
@@ -593,9 +594,9 @@
             if (existingPalette) {
                 existingPalette.remove();
             }
-
+        
             if (colors.length === 0) return;
-
+        
             const colorPalette = document.createElement('div');
             colorPalette.className = 'color-palette';
             colors.forEach(color => {
@@ -606,6 +607,8 @@
                     document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
                     option.classList.add('selected');
                     selectedBoxColor = color;
+                    // Apply color immediately when selected
+                    applyColorBtn.click();
                 };
                 colorPalette.appendChild(option);
             });
@@ -615,7 +618,6 @@
             }
             canvasUI.insertBefore(colorPalette, canvasUI.firstChild);
         }
-
         let stylesDB = [];
 
         fetch('stile.json')
