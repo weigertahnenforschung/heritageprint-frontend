@@ -24,9 +24,7 @@
             --font-title: 'Cinzel', serif;
             --font-body: 'Plus Jakarta Sans', sans-serif;
         }
-
         * { box-sizing: border-box; }
-
         body {
             margin: 0;
             font-family: var(--font-body);
@@ -36,7 +34,6 @@
             display: flex;
             flex-direction: column;
         }
-
         #main-content {
             display: flex;
             flex-direction: column;
@@ -46,8 +43,6 @@
             padding: 24px;
             gap: 32px;
         }
-
-        /* --- STAMMBAUM PREVIEW --- */
         #preview-area {
             width: 100%;
             background-color: #cbd5e1;
@@ -62,7 +57,6 @@
             background-size: 24px 24px;
             padding: 40px 20px;
         }
-
         #preview-canvas {
             background-color: var(--parchment);
             box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
@@ -75,14 +69,7 @@
             justify-content: center;
             overflow: hidden;
         }
-
-        #preview-canvas img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* --- KONFIGURATOR CONTAINER --- */
+        #preview-canvas img { width: 100%; height: 100%; object-fit: contain; }
         #config-container {
             width: 100%;
             background-color: var(--sidebar-bg);
@@ -93,7 +80,6 @@
             gap: 28px;
             border: 1px solid var(--border-color);
         }
-
         .header-area h1 {
             margin: 0;
             font-family: var(--font-title);
@@ -101,22 +87,9 @@
             color: var(--primary);
             letter-spacing: 0.5px;
         }
-        .header-area p {
-            margin: 8px 0 0 0;
-            font-size: 1rem;
-            color: var(--text-muted);
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        label {
-            font-size: 0.85rem;
-            color: var(--primary);
-            font-weight: 500;
-        }
+        .header-area p { margin: 8px 0 0 0; font-size: 1rem; color: var(--text-muted); }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        label { font-size: 0.85rem; color: var(--primary); font-weight: 500; }
         select {
             width: 100%;
             padding: 12px 14px;
@@ -125,30 +98,12 @@
             background-color: #ffffff;
             font-size: 0.95rem;
         }
-        select:focus {
-            border-color: var(--accent);
-            outline: none;
-        }
-        .field-hint {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        @media (max-width: 700px) {
-            .options-grid { grid-template-columns: 1fr; }
-        }
-
-        /* --- PAPER SWATCHES --- */
-        .paper-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 14px;
-        }
+        select:focus { border-color: var(--accent); outline: none; }
+        select:disabled { opacity: 0.5; cursor: not-allowed; }
+        .field-hint { font-size: 0.78rem; color: var(--text-muted); }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 700px) { .options-grid { grid-template-columns: 1fr; } }
+        .paper-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
         .paper-card {
             border: 2px solid var(--border-color);
             border-radius: 10px;
@@ -163,18 +118,9 @@
             background: #fffdf9;
             box-shadow: 0 3px 10px rgba(217, 119, 6, 0.1);
         }
-        .paper-card h4 {
-            margin: 0 0 4px 0;
-            font-size: 0.95rem;
-            color: var(--primary);
-        }
-        .paper-card p {
-            margin: 0;
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            line-height: 1.35;
-        }
-
+        .paper-card.disabled { opacity: 0.4; cursor: not-allowed; }
+        .paper-card h4 { margin: 0 0 4px 0; font-size: 0.95rem; color: var(--primary); }
+        .paper-card p { margin: 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; }
         .price-box {
             display: flex;
             justify-content: space-between;
@@ -184,31 +130,11 @@
             border-radius: 10px;
             padding: 20px 24px;
         }
-        .price-box .label {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-        .price-box .value {
-            font-family: var(--font-title);
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        .price-box .value.loading {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            font-family: var(--font-body);
-        }
-
-        .actions {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        @media (min-width: 600px) {
-            .actions { flex-direction: row; }
-        }
-
+        .price-box .label { font-size: 0.95rem; color: var(--text-muted); }
+        .price-box .value { font-family: var(--font-title); font-size: 1.8rem; font-weight: bold; color: var(--primary); }
+        .price-box .value.loading { font-size: 1.1rem; color: var(--text-muted); font-family: var(--font-body); }
+        .actions { display: flex; flex-direction: column; gap: 12px; }
+        @media (min-width: 600px) { .actions { flex-direction: row; } }
         button.btn {
             font-family: var(--font-body);
             font-weight: 600;
@@ -220,37 +146,20 @@
             width: 100%;
             transition: background 0.2s, border-color 0.2s, color 0.2s;
         }
-        button.btn-primary {
-            background-color: var(--accent);
-            color: white;
-        }
+        button.btn-primary { background-color: var(--accent); color: white; }
         button.btn-primary:hover { background-color: var(--accent-hover); }
-        button.btn-primary:disabled {
-            background-color: #d6d3d1;
-            cursor: not-allowed;
-        }
-        button.btn-secondary {
-            background-color: #ffffff;
-            color: var(--primary);
-            border: 1.5px solid var(--border-color);
-        }
+        button.btn-primary:disabled { background-color: #d6d3d1; cursor: not-allowed; }
+        button.btn-secondary { background-color: #ffffff; color: var(--primary); border: 1.5px solid var(--border-color); }
         button.btn-secondary:hover { border-color: var(--text-muted); }
-
-        #dimension-note {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: -8px;
-        }
-
-        #no-image-warning {
+        #dimension-note { font-size: 0.8rem; color: var(--text-muted); margin-top: -8px; }
+        #no-image-warning, #upload-status {
             display: none;
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #b91c1c;
             padding: 14px 18px;
             border-radius: 8px;
             font-size: 0.9rem;
         }
+        #no-image-warning { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+        #upload-status { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
     </style>
 </head>
 <body>
@@ -272,6 +181,7 @@
             <div id="no-image-warning">
                 Es wurde noch kein Stammbaum-Design gefunden. Bitte kehre zum Editor zurück und erstelle zuerst dein Design.
             </div>
+            <div id="upload-status">Design wird vorbereitet…</div>
 
             <div class="options-grid">
                 <div class="form-group">
@@ -301,7 +211,7 @@
 
             <div class="actions">
                 <button class="btn btn-secondary" id="digital-only-btn">Nur digitale Kopie kaufen (25,00 €)</button>
-                <button class="btn btn-primary" id="proceed-print-btn">Weiter zur Bezahlung (Druck)</button>
+                <button class="btn btn-primary" id="proceed-print-btn" disabled>Weiter zur Bezahlung (Druck)</button>
             </div>
         </div>
     </div>
@@ -314,108 +224,255 @@
 
         const BACKEND = 'https://heritageprint-backend.onrender.com';
 
-        // --- Prodigi Papierarten (echte Substrate aus dem Prodigi-Katalog) ---
-        // "code" wird in das SKU-Muster GLOBAL-{code}-{WxH} eingesetzt.
-        const PAPER_TYPES = [
+        // =====================================================================
+        // REAL PRODIGI PRODUCT CATALOG
+        // -------------------------------------------------------------------
+        // Every entry here MUST correspond to one real, orderable Prodigi
+        // product. Get these from https://dash.prodigi.com (Product Catalogue)
+        // or GET https://api.prodigi.com/v4.0/products with your API key.
+        // Do NOT construct SKUs by string concatenation anywhere in this app —
+        // Prodigi SKUs are opaque catalog identifiers, not a pattern.
+        //
+        // Fill this array in with SKUs you copy from your dashboard. Each
+        // "paperOptions" entry is itself a full product (Prodigi ties paper/
+        // substrate to the SKU, it is not a separate parameter you can bolt on).
+        // =====================================================================
+        const PRODUCTS = [
             {
-                code: 'FAP',
-                name: 'Enhanced Matte Art',
-                desc: '200gsm, mattes Fine-Art-Papier – Bestseller, gestochen scharfe Details.'
+                sizeId: 'A5',
+                sizeLabel: 'Extra Klein',
+                widthCm: 14.8,
+                heightCm: 21.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A5'
             },
             {
-                code: 'SAP',
-                name: 'Smooth Art Paper',
-                desc: 'Feine Textur, seidenmatt – ideal für Illustrationen und feine Linien.'
+                sizeId: 'A5',
+                sizeLabel: 'Extra Klein',
+                widthCm: 14.8,
+                heightCm: 21.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A5'
             },
             {
-                code: 'MFAP',
-                name: 'Museum Fine Art',
-                desc: 'Archivfähiges Museumspapier ohne Kunststoff, für höchste Ansprüche.'
+                sizeId: 'A4',
+                sizeLabel: 'Klein',
+                widthCm: 21.0,
+                heightCm: 29.7,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A4'
             },
             {
-                code: 'GLOSSY',
-                name: 'Fotopapier Glänzend',
-                desc: 'Brillante Farben mit glänzender Oberfläche, sehr kontrastreich.'
-            }
+                sizeId: 'A4',
+                sizeLabel: 'Klein',
+                widthCm: 21.0,
+                heightCm: 29.7,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A4'
+            },
+            {
+                sizeId: 'A3',
+                sizeLabel: 'Mittel',
+                widthCm: 29.7,
+                heightCm: 42.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A3'
+            },
+            {
+                sizeId: 'A3',
+                sizeLabel: 'Mittel',
+                widthCm: 29.7,
+                heightCm: 42.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A3'
+            },
+            {
+                sizeId: 'A2',
+                sizeLabel: 'Groß',
+                widthCm: 42.0,
+                heightCm: 59.4,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A2'
+            },
+            {
+                sizeId: 'A2',
+                sizeLabel: 'Groß',
+                widthCm: 42.0,
+                heightCm: 59.4,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A2'
+            },
+            {
+                sizeId: 'A1',
+                sizeLabel: 'Galerie',
+                widthCm: 59.4,
+                heightCm: 84.1,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A1'
+            },
+            {
+                sizeId: 'A1',
+                sizeLabel: 'Galerie',
+                widthCm: 59.4,
+                heightCm: 84.1,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A1'
+            },
+            {
+                sizeId: 'A0',
+                sizeLabel: 'Museumsqualität',
+                widthCm: 84.1,
+                heightCm: 118.9,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A0'
+            },
+            {
+                sizeId: 'A0',
+                sizeLabel: 'Museumsqualität',
+                widthCm: 84.1,
+                heightCm: 118.9,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A0'
+            },
         ];
 
-        // Standard-Zielgrößen in cm - werden nach Laden des Bildes anhand des
-        // Seitenverhältnisses gefiltert/beschriftet (keine hartkodierten Maße mehr,
-        // sondern an das jeweilige Bild angepasste Optionen).
-        const BASE_SIZES_CM = [
-            { code: '30X20', w: 30, h: 20, label: 'Klein' },
-            { code: '40X30', w: 40, h: 30, label: 'Mittel' },
-            { code: '60X40', w: 60, h: 40, label: 'Standard' },
-            { code: '90X60', w: 90, h: 60, label: 'Galerie' },
-            { code: '120X80', w: 120, h: 80, label: 'Museumsqualität' }
-        ];
-
-        let selectedPaper = PAPER_TYPES[0].code;
-        let imageAspect = null; // width / height
+        let selectedProduct = null;
+        let imageAspect = null;
         let quoteTimeout;
+        let uploadedImageUrl = null;   // public URL, filled in after Cloudflare upload
+        let uploadInFlight = null;     // promise so we don't race multiple uploads
 
-        // --- 1. Bild laden & Abmessungen ermitteln ---
-        const savedImage = localStorage.getItem('finalCompositedImage') || sessionStorage.getItem('finalCompositedImage');
         const imgEl = document.getElementById('config-tree-img');
+        const uploadStatusEl = document.getElementById('upload-status');
+        const proceedBtn = document.getElementById('proceed-print-btn');
+
+        // Group products by size so the size <select> only lists sizes that
+        // actually exist in PRODUCTS, and paper options only show what's valid
+        // for the currently selected size.
+        function sizesAvailable() {
+            const seen = new Map();
+            PRODUCTS.forEach(p => { if (!seen.has(p.sizeId)) seen.set(p.sizeId, p); });
+            return [...seen.values()];
+        }
+        function papersForSize(sizeId) {
+            return PRODUCTS.filter(p => p.sizeId === sizeId);
+        }
 
         function buildSizeOptions() {
             const select = document.getElementById('print-size');
             select.innerHTML = '';
 
-            BASE_SIZES_CM.forEach(size => {
-                // An das Seitenverhältnis des Bildes angepasste Höhe, damit die
-                // angebotenen Formate wirklich zum hochgeladenen Design passen.
-                let w = size.w;
-                let h = size.h;
-                if (imageAspect) {
-                    if (imageAspect >= 1) {
-                        h = Math.round((w / imageAspect) / 5) * 5 || w;
-                    } else {
-                        w = Math.round((h * imageAspect) / 5) * 5 || h;
-                    }
-                }
+            if (PRODUCTS.length === 0) {
                 const opt = document.createElement('option');
-                opt.value = `${w}X${h}`;
-                opt.dataset.w = w;
-                opt.dataset.h = h;
-                opt.textContent = `${size.label}: ${w} × ${h} cm`;
+                opt.textContent = 'Keine Produkte konfiguriert';
+                select.appendChild(opt);
+                select.disabled = true;
+                return;
+            }
+
+            sizesAvailable().forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.sizeId;
+                opt.textContent = `${p.sizeLabel}: ${p.widthCm} × ${p.heightCm} cm`;
                 select.appendChild(opt);
             });
 
-            select.selectedIndex = Math.min(2, select.options.length - 1);
             updateDimensionNote();
+            buildPaperGrid();
         }
 
         function updateDimensionNote() {
             const select = document.getElementById('print-size');
-            const opt = select.options[select.selectedIndex];
-            if (!opt) return;
+            const sizeId = select.value;
+            const match = PRODUCTS.find(p => p.sizeId === sizeId);
+            if (!match) return;
             document.getElementById('dimension-note').textContent =
-                `Passend zugeschnitten auf das Seitenverhältnis deines Stammbaums (${opt.dataset.w} × ${opt.dataset.h} cm).`;
+                `${match.widthCm} × ${match.heightCm} cm (festes Prodigi-Format)`;
         }
 
         function buildPaperGrid() {
             const grid = document.getElementById('paper-grid');
             grid.innerHTML = '';
-            PAPER_TYPES.forEach((paper, idx) => {
+            const select = document.getElementById('print-size');
+            const options = papersForSize(select.value);
+
+            options.forEach((product, idx) => {
                 const card = document.createElement('div');
                 card.className = 'paper-card' + (idx === 0 ? ' selected' : '');
-                card.dataset.code = paper.code;
-                card.innerHTML = `<h4>${paper.name}</h4><p>${paper.desc}</p>`;
+                card.dataset.paperId = product.paperId;
+                card.innerHTML = `<h4>${product.paperName}</h4><p>${product.paperDesc}</p>`;
                 card.addEventListener('click', () => {
                     document.querySelectorAll('.paper-card').forEach(c => c.classList.remove('selected'));
                     card.classList.add('selected');
-                    selectedPaper = paper.code;
+                    selectedProduct = product;
                     updatePrintQuote();
                 });
                 grid.appendChild(card);
             });
+
+            selectedProduct = options[0] || null;
         }
 
-        function getCurrentSku() {
-            const select = document.getElementById('print-size');
-            const opt = select.options[select.selectedIndex];
-            return `GLOBAL-${selectedPaper}-${opt.dataset.w}X${opt.dataset.h}`;
+        // --- Upload composited image to Cloudflare BEFORE quoting/ordering ---
+        // Prodigi needs a publicly reachable URL, never localStorage/base64 data.
+        async function ensureImageUploaded(dataUrl) {
+            if (uploadedImageUrl) return uploadedImageUrl;
+            if (uploadInFlight) return uploadInFlight;
+
+            uploadStatusEl.style.display = 'block';
+            uploadStatusEl.textContent = 'Design wird hochgeladen…';
+
+            uploadInFlight = (async () => {
+                const response = await fetch(`${BACKEND}/api/upload-design`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: dataUrl })
+                });
+                if (!response.ok) throw new Error('Upload fehlgeschlagen');
+                const data = await response.json();
+                if (!data.url) throw new Error('Upload lieferte keine URL zurück');
+
+                uploadedImageUrl = data.url;
+                sessionStorage.setItem('uploadedDesignUrl', uploadedImageUrl);
+                uploadStatusEl.style.display = 'none';
+                proceedBtn.disabled = false;
+                return uploadedImageUrl;
+            })();
+
+            try {
+                return await uploadInFlight;
+            } catch (err) {
+                console.error('Fehler beim Hochladen:', err);
+                uploadStatusEl.textContent = 'Upload fehlgeschlagen — Druckbestellung derzeit nicht möglich.';
+                proceedBtn.disabled = true;
+                throw err;
+            } finally {
+                uploadInFlight = null;
+            }
         }
 
         async function updatePrintQuote() {
@@ -424,25 +481,44 @@
             priceEl.textContent = 'Lädt...';
             priceEl.classList.add('loading');
 
+            if (!selectedProduct) {
+                priceEl.textContent = 'Kein Produkt verfügbar';
+                priceEl.classList.remove('loading');
+                return;
+            }
+
             quoteTimeout = setTimeout(async () => {
-                const sku = getCurrentSku();
                 const countryCode = document.getElementById('shipping-country').value;
 
                 try {
+                    // Quote request matches Prodigi's real quote shape: an items
+                    // array with sku + copies + assets (Prodigi validates the
+                    // asset URL/aspect ratio even at quote time for some products),
+                    // plus a shipping address for cost/tax calculation.
                     const response = await fetch(`${BACKEND}/api/get-print-quote`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ sku, countryCode })
+                        body: JSON.stringify({
+                            items: [
+                                {
+                                    sku: selectedProduct.sku,
+                                    copies: 1,
+                                    assets: uploadedImageUrl
+                                        ? [{ printArea: 'default', url: uploadedImageUrl }]
+                                        : []
+                                }
+                            ],
+                            shippingAddress: { countryCode }
+                        })
                     });
 
                     if (!response.ok) throw new Error('Fehler beim Abrufen des Preises');
 
                     const data = await response.json();
-                    const total = 25 + (data.totalCost || 0); // 25€ Basis (digitale Lizenz) + Prodigi-Preis
+                    const total = 25 + (data.totalCost || 0);
                     priceEl.textContent = total.toFixed(2).replace('.', ',') + ' €';
                     priceEl.classList.remove('loading');
 
-                    // Für den Checkout-Schritt merken
                     sessionStorage.setItem('printQuoteTotal', total.toFixed(2));
                 } catch (err) {
                     console.error('Fehler beim Preisabruf:', err);
@@ -452,52 +528,58 @@
             }, 400);
         }
 
+        const savedImage = localStorage.getItem('finalCompositedImage') || sessionStorage.getItem('finalCompositedImage');
+
         if (savedImage) {
             imgEl.src = savedImage;
+            buildSizeOptions();
+
             const probe = new Image();
-            probe.onload = () => {
+            probe.onload = async () => {
                 imageAspect = probe.naturalWidth / probe.naturalHeight;
-                buildSizeOptions();
-                updatePrintQuote();
+                try {
+                    await ensureImageUploaded(savedImage);
+                    updatePrintQuote();
+                } catch (_) {
+                    // status message already shown; digital-only purchase still works
+                }
             };
             probe.onerror = () => {
-                buildSizeOptions();
-                updatePrintQuote();
+                uploadStatusEl.style.display = 'block';
+                uploadStatusEl.textContent = 'Bild konnte nicht gelesen werden.';
+                proceedBtn.disabled = true;
             };
             probe.src = savedImage;
         } else {
             imgEl.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300'><rect width='800' height='300' fill='%23fdfbf7'/><text x='400' y='150' font-family='sans-serif' font-size='16' text-anchor='middle' fill='%2364748b'>Kein Stammbaum-Design geladen</text></svg>";
             document.getElementById('no-image-warning').style.display = 'block';
-            document.getElementById('proceed-print-btn').disabled = true;
+            proceedBtn.disabled = true;
             document.getElementById('digital-only-btn').disabled = true;
             buildSizeOptions();
         }
 
-        buildPaperGrid();
-
         document.getElementById('print-size').addEventListener('change', () => {
             updateDimensionNote();
+            buildPaperGrid();
             updatePrintQuote();
         });
         document.getElementById('shipping-country').addEventListener('change', updatePrintQuote);
 
-        // --- 2. Weiterleitung zum Checkout ---
         document.getElementById('digital-only-btn').addEventListener('click', () => {
             sessionStorage.setItem('checkoutMode', 'digital');
             window.location.href = 'checkout.html';
         });
 
-        document.getElementById('proceed-print-btn').addEventListener('click', () => {
-            const select = document.getElementById('print-size');
-            const opt = select.options[select.selectedIndex];
-            const paper = PAPER_TYPES.find(p => p.code === selectedPaper);
+        proceedBtn.addEventListener('click', () => {
+            if (!selectedProduct || !uploadedImageUrl) return;
 
             sessionStorage.setItem('checkoutMode', 'print');
-            sessionStorage.setItem('printSku', getCurrentSku());
-            sessionStorage.setItem('printSizeLabel', `${opt.dataset.w} × ${opt.dataset.h} cm`);
-            sessionStorage.setItem('printPaperName', paper.name);
-            sessionStorage.setItem('printPaperCode', paper.code);
+            sessionStorage.setItem('printSku', selectedProduct.sku);
+            sessionStorage.setItem('printSizeLabel', `${selectedProduct.widthCm} × ${selectedProduct.heightCm} cm`);
+            sessionStorage.setItem('printPaperName', selectedProduct.paperName);
+            sessionStorage.setItem('printPaperId', selectedProduct.paperId);
             sessionStorage.setItem('printCountry', document.getElementById('shipping-country').value);
+            sessionStorage.setItem('printImageUrl', uploadedImageUrl);
 
             window.location.href = 'checkout.html';
         });
