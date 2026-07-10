@@ -1429,7 +1429,7 @@
         function showFinalResult(compositedUrl) {
             finalCompositedImage = compositedUrl;
             waveOverlay.style.display = 'none';
-
+        
             if (!aiImageElement) {
                 aiImageElement = document.createElement('img');
                 aiImageElement.id = 'ai-image-workspace';
@@ -1443,34 +1443,22 @@
             aiImageElement.style.width = canvas.style.width;
             aiImageElement.style.height = canvas.style.height;
             aiImageElement.style.transform = `translate(${pX}px, ${pY}px) scale(${scale})`;
-
-            applyColorBtn.style.display = 'block';
+        
+            // Remove the "Farben anwenden" button (it's now redundant)
+            applyColorBtn.style.display = 'none';
+        
             designBtn.disabled = false;
-
+        
             const img = new Image();
             img.onload = async () => {
                 try {
-                    dominantColors = await extractDominantColors(img, 5);
-                    updateColorPalette(dominantColors);
+                    const extractedColors = await extractDominantColors(img, 5);
+                    updateColorPalette(extractedColors);
                 } catch (err) {
                     console.error(err);
                 }
             };
             img.src = compositedUrl;
-
-            applyColorBtn.onclick = async () => {
-                if (!finalCompositedImage) return;
-                applyColorBtn.style.display = 'none';
-                try {
-                    const coloredImageUrl = await applyColorToBoxes(finalCompositedImage, selectedBoxColor);
-                    finalCompositedImage = coloredImageUrl;
-                    aiImageElement.src = coloredImageUrl;
-                    applyColorBtn.style.display = 'block';
-                } catch (err) {
-                    console.error(err);
-                    applyColorBtn.style.display = 'block';
-                }
-            };
         }
 
         designBtn.addEventListener('click', async () => {
