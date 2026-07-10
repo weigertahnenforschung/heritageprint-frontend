@@ -7,14 +7,14 @@
     <script src="https://js.stripe.com/v3/"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=500;600;700&family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary: #1e293b;
             --primary-light: #334155;
-            --accent: #d97706;
-            --accent-hover: #b45309;
+            --accent: #0066cc;
+            --accent-hover: #0052a3;
             --bg-main: #f1f5f9;
             --sidebar-bg: #ffffff;
             --text-main: #0f172a;
@@ -132,7 +132,7 @@
         .order-summary .row.total span:first-child { color: var(--text-main); }
         .edit-link {
             font-size: 0.82rem;
-            color: var(--accent);
+            color: #0066cc;
             text-decoration: none;
             align-self: flex-start;
         }
@@ -149,7 +149,7 @@
             color: var(--primary);
             font-weight: 500;
         }
-        input[type="email"], input[type="text"] {
+        input[type="email"], input[type="text"], .stripe-input-field {
             width: 100%;
             padding: 12px 14px;
             border-radius: 8px;
@@ -157,14 +157,7 @@
             background-color: #ffffff;
             font-size: 0.95rem;
         }
-        input:focus { border-color: var(--accent); outline: none; }
-
-        #card-element {
-            background-color: #ffffff;
-            padding: 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
+        input:focus, .stripe-input-field--focus { border-color: var(--accent); outline: none; }
 
         button.pay-btn {
             font-family: var(--font-body);
@@ -267,10 +260,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="card-element">Zahlungsdetails (Kredit- oder Debitkarte)</label>
-                    <div id="card-element"></div>
-                    <div id="card-errors" role="alert"></div>
+                    <label>Kartennummer</label>
+                    <div id="card-number-element" class="stripe-input-field"></div>
                 </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Gültig bis</label>
+                        <div id="card-expiry-element" class="stripe-input-field"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Prüfziffer (CVC)</label>
+                        <div id="card-cvc-element" class="stripe-input-field"></div>
+                    </div>
+                </div>
+                
+                <div id="card-errors" role="alert"></div>
 
                 <button class="pay-btn" id="submit-payment">Jetzt bezahlen</button>
             </form>
@@ -349,7 +354,7 @@
         // --- 3. Stripe Setup ---
         const stripe = Stripe('pk_test_51Tj7xkIevlrrI6BDTkT27AV4NlhFcCjN4991bB0isXfY4cnQ4m6FhhjNzR1d6evTISD8gQP9BO5ky6KgqFykGmxX00JfOF1q0z');
 
-        const style = {
+        const stripeStyle = {
             base: {
                 color: '#0f172a',
                 fontFamily: '"Plus Jakarta Sans", sans-serif',
@@ -360,13 +365,25 @@
             invalid: { color: '#dc2626', iconColor: '#dc2626' }
         };
 
+        // Initialize elements specifying postalCode: false to prevent duplicate ZIP requests
         const elements = stripe.elements();
-        const card = elements.create('card', { style: style });
-        card.mount('#card-element');
+        
+        const cardNumber = elements.create('cardNumber', { style: stripeStyle, showIcon: true });
+        cardNumber.mount('#card-number-element');
 
-        card.on('change', ({ error }) => {
+        const cardExpiry = elements.create('cardExpiry', { style: stripeStyle });
+        cardExpiry.mount('#card-expiry-element');
+
+        const cardCvc = elements.create('cardCvc', { style: stripeStyle });
+        cardCvc.mount('#card-cvc-element');
+
+        // Error Handling for separate components
+        const errorHandler = ({ error }) => {
             document.getElementById('card-errors').textContent = error ? error.message : '';
-        });
+        };
+        cardNumber.on('change', errorHandler);
+        cardExpiry.on('change', errorHandler);
+        cardCvc.on('change', errorHandler);
 
         // --- 4. Zahlungsabwicklung ---
         const form = document.getElementById('payment-form');
@@ -428,9 +445,10 @@
                 const clientSecret = data.clientSecret;
                 if (!clientSecret) throw new Error('Kein Client Secret vom Server erhalten.');
 
+                // Using cardNumber element here captures validation parameters across all connected elements automatically
                 const result = await stripe.confirmCardPayment(clientSecret, {
                     payment_method: {
-                        card: card,
+                        card: cardNumber,
                         billing_details: { email: email }
                     }
                 });
