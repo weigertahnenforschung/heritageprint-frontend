@@ -238,6 +238,7 @@
         // substrate to the SKU, it is not a separate parameter you can bolt on).
         // =====================================================================
         const PRODUCTS = [
+            // --- A-Formate (Hochformat/Standard, seitenverh. ~1:1.41) ---
             {
                 sizeId: 'A5',
                 sizeLabel: 'Extra Klein',
@@ -358,6 +359,372 @@
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
                 sku: 'GLOBAL-HGE-A0'
             },
+
+            // --- Landscape-Formate, breite Auswahl nach Seitenverhaeltnis-Band ---
+            // long = breite Seite, short = kurze Seite -> im Querformat: widthCm=long, heightCm=short
+            {
+                sizeId: '4:3-S-EMA',
+                sizeLabel: 'Klassisch (4:3) – Klein',
+                widthCm: 20.0,
+                heightCm: 15.0,
+                ratio: 1.33,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-6X8'
+            },
+            {
+                sizeId: '4:3-M-EMA',
+                sizeLabel: 'Klassisch (4:3) – Mittel',
+                widthCm: 48.0,
+                heightCm: 36.0,
+                ratio: 1.33,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-19X14'
+            },
+            {
+                sizeId: '4:3-L-EMA',
+                sizeLabel: 'Klassisch (4:3) – Groß',
+                widthCm: 100.0,
+                heightCm: 75.0,
+                ratio: 1.33,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-30X40'
+            },
+            {
+                sizeId: '4:3-XL-EMA',
+                sizeLabel: 'Klassisch (4:3) – Riesig',
+                widthCm: 142.0,
+                heightCm: 107.0,
+                ratio: 1.33,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-42X56'
+            },
+            {
+                sizeId: '3:2-S-EMA',
+                sizeLabel: 'Foto-Format (3:2) – Klein',
+                widthCm: 15.0,
+                heightCm: 10.0,
+                ratio: 1.5,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-4X6'
+            },
+            {
+                sizeId: '3:2-M-EMA',
+                sizeLabel: 'Foto-Format (3:2) – Mittel',
+                widthCm: 60.0,
+                heightCm: 40.0,
+                ratio: 1.5,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-16X24'
+            },
+            {
+                sizeId: '3:2-L-EMA',
+                sizeLabel: 'Foto-Format (3:2) – Groß',
+                widthCm: 90.0,
+                heightCm: 60.0,
+                ratio: 1.5,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-24X36'
+            },
+            {
+                sizeId: '3:2-XL-EMA',
+                sizeLabel: 'Foto-Format (3:2) – Riesig',
+                widthCm: 150.0,
+                heightCm: 100.0,
+                ratio: 1.5,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-40X60'
+            },
+            {
+                sizeId: '16:9-S-EMA',
+                sizeLabel: 'Breitbild (16:9) – Klein',
+                widthCm: 40.6,
+                heightCm: 22.9,
+                ratio: 1.77,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-9X16'
+            },
+            {
+                sizeId: '16:9-L-EMA',
+                sizeLabel: 'Breitbild (16:9) – Groß',
+                widthCm: 114.0,
+                heightCm: 64.0,
+                ratio: 1.78,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-25X45'
+            },
+            {
+                sizeId: '16:9-XL-EMA',
+                sizeLabel: 'Breitbild (16:9) – Riesig',
+                widthCm: 150.0,
+                heightCm: 84.0,
+                ratio: 1.79,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-33X60'
+            },
+            {
+                sizeId: '2:1-S-EMA',
+                sizeLabel: 'Panorama (2:1) – Klein',
+                widthCm: 40.0,
+                heightCm: 20.0,
+                ratio: 2.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-8X16'
+            },
+            {
+                sizeId: '2:1-M-EMA',
+                sizeLabel: 'Panorama (2:1) – Mittel',
+                widthCm: 60.0,
+                heightCm: 30.0,
+                ratio: 2.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-12X24'
+            },
+            {
+                sizeId: '2:1-L-EMA',
+                sizeLabel: 'Panorama (2:1) – Groß',
+                widthCm: 100.0,
+                heightCm: 50.0,
+                ratio: 2.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-20X40'
+            },
+            {
+                sizeId: '2:1-XL-EMA',
+                sizeLabel: 'Panorama (2:1) – Riesig',
+                widthCm: 142.0,
+                heightCm: 71.0,
+                ratio: 2.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-28X56'
+            },
+            {
+                sizeId: '5:2-M-EMA',
+                sizeLabel: 'XL-Panorama (5:2) – Mittel',
+                widthCm: 51.0,
+                heightCm: 20.0,
+                ratio: 2.55,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-8X20'
+            },
+            {
+                sizeId: '3:1-M-EMA',
+                sizeLabel: 'Ultra-Panorama (3:1) – Mittel',
+                widthCm: 75.0,
+                heightCm: 25.0,
+                ratio: 3.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-10X30'
+            },
+            {
+                sizeId: '3:1-L-EMA',
+                sizeLabel: 'Ultra-Panorama (3:1) – Groß',
+                widthCm: 90.0,
+                heightCm: 30.0,
+                ratio: 3.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-12X36'
+            },
+            {
+                sizeId: '4:3-S-HGE',
+                sizeLabel: 'Klassisch (4:3) – Klein',
+                widthCm: 20.0,
+                heightCm: 15.0,
+                ratio: 1.33,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-6X8'
+            },
+            {
+                sizeId: '4:3-M-HGE',
+                sizeLabel: 'Klassisch (4:3) – Mittel',
+                widthCm: 60.0,
+                heightCm: 45.0,
+                ratio: 1.33,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-18X24'
+            },
+            {
+                sizeId: '4:3-L-HGE',
+                sizeLabel: 'Klassisch (4:3) – Groß',
+                widthCm: 100.0,
+                heightCm: 75.0,
+                ratio: 1.33,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-30X40'
+            },
+            {
+                sizeId: '4:3-XL-HGE',
+                sizeLabel: 'Klassisch (4:3) – Riesig',
+                widthCm: 142.0,
+                heightCm: 107.0,
+                ratio: 1.33,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-42X56'
+            },
+            {
+                sizeId: '3:2-S-HGE',
+                sizeLabel: 'Foto-Format (3:2) – Klein',
+                widthCm: 15.0,
+                heightCm: 10.0,
+                ratio: 1.5,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-6X4'
+            },
+            {
+                sizeId: '3:2-M-HGE',
+                sizeLabel: 'Foto-Format (3:2) – Mittel',
+                widthCm: 60.0,
+                heightCm: 40.0,
+                ratio: 1.5,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-16X24'
+            },
+            {
+                sizeId: '3:2-L-HGE',
+                sizeLabel: 'Foto-Format (3:2) – Groß',
+                widthCm: 90.0,
+                heightCm: 60.0,
+                ratio: 1.5,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-24X36'
+            },
+            {
+                sizeId: '3:2-XL-HGE',
+                sizeLabel: 'Foto-Format (3:2) – Riesig',
+                widthCm: 150.0,
+                heightCm: 100.0,
+                ratio: 1.5,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-40X60'
+            },
+            {
+                sizeId: '16:9-L-HGE',
+                sizeLabel: 'Breitbild (16:9) – Groß',
+                widthCm: 91.0,
+                heightCm: 51.0,
+                ratio: 1.78,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-20X36'
+            },
+            {
+                sizeId: '2:1-S-HGE',
+                sizeLabel: 'Panorama (2:1) – Klein',
+                widthCm: 40.0,
+                heightCm: 20.0,
+                ratio: 2.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-8X16'
+            },
+            {
+                sizeId: '2:1-M-HGE',
+                sizeLabel: 'Panorama (2:1) – Mittel',
+                widthCm: 46.0,
+                heightCm: 23.0,
+                ratio: 2.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-9X18'
+            },
+            {
+                sizeId: '2:1-L-HGE',
+                sizeLabel: 'Panorama (2:1) – Groß',
+                widthCm: 100.0,
+                heightCm: 50.0,
+                ratio: 2.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-20X40'
+            },
+            {
+                sizeId: '2:1-XL-HGE',
+                sizeLabel: 'Panorama (2:1) – Riesig',
+                widthCm: 150.0,
+                heightCm: 75.0,
+                ratio: 2.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-30X60'
+            },
+            {
+                sizeId: '3:1-M-HGE',
+                sizeLabel: 'Ultra-Panorama (3:1) – Mittel',
+                widthCm: 76.0,
+                heightCm: 25.0,
+                ratio: 3.04,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-10X30'
+            },
+            {
+                sizeId: '3:1-L-HGE',
+                sizeLabel: 'Ultra-Panorama (3:1) – Groß',
+                widthCm: 90.0,
+                heightCm: 30.0,
+                ratio: 3.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-12X36'
+            },
         ];
 
         let selectedProduct = null;
@@ -373,10 +740,25 @@
         // Group products by size so the size <select> only lists sizes that
         // actually exist in PRODUCTS, and paper options only show what's valid
         // for the currently selected size.
+        //
+        // When imageAspect is known, sizes are sorted by how closely their
+        // own aspect ratio matches the uploaded image (best match first).
+        // This is sorting only — every size stays selectable, nothing is
+        // hidden, since the printed image will simply be cropped to fit
+        // whichever format the customer picks.
         function sizesAvailable() {
             const seen = new Map();
             PRODUCTS.forEach(p => { if (!seen.has(p.sizeId)) seen.set(p.sizeId, p); });
-            return [...seen.values()];
+            let list = [...seen.values()];
+
+            if (imageAspect) {
+                list.sort((a, b) => {
+                    const aRatio = a.widthCm / a.heightCm;
+                    const bRatio = b.widthCm / b.heightCm;
+                    return Math.abs(aRatio - imageAspect) - Math.abs(bRatio - imageAspect);
+                });
+            }
+            return list;
         }
         function papersForSize(sizeId) {
             return PRODUCTS.filter(p => p.sizeId === sizeId);
@@ -401,6 +783,9 @@
                 select.appendChild(opt);
             });
 
+            // Best match (first in sorted list) is selected by default.
+            select.selectedIndex = 0;
+
             updateDimensionNote();
             buildPaperGrid();
         }
@@ -410,8 +795,20 @@
             const sizeId = select.value;
             const match = PRODUCTS.find(p => p.sizeId === sizeId);
             if (!match) return;
-            document.getElementById('dimension-note').textContent =
-                `${match.widthCm} × ${match.heightCm} cm (festes Prodigi-Format)`;
+
+            let note = `${match.widthCm} × ${match.heightCm} cm (festes Prodigi-Format)`;
+            if (imageAspect) {
+                const sizeRatio = match.widthCm / match.heightCm;
+                const diffPct = Math.abs(sizeRatio - imageAspect) / imageAspect * 100;
+                if (diffPct < 3) {
+                    note += ' — passt fast exakt zu deinem Bild.';
+                } else if (diffPct < 15) {
+                    note += ' — passt gut, leichter Beschnitt möglich.';
+                } else {
+                    note += ' — dein Bild wird stärker beschnitten, um dieses Format zu füllen.';
+                }
+            }
+            document.getElementById('dimension-note').textContent = note;
         }
 
         function buildPaperGrid() {
