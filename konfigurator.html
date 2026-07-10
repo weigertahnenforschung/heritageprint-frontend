@@ -68,8 +68,9 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            transition: width 0.25s ease, height 0.25s ease;
         }
-        #preview-canvas img { width: 100%; height: 100%; object-fit: contain; }
+        #preview-canvas img { width: 100%; height: 100%; object-fit: contain; transition: object-fit 0.1s; }
         #config-container {
             width: 100%;
             background-color: var(--sidebar-bg);
@@ -152,14 +153,13 @@
         button.btn-secondary { background-color: #ffffff; color: var(--primary); border: 1.5px solid var(--border-color); }
         button.btn-secondary:hover { border-color: var(--text-muted); }
         #dimension-note { font-size: 0.8rem; color: var(--text-muted); margin-top: -8px; }
-        #no-image-warning, #upload-status {
+        #no-image-warning {
             display: none;
             padding: 14px 18px;
             border-radius: 8px;
             font-size: 0.9rem;
         }
         #no-image-warning { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
-        #upload-status { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
     </style>
 </head>
 <body>
@@ -181,7 +181,6 @@
             <div id="no-image-warning">
                 Es wurde noch kein Stammbaum-Design gefunden. Bitte kehre zum Editor zurück und erstelle zuerst dein Design.
             </div>
-            <div id="upload-status">Design wird vorbereitet…</div>
 
             <div class="options-grid">
                 <div class="form-group">
@@ -238,10 +237,9 @@
         // substrate to the SKU, it is not a separate parameter you can bolt on).
         // =====================================================================
         const PRODUCTS = [
-            // --- A-Formate (Hochformat/Standard, seitenverh. ~1:1.41) ---
+            // --- A-Formate ---
             {
-                sizeId: 'A5',
-                sizeLabel: 'Extra Klein',
+                sizeId: 'A5-EMA',
                 widthCm: 14.8,
                 heightCm: 21.0,
                 paperId: 'EMA',
@@ -250,8 +248,7 @@
                 sku: 'GLOBAL-FAP-A5'
             },
             {
-                sizeId: 'A5',
-                sizeLabel: 'Extra Klein',
+                sizeId: 'A5-HGE',
                 widthCm: 14.8,
                 heightCm: 21.0,
                 paperId: 'HGE',
@@ -260,8 +257,7 @@
                 sku: 'GLOBAL-HGE-A5'
             },
             {
-                sizeId: 'A4',
-                sizeLabel: 'Klein',
+                sizeId: 'A4-EMA',
                 widthCm: 21.0,
                 heightCm: 29.7,
                 paperId: 'EMA',
@@ -270,8 +266,7 @@
                 sku: 'GLOBAL-FAP-A4'
             },
             {
-                sizeId: 'A4',
-                sizeLabel: 'Klein',
+                sizeId: 'A4-HGE',
                 widthCm: 21.0,
                 heightCm: 29.7,
                 paperId: 'HGE',
@@ -280,8 +275,7 @@
                 sku: 'GLOBAL-HGE-A4'
             },
             {
-                sizeId: 'A3',
-                sizeLabel: 'Mittel',
+                sizeId: 'A3-EMA',
                 widthCm: 29.7,
                 heightCm: 42.0,
                 paperId: 'EMA',
@@ -290,8 +284,7 @@
                 sku: 'GLOBAL-FAP-A3'
             },
             {
-                sizeId: 'A3',
-                sizeLabel: 'Mittel',
+                sizeId: 'A3-HGE',
                 widthCm: 29.7,
                 heightCm: 42.0,
                 paperId: 'HGE',
@@ -300,8 +293,7 @@
                 sku: 'GLOBAL-HGE-A3'
             },
             {
-                sizeId: 'A2',
-                sizeLabel: 'Groß',
+                sizeId: 'A2-EMA',
                 widthCm: 42.0,
                 heightCm: 59.4,
                 paperId: 'EMA',
@@ -310,8 +302,7 @@
                 sku: 'GLOBAL-FAP-A2'
             },
             {
-                sizeId: 'A2',
-                sizeLabel: 'Groß',
+                sizeId: 'A2-HGE',
                 widthCm: 42.0,
                 heightCm: 59.4,
                 paperId: 'HGE',
@@ -320,8 +311,7 @@
                 sku: 'GLOBAL-HGE-A2'
             },
             {
-                sizeId: 'A1',
-                sizeLabel: 'Galerie',
+                sizeId: 'A1-EMA',
                 widthCm: 59.4,
                 heightCm: 84.1,
                 paperId: 'EMA',
@@ -330,8 +320,7 @@
                 sku: 'GLOBAL-FAP-A1'
             },
             {
-                sizeId: 'A1',
-                sizeLabel: 'Galerie',
+                sizeId: 'A1-HGE',
                 widthCm: 59.4,
                 heightCm: 84.1,
                 paperId: 'HGE',
@@ -340,8 +329,7 @@
                 sku: 'GLOBAL-HGE-A1'
             },
             {
-                sizeId: 'A0',
-                sizeLabel: 'Museumsqualität',
+                sizeId: 'A0-EMA',
                 widthCm: 84.1,
                 heightCm: 118.9,
                 paperId: 'EMA',
@@ -350,8 +338,7 @@
                 sku: 'GLOBAL-FAP-A0'
             },
             {
-                sizeId: 'A0',
-                sizeLabel: 'Museumsqualität',
+                sizeId: 'A0-HGE',
                 widthCm: 84.1,
                 heightCm: 118.9,
                 paperId: 'HGE',
@@ -360,14 +347,11 @@
                 sku: 'GLOBAL-HGE-A0'
             },
 
-            // --- Landscape-Formate, breite Auswahl nach Seitenverhaeltnis-Band ---
-            // long = breite Seite, short = kurze Seite -> im Querformat: widthCm=long, heightCm=short
+            // --- Landscape / Panorama-Formate (bis 6:1) ---
             {
                 sizeId: '4:3-S-EMA',
-                sizeLabel: 'Klassisch (4:3) – Klein',
                 widthCm: 20.0,
                 heightCm: 15.0,
-                ratio: 1.33,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -375,10 +359,8 @@
             },
             {
                 sizeId: '4:3-M-EMA',
-                sizeLabel: 'Klassisch (4:3) – Mittel',
                 widthCm: 48.0,
                 heightCm: 36.0,
-                ratio: 1.33,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -386,10 +368,8 @@
             },
             {
                 sizeId: '4:3-L-EMA',
-                sizeLabel: 'Klassisch (4:3) – Groß',
                 widthCm: 100.0,
                 heightCm: 75.0,
-                ratio: 1.33,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -397,10 +377,8 @@
             },
             {
                 sizeId: '4:3-XL-EMA',
-                sizeLabel: 'Klassisch (4:3) – Riesig',
                 widthCm: 142.0,
                 heightCm: 107.0,
-                ratio: 1.33,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -408,10 +386,8 @@
             },
             {
                 sizeId: '3:2-S-EMA',
-                sizeLabel: 'Foto-Format (3:2) – Klein',
                 widthCm: 15.0,
                 heightCm: 10.0,
-                ratio: 1.5,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -419,10 +395,8 @@
             },
             {
                 sizeId: '3:2-M-EMA',
-                sizeLabel: 'Foto-Format (3:2) – Mittel',
                 widthCm: 60.0,
                 heightCm: 40.0,
-                ratio: 1.5,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -430,10 +404,8 @@
             },
             {
                 sizeId: '3:2-L-EMA',
-                sizeLabel: 'Foto-Format (3:2) – Groß',
                 widthCm: 90.0,
                 heightCm: 60.0,
-                ratio: 1.5,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -441,10 +413,8 @@
             },
             {
                 sizeId: '3:2-XL-EMA',
-                sizeLabel: 'Foto-Format (3:2) – Riesig',
                 widthCm: 150.0,
                 heightCm: 100.0,
-                ratio: 1.5,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -452,10 +422,8 @@
             },
             {
                 sizeId: '16:9-S-EMA',
-                sizeLabel: 'Breitbild (16:9) – Klein',
                 widthCm: 40.6,
                 heightCm: 22.9,
-                ratio: 1.77,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -463,10 +431,8 @@
             },
             {
                 sizeId: '16:9-L-EMA',
-                sizeLabel: 'Breitbild (16:9) – Groß',
                 widthCm: 114.0,
                 heightCm: 64.0,
-                ratio: 1.78,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -474,10 +440,8 @@
             },
             {
                 sizeId: '16:9-XL-EMA',
-                sizeLabel: 'Breitbild (16:9) – Riesig',
                 widthCm: 150.0,
                 heightCm: 84.0,
-                ratio: 1.79,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -485,10 +449,8 @@
             },
             {
                 sizeId: '2:1-S-EMA',
-                sizeLabel: 'Panorama (2:1) – Klein',
                 widthCm: 40.0,
                 heightCm: 20.0,
-                ratio: 2.0,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -496,10 +458,8 @@
             },
             {
                 sizeId: '2:1-M-EMA',
-                sizeLabel: 'Panorama (2:1) – Mittel',
                 widthCm: 60.0,
                 heightCm: 30.0,
-                ratio: 2.0,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -507,10 +467,8 @@
             },
             {
                 sizeId: '2:1-L-EMA',
-                sizeLabel: 'Panorama (2:1) – Groß',
                 widthCm: 100.0,
                 heightCm: 50.0,
-                ratio: 2.0,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -518,10 +476,8 @@
             },
             {
                 sizeId: '2:1-XL-EMA',
-                sizeLabel: 'Panorama (2:1) – Riesig',
                 widthCm: 142.0,
                 heightCm: 71.0,
-                ratio: 2.0,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -529,10 +485,8 @@
             },
             {
                 sizeId: '5:2-M-EMA',
-                sizeLabel: 'XL-Panorama (5:2) – Mittel',
                 widthCm: 51.0,
                 heightCm: 20.0,
-                ratio: 2.55,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -540,10 +494,8 @@
             },
             {
                 sizeId: '3:1-M-EMA',
-                sizeLabel: 'Ultra-Panorama (3:1) – Mittel',
                 widthCm: 75.0,
                 heightCm: 25.0,
-                ratio: 3.0,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -551,10 +503,8 @@
             },
             {
                 sizeId: '3:1-L-EMA',
-                sizeLabel: 'Ultra-Panorama (3:1) – Groß',
                 widthCm: 90.0,
                 heightCm: 30.0,
-                ratio: 3.0,
                 paperId: 'EMA',
                 paperName: 'Enhanced Matte Art',
                 paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
@@ -562,10 +512,8 @@
             },
             {
                 sizeId: '4:3-S-HGE',
-                sizeLabel: 'Klassisch (4:3) – Klein',
                 widthCm: 20.0,
                 heightCm: 15.0,
-                ratio: 1.33,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -573,10 +521,8 @@
             },
             {
                 sizeId: '4:3-M-HGE',
-                sizeLabel: 'Klassisch (4:3) – Mittel',
                 widthCm: 60.0,
                 heightCm: 45.0,
-                ratio: 1.33,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -584,10 +530,8 @@
             },
             {
                 sizeId: '4:3-L-HGE',
-                sizeLabel: 'Klassisch (4:3) – Groß',
                 widthCm: 100.0,
                 heightCm: 75.0,
-                ratio: 1.33,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -595,10 +539,8 @@
             },
             {
                 sizeId: '4:3-XL-HGE',
-                sizeLabel: 'Klassisch (4:3) – Riesig',
                 widthCm: 142.0,
                 heightCm: 107.0,
-                ratio: 1.33,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -606,10 +548,8 @@
             },
             {
                 sizeId: '3:2-S-HGE',
-                sizeLabel: 'Foto-Format (3:2) – Klein',
                 widthCm: 15.0,
                 heightCm: 10.0,
-                ratio: 1.5,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -617,10 +557,8 @@
             },
             {
                 sizeId: '3:2-M-HGE',
-                sizeLabel: 'Foto-Format (3:2) – Mittel',
                 widthCm: 60.0,
                 heightCm: 40.0,
-                ratio: 1.5,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -628,10 +566,8 @@
             },
             {
                 sizeId: '3:2-L-HGE',
-                sizeLabel: 'Foto-Format (3:2) – Groß',
                 widthCm: 90.0,
                 heightCm: 60.0,
-                ratio: 1.5,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -639,10 +575,8 @@
             },
             {
                 sizeId: '3:2-XL-HGE',
-                sizeLabel: 'Foto-Format (3:2) – Riesig',
                 widthCm: 150.0,
                 heightCm: 100.0,
-                ratio: 1.5,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -650,10 +584,8 @@
             },
             {
                 sizeId: '16:9-L-HGE',
-                sizeLabel: 'Breitbild (16:9) – Groß',
                 widthCm: 91.0,
                 heightCm: 51.0,
-                ratio: 1.78,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -661,10 +593,8 @@
             },
             {
                 sizeId: '2:1-S-HGE',
-                sizeLabel: 'Panorama (2:1) – Klein',
                 widthCm: 40.0,
                 heightCm: 20.0,
-                ratio: 2.0,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -672,10 +602,8 @@
             },
             {
                 sizeId: '2:1-M-HGE',
-                sizeLabel: 'Panorama (2:1) – Mittel',
                 widthCm: 46.0,
                 heightCm: 23.0,
-                ratio: 2.0,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -683,10 +611,8 @@
             },
             {
                 sizeId: '2:1-L-HGE',
-                sizeLabel: 'Panorama (2:1) – Groß',
                 widthCm: 100.0,
                 heightCm: 50.0,
-                ratio: 2.0,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -694,10 +620,8 @@
             },
             {
                 sizeId: '2:1-XL-HGE',
-                sizeLabel: 'Panorama (2:1) – Riesig',
                 widthCm: 150.0,
                 heightCm: 75.0,
-                ratio: 2.0,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -705,10 +629,8 @@
             },
             {
                 sizeId: '3:1-M-HGE',
-                sizeLabel: 'Ultra-Panorama (3:1) – Mittel',
                 widthCm: 76.0,
                 heightCm: 25.0,
-                ratio: 3.04,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
@@ -716,37 +638,70 @@
             },
             {
                 sizeId: '3:1-L-HGE',
-                sizeLabel: 'Ultra-Panorama (3:1) – Groß',
                 widthCm: 90.0,
                 heightCm: 30.0,
-                ratio: 3.0,
                 paperId: 'HGE',
                 paperName: 'Hahnemühle German Etching',
                 paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
                 sku: 'GLOBAL-HGE-12X36'
+            },
+            {
+                sizeId: 'ultra---EMA',
+                widthCm: 106.0,
+                heightCm: 22.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-8X42'
+            },
+            {
+                sizeId: 'ultra---HGE',
+                widthCm: 140.0,
+                heightCm: 23.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-55X9'
+            },
+            {
+                sizeId: 'ultra---HGE',
+                widthCm: 295.0,
+                heightCm: 48.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-116X19'
+            },
+            {
+                sizeId: 'ultra---HGE',
+                widthCm: 210.0,
+                heightCm: 34.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-83X13'
             },
         ];
 
         let selectedProduct = null;
         let imageAspect = null;
         let quoteTimeout;
-        let uploadedImageUrl = null;   // public URL, filled in after Cloudflare upload
-        let uploadInFlight = null;     // promise so we don't race multiple uploads
-
         const imgEl = document.getElementById('config-tree-img');
-        const uploadStatusEl = document.getElementById('upload-status');
         const proceedBtn = document.getElementById('proceed-print-btn');
 
-        // Group products by size so the size <select> only lists sizes that
-        // actually exist in PRODUCTS, and paper options only show what's valid
-        // for the currently selected size.
-        //
-        // When imageAspect is known, sizes are sorted by how closely their
-        // own aspect ratio matches the uploaded image (best match first).
-        // This is sorting only — every size stays selectable, nothing is
-        // hidden, since the printed image will simply be cropped to fit
-        // whichever format the customer picks.
-        function sizesAvailable() {
+        // How many best-matching formats to offer in the dropdown. Every
+        // format in PRODUCTS still exists and can be quoted — this constant
+        // only controls how many show up so the list stays scannable instead
+        // of listing all 49 catalog entries.
+        const MAX_SIZE_OPTIONS = 8;
+
+        // Group products by size so paper options only show what's valid for
+        // the currently selected size, and rank sizes by how closely their
+        // own aspect ratio matches the uploaded image. Only the closest
+        // MAX_SIZE_OPTIONS are shown — this is a real filter now (not just a
+        // sort), since with 49 catalog entries listing everything defeats
+        // the point of "show me what actually fits my panorama design."
+        function sizesRankedByFit() {
             const seen = new Map();
             PRODUCTS.forEach(p => { if (!seen.has(p.sizeId)) seen.set(p.sizeId, p); });
             let list = [...seen.values()];
@@ -758,7 +713,7 @@
                     return Math.abs(aRatio - imageAspect) - Math.abs(bRatio - imageAspect);
                 });
             }
-            return list;
+            return list.slice(0, MAX_SIZE_OPTIONS);
         }
         function papersForSize(sizeId) {
             return PRODUCTS.filter(p => p.sizeId === sizeId);
@@ -776,18 +731,19 @@
                 return;
             }
 
-            sizesAvailable().forEach(p => {
+            sizesRankedByFit().forEach(p => {
                 const opt = document.createElement('option');
                 opt.value = p.sizeId;
-                opt.textContent = `${p.sizeLabel}: ${p.widthCm} × ${p.heightCm} cm`;
+                // cm only, nothing else — e.g. "20 × 40 cm"
+                opt.textContent = `${p.widthCm} × ${p.heightCm} cm`;
                 select.appendChild(opt);
             });
 
-            // Best match (first in sorted list) is selected by default.
             select.selectedIndex = 0;
 
             updateDimensionNote();
             buildPaperGrid();
+            updateCropPreview();
         }
 
         function updateDimensionNote() {
@@ -795,20 +751,7 @@
             const sizeId = select.value;
             const match = PRODUCTS.find(p => p.sizeId === sizeId);
             if (!match) return;
-
-            let note = `${match.widthCm} × ${match.heightCm} cm (festes Prodigi-Format)`;
-            if (imageAspect) {
-                const sizeRatio = match.widthCm / match.heightCm;
-                const diffPct = Math.abs(sizeRatio - imageAspect) / imageAspect * 100;
-                if (diffPct < 3) {
-                    note += ' — passt fast exakt zu deinem Bild.';
-                } else if (diffPct < 15) {
-                    note += ' — passt gut, leichter Beschnitt möglich.';
-                } else {
-                    note += ' — dein Bild wird stärker beschnitten, um dieses Format zu füllen.';
-                }
-            }
-            document.getElementById('dimension-note').textContent = note;
+            document.getElementById('dimension-note').textContent = '';
         }
 
         function buildPaperGrid() {
@@ -834,42 +777,34 @@
             selectedProduct = options[0] || null;
         }
 
-        // --- Upload composited image to Cloudflare BEFORE quoting/ordering ---
-        // Prodigi needs a publicly reachable URL, never localStorage/base64 data.
-        async function ensureImageUploaded(dataUrl) {
-            if (uploadedImageUrl) return uploadedImageUrl;
-            if (uploadInFlight) return uploadInFlight;
+        // --- Live crop preview -------------------------------------------
+        // Shows the customer what will actually get cropped off if their
+        // image doesn't exactly match the selected print's aspect ratio.
+        // Pure CSS: the image is scaled to cover a box shaped like the
+        // selected format, so anything outside the box is clipped exactly
+        // the way a print lab crops to fill a fixed-size sheet.
+        function updateCropPreview() {
+            const select = document.getElementById('print-size');
+            const match = PRODUCTS.find(p => p.sizeId === select.value);
+            const canvas = document.getElementById('preview-canvas');
+            if (!match) return;
 
-            uploadStatusEl.style.display = 'block';
-            uploadStatusEl.textContent = 'Design wird hochgeladen…';
-
-            uploadInFlight = (async () => {
-                const response = await fetch(`${BACKEND}/api/upload-design`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ image: dataUrl })
-                });
-                if (!response.ok) throw new Error('Upload fehlgeschlagen');
-                const data = await response.json();
-                if (!data.url) throw new Error('Upload lieferte keine URL zurück');
-
-                uploadedImageUrl = data.url;
-                sessionStorage.setItem('uploadedDesignUrl', uploadedImageUrl);
-                uploadStatusEl.style.display = 'none';
-                proceedBtn.disabled = false;
-                return uploadedImageUrl;
-            })();
-
-            try {
-                return await uploadInFlight;
-            } catch (err) {
-                console.error('Fehler beim Hochladen:', err);
-                uploadStatusEl.textContent = 'Upload fehlgeschlagen — Druckbestellung derzeit nicht möglich.';
-                proceedBtn.disabled = true;
-                throw err;
-            } finally {
-                uploadInFlight = null;
+            const targetRatio = match.widthCm / match.heightCm;
+            // Keep the preview box within the available preview area by
+            // capping its height, then deriving width from the target ratio.
+            const maxH = 380;
+            const maxW = canvas.parentElement.clientWidth - 40 || 700;
+            let boxH = maxH;
+            let boxW = boxH * targetRatio;
+            if (boxW > maxW) {
+                boxW = maxW;
+                boxH = boxW / targetRatio;
             }
+
+            canvas.style.width = `${boxW}px`;
+            canvas.style.height = `${boxH}px`;
+            canvas.style.maxHeight = 'none';
+            imgEl.style.objectFit = 'cover';
         }
 
         async function updatePrintQuote() {
@@ -888,10 +823,9 @@
                 const countryCode = document.getElementById('shipping-country').value;
 
                 try {
-                    // Quote request matches Prodigi's real quote shape: an items
-                    // array with sku + copies + assets (Prodigi validates the
-                    // asset URL/aspect ratio even at quote time for some products),
-                    // plus a shipping address for cost/tax calculation.
+                    // Quote-only request — no asset needed yet, since the
+                    // actual image is only uploaded/sent to Prodigi after
+                    // checkout and payment (handled on the cloud side).
                     const response = await fetch(`${BACKEND}/api/get-print-quote`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -899,10 +833,7 @@
                             items: [
                                 {
                                     sku: selectedProduct.sku,
-                                    copies: 1,
-                                    assets: uploadedImageUrl
-                                        ? [{ printArea: 'default', url: uploadedImageUrl }]
-                                        : []
+                                    copies: 1
                                 }
                             ],
                             shippingAddress: { countryCode }
@@ -929,22 +860,20 @@
 
         if (savedImage) {
             imgEl.src = savedImage;
-            buildSizeOptions();
 
             const probe = new Image();
-            probe.onload = async () => {
+            probe.onload = () => {
                 imageAspect = probe.naturalWidth / probe.naturalHeight;
-                try {
-                    await ensureImageUploaded(savedImage);
-                    updatePrintQuote();
-                } catch (_) {
-                    // status message already shown; digital-only purchase still works
-                }
+                // Build the size list now that imageAspect is known, so only
+                // the best-matching formats (e.g. panorama sizes for a wide
+                // tree) are offered, instead of the full catalog.
+                buildSizeOptions();
+                proceedBtn.disabled = false;
+                updatePrintQuote();
             };
             probe.onerror = () => {
-                uploadStatusEl.style.display = 'block';
-                uploadStatusEl.textContent = 'Bild konnte nicht gelesen werden.';
-                proceedBtn.disabled = true;
+                // Aspect ratio unknown — still show the default-ordered list.
+                buildSizeOptions();
             };
             probe.src = savedImage;
         } else {
@@ -958,6 +887,7 @@
         document.getElementById('print-size').addEventListener('change', () => {
             updateDimensionNote();
             buildPaperGrid();
+            updateCropPreview();
             updatePrintQuote();
         });
         document.getElementById('shipping-country').addEventListener('change', updatePrintQuote);
@@ -968,15 +898,17 @@
         });
 
         proceedBtn.addEventListener('click', () => {
-            if (!selectedProduct || !uploadedImageUrl) return;
+            if (!selectedProduct) return;
 
+            // The image itself is NOT uploaded here. checkout.html /
+            // your cloud backend is responsible for uploading the design
+            // and sending it to Prodigi only after successful payment.
             sessionStorage.setItem('checkoutMode', 'print');
             sessionStorage.setItem('printSku', selectedProduct.sku);
             sessionStorage.setItem('printSizeLabel', `${selectedProduct.widthCm} × ${selectedProduct.heightCm} cm`);
             sessionStorage.setItem('printPaperName', selectedProduct.paperName);
             sessionStorage.setItem('printPaperId', selectedProduct.paperId);
             sessionStorage.setItem('printCountry', document.getElementById('shipping-country').value);
-            sessionStorage.setItem('printImageUrl', uploadedImageUrl);
 
             window.location.href = 'checkout.html';
         });
