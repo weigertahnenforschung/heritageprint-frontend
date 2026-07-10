@@ -586,36 +586,55 @@
             });
         }
 
-        // --- REPLACE THE EXISTING updateColorPalette FUNCTION ---
         function updateColorPalette(colors) {
-            dominantColors = colors;
+            dominantColors = colors.filter(color => {
+                // Filter out invalid/forbidden colors (e.g., red, white, or empty)
+                const lowerColor = color.toLowerCase();
+                return lowerColor !== '#ff0000' && lowerColor !== '#ffffff' && lowerColor !== '';
+            });
+        
             // Clear existing palette
             const existingPalette = document.querySelector('#canvas-ui .color-palette');
             if (existingPalette) {
                 existingPalette.remove();
             }
         
-            if (colors.length === 0) return;
+            if (dominantColors.length === 0) return;
         
             const colorPalette = document.createElement('div');
             colorPalette.className = 'color-palette';
-            colors.forEach(color => {
+        
+            dominantColors.forEach(color => {
                 const option = document.createElement('div');
                 option.className = 'color-option';
                 option.style.backgroundColor = color;
-                option.onclick = () => {
+                option.onclick = async () => {
+                    // Remove selected class from all options
                     document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+                    // Add selected class to the clicked option
                     option.classList.add('selected');
                     selectedBoxColor = color;
-                    // Apply color immediately when selected
-                    applyColorBtn.click();
+        
+                    // Apply the color immediately
+                    if (finalCompositedImage) {
+                        try {
+                            const coloredImageUrl = await applyColorToBoxes(finalCompositedImage, selectedBoxColor);
+                            finalCompositedImage = coloredImageUrl;
+                            aiImageElement.src = coloredImageUrl;
+                        } catch (err) {
+                            console.error("Failed to apply color:", err);
+                        }
+                    }
                 };
                 colorPalette.appendChild(option);
             });
-            if (colorPalette.children.length > 0) {
+        
+            // Select the first color by default
+            if (dominantColors.length > 0) {
                 colorPalette.children[0].classList.add('selected');
                 selectedBoxColor = dominantColors[0];
             }
+        
             canvasUI.insertBefore(colorPalette, canvasUI.firstChild);
         }
         let stylesDB = [];
