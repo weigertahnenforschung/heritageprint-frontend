@@ -318,7 +318,120 @@
                 align-items: center;
             }
         }
-    <script>
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <div class="logo-area">
+            <h1>HeritagePrint</h1>
+        </div>
+
+        <!-- STEP 1: DATA IMPORT -->
+        <div class="step-card">
+            <h2><span>1</span> Datenquelle</h2>
+            <div class="control-group">
+                <label>GEDCOM-Datei hochladen</label>
+                <div class="file-upload-wrapper">
+                    <div class="file-upload-text" id="upload-label-text">Datei herziehen oder <strong>durchsuchen</strong></div>
+                    <input type="file" id="gedcom-upload" accept=".ged">
+                </div>
+            </div>
+            <div id="search-container" class="control-group" style="display:none;">
+                <label>Ausgangsperson (Proband) suchen</label>
+                <input type="text" id="proband-search" placeholder="Name eingeben..." autocomplete="off">
+                <div id="search-results"></div>
+                <input type="hidden" id="selected-indi-id">
+            </div>
+        </div>
+
+        <!-- STEP 2: TREE ARCHITECTURE -->
+        <div class="step-card">
+            <h2><span>2</span> Struktur & Layout</h2>
+            <div class="control-group">
+                <label>Dokumententitel</label>
+                <input type="text" id="doc-title-input" placeholder="z.B. Chronik der Familie Maier">
+            </div>
+            <div class="row">
+                <div>
+                    <label>Generationen</label>
+                    <input type="number" id="gen-depth" min="1" max="15" value="4">
+                </div>
+                <div>
+                    <label>Richtung</label>
+                    <select id="lineage-mode">
+                        <option value="ancestors">Vorfahren</option>
+                        <option value="descendants">Nachkommen</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Wachstumsrichtung</label>
+                <select id="tree-orientation">
+                    <option value="up">Nach oben wachsen lassen</option>
+                    <option value="down">Nach unten wachsen lassen</option>
+                </select>
+            </div>
+
+            <div class="checkbox-row">
+                <input type="checkbox" id="show-dates" checked>
+                <label for="show-dates">Lebensdaten anzeigen (* / †)</label>
+            </div>
+
+            <input type="hidden" id="format-preset" value="optimal">
+            <input type="hidden" id="sheet-w" value="29.7">
+            <input type="hidden" id="sheet-h" value="21.0">
+        </div>
+
+        <!-- STEP 3: DESIGN -->
+        <div class="step-card">
+            <h2><span>3</span> Design</h2>
+            <div class="control-group">
+                <label>Kunststil</label>
+                <select id="style-search" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-main); font-size: 0.9rem; font-family: inherit;">
+                    <option value="" disabled selected>Wählen Sie einen Stil</option>
+                </select>
+                <input type="hidden" id="selected-style-prompt">
+            </div>
+            <button class="ai-btn" id="design-btn">Generieren</button>
+        </div>
+
+        <!-- CHECKOUT BUTTON -->
+        <div class="control-group" style="margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border-color);">
+            <button class="main" id="checkout-btn" style="background-color: #10b981; width: 100%;">
+                Weiter
+            </button>
+        </div>
+    </div>
+
+    <div id="viewport-container">
+        <div id="top-ruler"></div>
+        <div id="main-area">
+            <div id="left-ruler"></div>
+            <div id="workspace">
+                <div id="a4-canvas">
+                    <svg id="tree-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+                    <div id="wave-overlay"></div>
+                </div>
+                <div id="ai-image-container"></div>
+                <div id="canvas-ui">
+                    <button class="close-btn" id="apply-color-btn" style="display:none; background:#3b82f6;">🎨 Farbe anwenden</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal">
+        <div id="confirmation-box">
+            <p>Möchten Sie wirklich die Einstellungen ändern? Das aktuelle Bild wird gelöscht.</p>
+            <button id="confirm-yes">Ja</button>
+            <button id="confirm-no">Nein</button>
+        </div>
+    </div>
+
+<script>
 document.addEventListener('DOMContentLoaded', () => {
     let rawData = { individuals: {}, families: {} };
     let scale = 0.8;
@@ -336,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastGenerationTime = 0;
     const GENERATION_COOLDOWN = 20000; // 20 seconds
 
-    // Speichert die Positionen der Boxen für späteres Farbwechseln
+    // NEU: Speichert die Positionen der Boxen für späteres Farbwechseln
     window.boxPositions = [];
 
     // Dynamic setup for mobile screens right on load
@@ -407,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function removeAIImage() {
         finalCompositedImage = null;
-        window.boxPositions = []; // Box-Positionen zurücksetzen
+        window.boxPositions = []; // NEU: Box-Positionen zurücksetzen
         if (aiImageElement) {
             aiImageElement.remove();
             aiImageElement = null;
@@ -503,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.classList.add('selected');
                 selectedBoxColor = color;
 
-                // Farbe sofort anwenden
+                // NEU: Farbe sofort anwenden
                 if (finalCompositedImage && window.boxPositions.length > 0) {
                     try {
                         const coloredImageUrl = await applyColorToBoxes(finalCompositedImage, selectedBoxColor);
@@ -1093,7 +1206,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         return areaOk && aspectOk;
                     });
 
-                    // Speichere die Box-Positionen für späteres Farbwechseln
+                    // NEU: Speichere die Box-Positionen für späteres Farbwechseln
                     window.boxPositions = filteredBoxes.map(b => ({
                         x: b.x,
                         y: b.y,
@@ -1206,12 +1319,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const fCtx = finalCanvas.getContext('2d');
                     fCtx.drawImage(img, 0, 0);
 
-                    // NEU: Kein künstlich vergrößerter weißer Rand mehr
+                    const ERASE_RADIUS = 4;
                     for (const det of deduped) {
-                        const rx1 = Math.max(0, Math.floor(det.x));
-                        const ry1 = Math.max(0, Math.floor(det.y));
-                        const rx2 = Math.min(aiW - 1, Math.ceil(det.x + det.w));
-                        const ry2 = Math.min(aiH - 1, Math.ceil(det.y + det.h));
+                        const rx1 = Math.max(0, Math.floor(det.x - ERASE_RADIUS));
+                        const ry1 = Math.max(0, Math.floor(det.y - ERASE_RADIUS));
+                        const rx2 = Math.min(aiW - 1, Math.ceil(det.x + det.w + ERASE_RADIUS));
+                        const ry2 = Math.min(aiH - 1, Math.ceil(det.y + det.h + ERASE_RADIUS));
                         const regionData = fCtx.getImageData(rx1, ry1, rx2 - rx1 + 1, ry2 - ry1 + 1);
                         const px = regionData.data;
 
@@ -1223,6 +1336,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         fCtx.putImageData(regionData, rx1, ry1);
                     }
 
+                    const EXPAND = 3;
                     const detRows = clusterDetectedBoxesIntoRows(deduped);
                     const nodesByDepth = {};
                     for (const n of currentNodes) {
@@ -1241,9 +1355,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         for (let bi = 0; bi < detBoxes.length; bi++) {
                             const det = detBoxes[bi]; const node = svgGen[bi];
                             if (!node) break;
-                            // NEU: Kein EXPAND mehr, um den weißen Rand zu vermeiden
                             fCtx.fillStyle = '#ffffff';
-                            fCtx.fillRect(det.x, det.y, det.w, det.h);
+                            fCtx.fillRect(det.x - EXPAND, det.y - EXPAND, det.w + EXPAND*2, det.h + EXPAND*2);
                             drawNodeTextToCanvas(fCtx, det, node.data, showDates);
                         }
                     }
@@ -1254,7 +1367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Funktion zum Einfärben der Boxen an den gemerkten Positionen
+    // NEU: Funktion zum Einfärben der Boxen an den gemerkten Positionen
     function applyColorToBoxes(imageUrl, color) {
         return new Promise((resolve, reject) => {
             if (!window.boxPositions || window.boxPositions.length === 0) {
@@ -1276,7 +1389,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const g = parseInt(color.slice(3, 5), 16);
                     const b = parseInt(color.slice(5, 7), 16);
 
-                    // Nur die gemerkten Box-Positionen einfärben
+                    // NEU: Nur die gemerkten Box-Positionen einfärben
                     for (const box of window.boxPositions) {
                         const x = box.x;
                         const y = box.y;
@@ -1305,14 +1418,11 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const backendUrl = 'https://heritageprint-backend.onrender.com/api/transform-design';
 
-            // NEU: Prompt-Anpassung für schärfere Kanten
-            const finalPrompt = `${prompt}. The image shows a family tree with rectangular boxes connected by lines. Apply the artistic style to the ENTIRE image — background, borders, connecting lines, decorations. IMPORTANT: paint the interior fill of EVERY rectangular box with solid pure red color #FF0000 (RGB 255,0,0). There should be NO slow gradient going from red to the image, the red boxes must be cut SHARP and CRISP. Do NOT put any text, patterns, or other colors inside the boxes — only solid #FF0000 fill inside each box interior. Keep all box positions and sizes unchanged. Output a high quality image.`;
-
             const response = await fetch(backendUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    prompt: finalPrompt,
+                    prompt: prompt,
                     imageBase64: imageBase64,
                     mimeType: imageMime
                 })
@@ -1391,7 +1501,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const { base64: imgBase64, mimeType: imgMimeType } = await svgToPngBase64(svgElement, 800, true);
-            const aiUrl = await callBackendGemini(stylePrompt, imgBase64, imgMimeType);
+            const finalPrompt = `${stylePrompt}. The image shows a family tree with rectangular boxes connected by lines. Apply the artistic style to the ENTIRE image — background, borders, connecting lines, decorations. IMPORTANT: paint the interior fill of EVERY rectangular box with solid pure red color #FF0000 (RGB 255,0,0). Do NOT put any text, patterns, or other colors inside the boxes — only solid #FF0000 fill inside each box interior. Keep all box positions and sizes unchanged. Output a high quality image.`;
+
+            const aiUrl = await callBackendGemini(finalPrompt, imgBase64, imgMimeType);
 
             const detection = await detectRedBoxes(aiUrl);
             const validation = validateDetectedBoxes(detection.deduped);
@@ -1423,7 +1535,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Bild in localStorage speichern
+        // 🔥 WICHTIG: Bild in localStorage speichern
         localStorage.setItem('finalCompositedImage', finalCompositedImage);
 
         try {
