@@ -823,27 +823,37 @@
                 const countryCode = document.getElementById('shipping-country').value;
 
                 try {
-                    // Quote-only request — no asset needed yet, since the
-                    // actual image is only uploaded/sent to Prodigi after
-                    // checkout and payment (handled on the cloud side).
+                    // Body shape must match the backend's actual contract:
+                    // app.post('/api/get-print-quote') reads req.body.sku and
+                    // req.body.countryCode directly (not a nested items/
+                    // shippingAddress structure) — see get-print-quote route.
                     const response = await fetch(`${BACKEND}/api/get-print-quote`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            items: [
-                                {
-                                    sku: selectedProduct.sku,
-                                    copies: 1
-                                }
-                            ],
-                            shippingAddress: { countryCode }
+                            sku: selectedProduct.sku,
+                            countryCode
                         })
                     });
 
                     if (!response.ok) throw new Error('Fehler beim Abrufen des Preises');
 
                     const data = await response.json();
-                    const total = 25 + (data.totalCost || 0);
+
+                    // Real Prodigi quote shape (the backend forwards this
+                    // response unmodified): data.quotes[0].costSummary has
+                    // separate "items" and "shipping" cost objects, each
+                    // { amount: "12.34", currency: "EUR" } — there is no
+                    // top-level totalCost field.
+                    const quote = data.quotes && data.quotes[0];
+                    if (!quote || !quote.costSummary) {
+                        throw new Error('Unerwartetes Antwortformat von Prodigi');
+                    }
+                    const itemsCost = parseFloat(quote.costSummary.items?.amount || 0);
+                    const shippingCost = parseFloat(quote.costSummary.shipping?.amount || 0);
+                    const printCost = itemsCost + shippingCost;
+
+                    const total = 25 + printCost;
                     priceEl.textContent = total.toFixed(2).replace('.', ',') + ' €';
                     priceEl.classList.remove('loading');
 
