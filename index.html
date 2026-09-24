@@ -265,7 +265,50 @@
             margin: 10px;
             width: 100px;
         }
-
+        
+                /* Custom Generations Control */
+        .generations-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .generations-control:focus-within {
+            border-color: var(--accent);
+            background-color: #fff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+        }
+        
+        .generations-arrow {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 0 8px;
+            transition: color 0.2s;
+        }
+        
+        .generations-arrow:hover {
+            color: var(--accent);
+        }
+        
+        .generations-value {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 20px;
+            text-align: center;
+        }
         /* -----------------------------------------
            📱 MOBILE & TABLET OPTIMIZATIONS (MEDIA QUERY)
            ----------------------------------------- */
@@ -355,7 +398,12 @@
             <div class="row">
                 <div>
                     <label>Generationen</label>
-                    <input type="number" id="gen-depth" min="1" max="15" value="4">
+                    <div class="generations-control">
+                        <button class="generations-arrow up" id="gen-up">▲</button>
+                        <span class="generations-value" id="gen-value">4</span>
+                        <button class="generations-arrow down" id="gen-down">▼</button>
+                    </div>
+                    <input type="hidden" id="gen-depth" min="1" max="15" value="4">
                 </div>
                 <div>
                     <label>Richtung</label>
@@ -1269,8 +1317,41 @@
                 }
             });
 
+            // Generations Control Logic
+            const genUpBtn = document.getElementById('gen-up');
+            const genDownBtn = document.getElementById('gen-down');
+            const genValueSpan = document.getElementById('gen-value');
+            const genDepthInput = document.getElementById('gen-depth');
+            
+            function updateGenerationsValue() {
+                genValueSpan.textContent = genDepthInput.value;
+            }
+            
+            genUpBtn.addEventListener('click', () => {
+                const currentValue = parseInt(genDepthInput.value);
+                if (currentValue < 5) {  // Max limit: 5
+                    genDepthInput.value = currentValue + 1;
+                    updateGenerationsValue();
+                    triggerSettingsChange();
+                }
+            });
+            
+            genDownBtn.addEventListener('click', () => {
+                const currentValue = parseInt(genDepthInput.value);
+                if (currentValue > 1) {
+                    genDepthInput.value = currentValue - 1;
+                    updateGenerationsValue();
+                    triggerSettingsChange();
+                }
+            });
+            
+            // Initialize value
+            updateGenerationsValue();
+
             updateT();
         });
+
+        
     </script>
 </body>
 </html>
