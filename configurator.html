@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,7 +58,32 @@
         .logo-area {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .back-btn:hover {
+            background-color: var(--bg-main);
+            border-color: var(--accent);
+            color: var(--accent);
         }
         
         .logo-img {
@@ -265,7 +290,7 @@
             width: 100px;
         }
         
-                /* Custom Generations Control */
+        /* Custom Generations Control */
         .generations-control {
             display: flex;
             align-items: center;
@@ -366,22 +391,23 @@
 
     <div id="sidebar">
         <div class="logo-area">
+            <a href="javascript:history.back()" class="back-btn" title="Go back">&#8592;</a>
             <img src="facidra-icon.png" alt="Facidra Logo" class="logo-img">
         </div>
 
         <!-- STEP 1: DATA IMPORT -->
         <div class="step-card">
-            <h2><span>1</span> Datenquelle</h2>
+            <h2><span>1</span> Data Source</h2>
             <div class="control-group">
-                <label>GEDCOM-Datei hochladen</label>
+                <label>Upload GEDCOM File</label>
                 <div class="file-upload-wrapper">
-                    <div class="file-upload-text" id="upload-label-text">Datei herziehen oder <strong>durchsuchen</strong></div>
+                    <div class="file-upload-text" id="upload-label-text">Drag file here or <strong>browse</strong></div>
                     <input type="file" id="gedcom-upload" accept=".ged">
                 </div>
             </div>
             <div id="search-container" class="control-group" style="display:none;">
-                <label>Ausgangsperson (Proband) suchen</label>
-                <input type="text" id="proband-search" placeholder="Name eingeben..." autocomplete="off">
+                <label>Search Starting Person (Proband)</label>
+                <input type="text" id="proband-search" placeholder="Enter name..." autocomplete="off">
                 <div id="search-results"></div>
                 <input type="hidden" id="selected-indi-id">
             </div>
@@ -389,14 +415,14 @@
 
         <!-- STEP 2: TREE ARCHITECTURE -->
         <div class="step-card">
-            <h2><span>2</span> Struktur & Layout</h2>
+            <h2><span>2</span> Structure & Layout</h2>
             <div class="control-group">
-                <label>Dokumententitel</label>
-                <input type="text" id="doc-title-input" placeholder="z.B. Chronik der Familie Maier">
+                <label>Document Title</label>
+                <input type="text" id="doc-title-input" placeholder="e.g. Chronicle of the Smith Family">
             </div>
             <div class="row">
                 <div>
-                    <label>Generationen</label>
+                    <label>Generations</label>
                     <div class="generations-control">
                         <button class="generations-arrow up" id="gen-up">▲</button>
                         <span class="generations-value" id="gen-value">4</span>
@@ -405,25 +431,25 @@
                     <input type="hidden" id="gen-depth" min="1" max="15" value="4">
                 </div>
                 <div>
-                    <label>Richtung</label>
+                    <label>Direction</label>
                     <select id="lineage-mode">
-                        <option value="ancestors">Vorfahren</option>
-                        <option value="descendants">Nachkommen</option>
+                        <option value="ancestors">Ancestors</option>
+                        <option value="descendants">Descendants</option>
                     </select>
                 </div>
             </div>
 
             <div class="control-group">
-                <label>Wachstumsrichtung</label>
+                <label>Growth Direction</label>
                 <select id="tree-orientation">
-                    <option value="up">Nach oben wachsen lassen</option>
-                    <option value="down">Nach unten wachsen lassen</option>
+                    <option value="up">Grow upwards</option>
+                    <option value="down">Grow downwards</option>
                 </select>
             </div>
 
             <div class="checkbox-row">
                 <input type="checkbox" id="show-dates" checked>
-                <label for="show-dates">Lebensdaten anzeigen (* / †)</label>
+                <label for="show-dates">Show life dates (* / †)</label>
             </div>
 
             <input type="hidden" id="format-preset" value="optimal">
@@ -435,19 +461,19 @@
         <div class="step-card">
             <h2><span>3</span> Design</h2>
             <div class="control-group">
-                <label>Kunststil</label>
+                <label>Art Style</label>
                 <select id="style-search" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-main); font-size: 0.9rem; font-family: inherit;">
-                    <option value="" disabled selected>Wählen Sie einen Stil</option>
+                    <option value="" disabled selected>Select a style</option>
                 </select>
                 <input type="hidden" id="selected-style-prompt">
             </div>
-            <button class="ai-btn" id="design-btn">Generieren</button>
+            <button class="ai-btn" id="design-btn">Generate</button>
         </div>
 
         <!-- CHECKOUT BUTTON -->
         <div class="control-group" style="margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border-color);">
             <button class="main" id="checkout-btn" style="background-color: #10b981; width: 100%;">
-                Weiter
+                Next
             </button>
         </div>
     </div>
@@ -472,9 +498,9 @@
     <!-- Confirmation Modal -->
     <div id="confirmation-modal">
         <div id="confirmation-box">
-            <p>Möchten Sie wirklich die Einstellungen ändern? Das aktuelle Bild wird gelöscht.</p>
-            <button id="confirm-yes">Ja</button>
-            <button id="confirm-no">Nein</button>
+            <p>Do you really want to change the settings? The current image will be deleted.</p>
+            <button id="confirm-yes">Yes</button>
+            <button id="confirm-no">No</button>
         </div>
     </div>
 
@@ -650,7 +676,7 @@
                     if (!Array.isArray(data) || data.length === 0) throw new Error('File empty');
                     stylesDB = data;
                     const styleSelect = document.getElementById('style-search');
-                    styleSelect.innerHTML = '<option value="" disabled selected>Wählen Sie einen Stil</option>';
+                    styleSelect.innerHTML = '<option value="" disabled selected>Select a style</option>';
                     stylesDB.forEach(style => {
                         const option = document.createElement('option');
                         option.value = style.prompt;
@@ -664,7 +690,7 @@
                 .catch(err => {
                     stylesDB = [];
                     const styleSelect = document.getElementById('style-search');
-                    styleSelect.innerHTML = '<option value="" disabled selected>Keine Stile verfügbar</option>';
+                    styleSelect.innerHTML = '<option value="" disabled selected>No styles available</option>';
                     styleSelect.disabled = true;
                 });
 
@@ -692,7 +718,7 @@
             uploadInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
-                uploadLabelText.innerHTML = `Aktiv: <strong>${file.name}</strong>`;
+                uploadLabelText.innerHTML = `Active: <strong>${file.name}</strong>`;
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     parseGedcom(ev.target.result);
@@ -710,7 +736,7 @@
                     if (parts[0] === '0') {
                         if (parts[2] === 'INDI') {
                             lastId = parts[1].replace(/@/g, '');
-                            rawData.individuals[lastId] = { id: lastId, name: 'Unbekannt', birth: '', death: '', father: null, mother: null, children: [] };
+                            rawData.individuals[lastId] = { id: lastId, name: 'Unknown', birth: '', death: '', father: null, mother: null, children: [] };
                             lastTag = 'INDI';
                         } else if (parts[2] === 'FAM') {
                             lastId = parts[1].replace(/@/g, '');
@@ -1132,19 +1158,19 @@
 
             designBtn.addEventListener('click', async () => {
                 if (activeDescendants.length === 0) {
-                    alert('Bitte wählen Sie zuerst eine Person aus.');
+                    alert('Please select a person first.');
                     return;
                 }
                 const stylePrompt = hiddenStylePrompt.value.trim();
                 if (!stylePrompt) {
-                    alert('Bitte wählen Sie einen Kunststil aus.');
+                    alert('Please select an art style.');
                     return;
                 }
 
                 const now = Date.now();
                 if (isGenerating || now - lastGenerationTime < GENERATION_COOLDOWN) {
                     const remainingTime = Math.ceil((GENERATION_COOLDOWN - (now - lastGenerationTime)) / 1000);
-                    alert(`Bitte warten Sie noch ${remainingTime} Sekunden, bevor Sie ein neues Design generieren.`);
+                    alert(`Please wait ${remainingTime} more seconds before generating a new design.`);
                     return;
                 }
 
@@ -1192,7 +1218,7 @@
                     if (detection.deduped.length !== expectedBoxCounts.total) {
                         waveOverlay.style.display = 'none';
                         designBtn.disabled = false;
-                        alert('Fehler beim Geometrie-Mapping. Bitte verändern Sie leicht die Skalierung.');
+                        alert('Error in geometry mapping. Please slightly adjust the scale.');
                         return;
                     }
 
@@ -1222,7 +1248,7 @@
                 } catch (err) {
                     waveOverlay.style.display = 'none';
                     designBtn.disabled = false;
-                    alert('Verbindungsfehler zur Creative Engine: ' + err.message);
+                    alert('Connection error to Creative Engine: ' + err.message);
                 } finally {
                     isGenerating = false;
                 }
@@ -1287,7 +1313,7 @@
             }
             checkoutBtn.addEventListener('click', async () => {
                 if (!finalCompositedImage || !_lastRawAiUrl || !_lastDetection) {
-                    alert('Bitte generieren Sie zuerst ein Design mit der KI (Schritt 3), um weiterzumachen!');
+                    alert('Please generate a design with AI first (Step 3) to continue!');
                     return;
                 }
 
@@ -1306,13 +1332,13 @@
                         })
                     });
 
-                    if (!response.ok) throw new Error('Fehler beim Sichern der Baum-Konfiguration.');
+                    if (!response.ok) throw new Error('Error saving tree configuration.');
                     const data = await response.json();
 
                     localStorage.setItem('currentTreeId', data.treeId);
                     window.location.href = 'configurator2.html';
                 } catch (err) {
-                    alert('Checkout-Fehler: ' + err.message);
+                    alert('Checkout error: ' + err.message);
                 }
             });
 
