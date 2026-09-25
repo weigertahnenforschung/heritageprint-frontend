@@ -12,8 +12,8 @@
         :root {
             --primary: #1e293b;
             --primary-light: #334155;
-            --accent: #d97706;
-            --accent-hover: #b45309;
+            --accent: #0066cc; /* Changed to apple-blue */
+            --accent-hover: #0077ed; /* Adjusted hover color */
             --bg-main: #f1f5f9;
             --sidebar-bg: #ffffff;
             --text-main: #0f172a;
@@ -34,6 +34,21 @@
             display: flex;
             flex-direction: column;
         }
+
+        /* Header Styles */
+        #header-placeholder {
+            padding: 16px 24px;
+            background-color: var(--sidebar-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #header-placeholder img {
+            height: 40px;
+            width: auto;
+        }
+
         #main-content {
             display: flex;
             flex-direction: column;
@@ -117,7 +132,7 @@
         .paper-card.selected {
             border-color: var(--accent);
             background: #fffdf9;
-            box-shadow: 0 3px 10px rgba(217, 119, 6, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 102, 204, 0.1);
         }
         .paper-card.disabled { opacity: 0.4; cursor: not-allowed; }
         .paper-card h4 { margin: 0 0 4px 0; font-size: 0.95rem; color: var(--primary); }
@@ -147,23 +162,48 @@
             width: 100%;
             transition: background 0.2s, border-color 0.2s, color 0.2s;
         }
-        button.btn-primary { background-color: var(--accent); color: white; }
-        button.btn-primary:hover { background-color: var(--accent-hover); }
-        button.btn-primary:disabled { background-color: #d6d3d1; cursor: not-allowed; }
-        button.btn-secondary { background-color: #ffffff; color: var(--primary); border: 1.5px solid var(--border-color); }
-        button.btn-secondary:hover { border-color: var(--text-muted); }
-        #dimension-note { font-size: 0.8rem; color: var(--text-muted); margin-top: -8px; }
+        button.btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        button.btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+        button.btn-primary:disabled {
+            background-color: #d6d3d1;
+            cursor: not-allowed;
+        }
+        button.btn-secondary {
+            background-color: #ffffff;
+            color: var(--primary);
+            border: 1.5px solid var(--border-color);
+        }
+        button.btn-secondary:hover {
+            border-color: var(--text-muted);
+        }
+        #dimension-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: -8px;
+        }
         #no-image-warning {
             display: none;
             padding: 14px 18px;
             border-radius: 8px;
             font-size: 0.9rem;
         }
-        #no-image-warning { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+        #no-image-warning {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
     </style>
 </head>
 <body>
-    <div id="header-placeholder"></div>
+    <!-- Updated Header with Only Logo -->
+    <div id="header-placeholder">
+        <img src="facidra-icon.png" alt="Facidra Logo">
+    </div>
 
     <div id="main-content">
         <div id="preview-area">
