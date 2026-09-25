@@ -16,7 +16,6 @@
             --accent-hover: #b45309;
             --accent-ai: #7c3aed;
             --accent-ai-hover: #6d28d9;
-            --apple-blue: #007aff;
             --bg-main: #f1f5f9;
             --sidebar-bg: #ffffff;
             --text-main: #0f172a;
@@ -58,8 +57,8 @@
 
         .logo-area {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            justify-content: space-between;
             gap: 12px;
         }
 
@@ -83,12 +82,12 @@
 
         .back-btn:hover {
             background-color: var(--bg-main);
-            border-color: var(--apple-blue);
-            color: var(--apple-blue);
+            border-color: var(--accent);
+            color: var(--accent);
         }
         
         .logo-img {
-            height: 40px; /* Adjust based on your logo's aspect ratio */
+            height: 40px;
             width: auto;
             object-fit: contain;
         }
@@ -105,22 +104,22 @@
             transition: all 0.2s ease;
         }
         .step-card:focus-within {
-            border-color: var(--apple-blue);
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.08);
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.08);
         }
         .step-card h2 {
             margin: 0;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: var(--apple-blue);
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 8px;
         }
         .step-card h2 span {
-            background: rgba(0, 122, 255, 0.1);
-            color: var(--apple-blue);
+            background: var(--bg-main);
+            color: var(--primary);
             width: 20px;
             height: 20px;
             border-radius: 50%;
@@ -138,48 +137,16 @@
         label { font-size: 0.8rem; color: var(--primary); font-weight: 500; }
 
         /* --- FORM ELEMENTS --- */
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], select {
             width: 100%; box-sizing: border-box; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color);
             background-color: var(--input-bg); color: var(--text-main); font-size: 0.9rem; transition: all 0.2s;
             font-family: inherit;
         }
-        input:focus {
-            border-color: var(--apple-blue);
+        input:focus, select:focus {
+            border-color: var(--accent);
             background-color: #fff;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
-        }
-
-        /* --- CUSTOM DROPDOWN STYLING --- */
-        select {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px 36px 10px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: var(--input-bg);
-            color: var(--text-main);
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2007aff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            cursor: pointer;
-        }
-        select:hover {
-            border-color: var(--apple-blue);
-            background-color: #ffffff;
-        }
-        select:focus {
-            border-color: var(--apple-blue);
-            background-color: #ffffff;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
         }
 
         /* Custom File Upload Styling */
@@ -194,14 +161,14 @@
             transition: all 0.2s;
         }
         .file-upload-wrapper:hover {
-            border-color: var(--apple-blue);
+            border-color: var(--accent);
             background: #fff;
         }
         .file-upload-wrapper input[type="file"] {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
         }
         .file-upload-text { font-size: 0.85rem; color: var(--text-muted); }
-        .file-upload-text strong { color: var(--apple-blue); }
+        .file-upload-text strong { color: var(--accent); }
 
         /* Search Results Popovers */
         #search-results, #style-results {
@@ -211,8 +178,8 @@
         }
         .search-item, .style-item { padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;}
         .search-item:last-child, .style-item:last-child { border-bottom: none; }
-        .search-item:hover, .style-item:hover { background: var(--input-bg); color: var(--apple-blue); }
-        .search-item small { color: var(--text-muted); font-size: 0.75rem; }
+        .search-item:hover, .style-item:hover { background: var(--input-bg); color: var(--accent); }
+        .search-item small, .style-item small { color: var(--text-muted); font-size: 0.75rem; }
 
         /* --- BUTTONS --- */
         button {
@@ -340,10 +307,10 @@
         }
         
         .generations-control:focus-within {
-            border-color: var(--apple-blue);
+            border-color: var(--accent);
             background-color: #fff;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
         }
         
         .generations-arrow {
@@ -357,7 +324,7 @@
         }
         
         .generations-arrow:hover {
-            color: var(--apple-blue);
+            color: var(--accent);
         }
         
         .generations-value {
@@ -366,6 +333,62 @@
             min-width: 20px;
             text-align: center;
         }
+
+        /* VS Code Style Internal Notification Toast */
+        #notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast-notification {
+            pointer-events: auto;
+            background: #1e1e1e;
+            color: #ffffff;
+            border-left: 4px solid #f43f5e;
+            padding: 12px 16px;
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-width: 280px;
+            max-width: 380px;
+            animation: toastIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .toast-notification.hide {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #a0a0a0;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0 4px;
+            line-height: 1;
+        }
+
+        .toast-close:hover {
+            color: #ffffff;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* -----------------------------------------
            📱 MOBILE & TABLET OPTIMIZATIONS (MEDIA QUERY)
            ----------------------------------------- */
@@ -400,8 +423,8 @@
 
             .logo-area {
                 display: flex;
-                flex-direction: column;
-                align-items: flex-start;
+                justify-content: space-between;
+                align-items: center;
                 border-bottom: 1px solid var(--border-color);
                 padding-bottom: 8px;
             }
@@ -495,9 +518,8 @@
             <h2><span>3</span> Design</h2>
             <div class="control-group">
                 <label>Art Style</label>
-                <select id="style-search">
-                    <option value="" disabled selected>Select a style</option>
-                </select>
+                <input type="text" id="style-search" placeholder="Search or select style..." autocomplete="off">
+                <div id="style-results"></div>
                 <input type="hidden" id="selected-style-prompt">
             </div>
             <button class="ai-btn" id="design-btn">Generate</button>
@@ -537,7 +559,41 @@
         </div>
     </div>
 
+    <!-- Notification Toast Container -->
+    <div id="notification-container"></div>
+
     <script>
+        // Internal Toast Notification System
+        function showNotification(message, duration = 4000) {
+            const container = document.getElementById('notification-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            
+            const msgSpan = document.createElement('span');
+            msgSpan.innerText = message;
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'toast-close';
+            closeBtn.innerHTML = '&times;';
+            closeBtn.onclick = () => removeToast(toast);
+
+            toast.appendChild(msgSpan);
+            toast.appendChild(closeBtn);
+            container.appendChild(toast);
+
+            const timer = setTimeout(() => {
+                removeToast(toast);
+            }, duration);
+
+            function removeToast(t) {
+                clearTimeout(timer);
+                t.classList.add('hide');
+                setTimeout(() => {
+                    if (t.parentNode) t.parentNode.removeChild(t);
+                }, 300);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             let rawData = { individuals: {}, families: {} };
             let scale = 0.8;
@@ -585,7 +641,9 @@
             const confirmationModal = document.getElementById('confirmation-modal');
             const confirmYes = document.getElementById('confirm-yes');
             const confirmNo = document.getElementById('confirm-no');
-            const styleSearch = document.getElementById('style-search');
+            
+            const styleInput = document.getElementById('style-search');
+            const styleResultsDiv = document.getElementById('style-results');
             const hiddenStylePrompt = document.getElementById('selected-style-prompt');
 
             // Settings change listeners
@@ -632,7 +690,7 @@
                     aiImageElement.remove();
                     aiImageElement = null;
                 }
-                applyColorBtn.style.display = 'none';
+                if(applyColorBtn) applyColorBtn.style.display = 'none';
             }
 
             function updateColorPalette(colors) {
@@ -648,7 +706,7 @@
             
                 if (dominantColors.length === 0) {
                     console.warn("No dominant colors found. Using fallback colors.");
-                    dominantColors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6']; // Fallback colors
+                    dominantColors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
                 }
             
                 const colorPalette = document.createElement('div');
@@ -665,7 +723,6 @@
             
                         if (finalCompositedImage && window.boxPositions.length > 0) {
                             try {
-                                // Instantly apply the color
                                 const response = await fetch('https://heritageprint-backend.onrender.com/api/apply-color', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
@@ -701,31 +758,54 @@
             
                 canvasUI.insertBefore(colorPalette, canvasUI.firstChild);
             }
+
             let stylesDB = [];
 
+            // Custom Dropdown logic for Art Style
             fetch('stile.json')
                 .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
                 .then(data => {
                     if (!Array.isArray(data) || data.length === 0) throw new Error('File empty');
                     stylesDB = data;
-                    const styleSelect = document.getElementById('style-search');
-                    styleSelect.innerHTML = '<option value="" disabled selected>Select a style</option>';
-                    stylesDB.forEach(style => {
-                        const option = document.createElement('option');
-                        option.value = style.prompt;
-                        option.textContent = style.name;
-                        styleSelect.appendChild(option);
-                    });
-                    styleSelect.addEventListener('change', () => {
-                        hiddenStylePrompt.value = styleSelect.value;
-                    });
                 })
                 .catch(err => {
                     stylesDB = [];
-                    const styleSelect = document.getElementById('style-search');
-                    styleSelect.innerHTML = '<option value="" disabled selected>No styles available</option>';
-                    styleSelect.disabled = true;
                 });
+
+            function renderStyleResults(filter = '') {
+                styleResultsDiv.innerHTML = '';
+                const matches = stylesDB.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()));
+                if (matches.length === 0) {
+                    styleResultsDiv.style.display = 'none';
+                    return;
+                }
+                matches.forEach(s => {
+                    const item = document.createElement('div');
+                    item.className = 'style-item';
+                    item.innerHTML = `<span><strong>${s.name}</strong></span>`;
+                    item.onclick = () => {
+                        styleInput.value = s.name;
+                        hiddenStylePrompt.value = s.prompt;
+                        styleResultsDiv.style.display = 'none';
+                    };
+                    styleResultsDiv.appendChild(item);
+                });
+                styleResultsDiv.style.display = 'block';
+            }
+
+            styleInput.addEventListener('focus', () => {
+                renderStyleResults(styleInput.value);
+            });
+
+            styleInput.addEventListener('input', (e) => {
+                renderStyleResults(e.target.value);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!styleInput.contains(e.target) && !styleResultsDiv.contains(e.target)) {
+                    styleResultsDiv.style.display = 'none';
+                }
+            });
 
             function updateRulers() {
                 if (window.innerWidth <= 768) return;
@@ -1191,19 +1271,19 @@
 
             designBtn.addEventListener('click', async () => {
                 if (activeDescendants.length === 0) {
-                    alert('Please select a person first.');
+                    showNotification('Please select a person first.');
                     return;
                 }
                 const stylePrompt = hiddenStylePrompt.value.trim();
                 if (!stylePrompt) {
-                    alert('Please select an art style.');
+                    showNotification('Please select an art style.');
                     return;
                 }
 
                 const now = Date.now();
                 if (isGenerating || now - lastGenerationTime < GENERATION_COOLDOWN) {
                     const remainingTime = Math.ceil((GENERATION_COOLDOWN - (now - lastGenerationTime)) / 1000);
-                    alert(`Please wait ${remainingTime} more seconds before generating a new design.`);
+                    showNotification(`Please wait ${remainingTime} more seconds before generating a new design.`);
                     return;
                 }
 
@@ -1212,10 +1292,8 @@
                 waveOverlay.style.display = 'block';
 
                 try {
-                    // Step 1: Convert SVG to PNG and send to backend for AI processing
                     const { base64: imgBase64, mimeType: imgMimeType } = await svgToPngBase64(svgElement, 800, true);
 
-                    // Step 2: Call backend to generate AI-styled tree
                     const aiResponse = await fetch('https://heritageprint-backend.onrender.com/api/generate-ai-tree', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1233,7 +1311,6 @@
                     const aiData = await aiResponse.json();
                     const aiUrl = aiData.aiImageUrl;
 
-                    // Step 3: Call backend to detect red boxes
                     const detectionResponse = await fetch('https://heritageprint-backend.onrender.com/api/detect-red-boxes', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1246,19 +1323,17 @@
 
                     const detection = await detectionResponse.json();
 
-                    // Step 4: Validate detected boxes
                     const expectedBoxCounts = getExpectedBoxCounts();
                     if (detection.deduped.length !== expectedBoxCounts.total) {
                         waveOverlay.style.display = 'none';
                         designBtn.disabled = false;
-                        alert('Error in geometry mapping. Please slightly adjust the scale.');
+                        showNotification('Error in geometry mapping. Please slightly adjust the scale.');
                         return;
                     }
 
                     _lastRawAiUrl = aiUrl;
                     _lastDetection = detection;
 
-                    // Step 5: Call backend to composite text into boxes
                     const compositeResponse = await fetch('https://heritageprint-backend.onrender.com/api/composite-text', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1281,7 +1356,7 @@
                 } catch (err) {
                     waveOverlay.style.display = 'none';
                     designBtn.disabled = false;
-                    alert('Connection error to Creative Engine: ' + err.message);
+                    showNotification('Connection error to Creative Engine: ' + err.message);
                 } finally {
                     isGenerating = false;
                 }
@@ -1317,7 +1392,6 @@
                 aiImageElement.style.height = canvas.style.height;
                 aiImageElement.style.transform = `translate(${pX}px, ${pY}px) scale(${scale})`;
             
-                // Extract dominant colors from the composited image using the backend
                 try {
                     fetch('https://heritageprint-backend.onrender.com/api/extract-dominant-colors', {
                         method: 'POST',
@@ -1335,18 +1409,17 @@
                     })
                     .catch(err => {
                         console.error('Error extracting colors:', err);
-                        // Fallback: Use default colors if extraction fails
                         updateColorPalette(['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6']);
                     });
                 } catch (err) {
                     console.error('Error extracting colors:', err);
-                    // Fallback: Use default colors if extraction fails
                     updateColorPalette(['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6']);
                 }
             }
+
             checkoutBtn.addEventListener('click', async () => {
                 if (!finalCompositedImage || !_lastRawAiUrl || !_lastDetection) {
-                    alert('Please generate a design with AI first (Step 3) to continue!');
+                    showNotification('Please generate a design with AI first (Step 3) to continue!');
                     return;
                 }
 
@@ -1371,7 +1444,7 @@
                     localStorage.setItem('currentTreeId', data.treeId);
                     window.location.href = 'configurator2.html';
                 } catch (err) {
-                    alert('Checkout error: ' + err.message);
+                    showNotification('Checkout error: ' + err.message);
                 }
             });
 
@@ -1387,7 +1460,7 @@
             
             genUpBtn.addEventListener('click', () => {
                 const currentValue = parseInt(genDepthInput.value);
-                if (currentValue < 5) {  // Max limit: 5
+                if (currentValue < 5) {
                     genDepthInput.value = currentValue + 1;
                     updateGenerationsValue();
                     triggerSettingsChange();
@@ -1403,9 +1476,7 @@
                 }
             });
             
-            // Initialize value
             updateGenerationsValue();
-
             updateT();
         });
     </script>
