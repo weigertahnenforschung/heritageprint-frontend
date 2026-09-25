@@ -16,6 +16,7 @@
             --accent-hover: #b45309;
             --accent-ai: #7c3aed;
             --accent-ai-hover: #6d28d9;
+            --apple-blue: #007aff;
             --bg-main: #f1f5f9;
             --sidebar-bg: #ffffff;
             --text-main: #0f172a;
@@ -57,8 +58,8 @@
 
         .logo-area {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            align-items: flex-start;
             gap: 12px;
         }
 
@@ -82,8 +83,8 @@
 
         .back-btn:hover {
             background-color: var(--bg-main);
-            border-color: var(--accent);
-            color: var(--accent);
+            border-color: var(--apple-blue);
+            color: var(--apple-blue);
         }
         
         .logo-img {
@@ -104,22 +105,22 @@
             transition: all 0.2s ease;
         }
         .step-card:focus-within {
-            border-color: var(--accent);
-            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.08);
+            border-color: var(--apple-blue);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.08);
         }
         .step-card h2 {
             margin: 0;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: var(--text-muted);
+            color: var(--apple-blue);
             display: flex;
             align-items: center;
             gap: 8px;
         }
         .step-card h2 span {
-            background: var(--bg-main);
-            color: var(--primary);
+            background: rgba(0, 122, 255, 0.1);
+            color: var(--apple-blue);
             width: 20px;
             height: 20px;
             border-radius: 50%;
@@ -137,16 +138,48 @@
         label { font-size: 0.8rem; color: var(--primary); font-weight: 500; }
 
         /* --- FORM ELEMENTS --- */
-        input[type="text"], input[type="number"], select {
+        input[type="text"], input[type="number"] {
             width: 100%; box-sizing: border-box; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color);
             background-color: var(--input-bg); color: var(--text-main); font-size: 0.9rem; transition: all 0.2s;
             font-family: inherit;
         }
-        input:focus, select:focus {
-            border-color: var(--accent);
+        input:focus {
+            border-color: var(--apple-blue);
             background-color: #fff;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+        }
+
+        /* --- CUSTOM DROPDOWN STYLING --- */
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 36px 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2007aff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            cursor: pointer;
+        }
+        select:hover {
+            border-color: var(--apple-blue);
+            background-color: #ffffff;
+        }
+        select:focus {
+            border-color: var(--apple-blue);
+            background-color: #ffffff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
         }
 
         /* Custom File Upload Styling */
@@ -161,14 +194,14 @@
             transition: all 0.2s;
         }
         .file-upload-wrapper:hover {
-            border-color: var(--accent);
+            border-color: var(--apple-blue);
             background: #fff;
         }
         .file-upload-wrapper input[type="file"] {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
         }
         .file-upload-text { font-size: 0.85rem; color: var(--text-muted); }
-        .file-upload-text strong { color: var(--accent); }
+        .file-upload-text strong { color: var(--apple-blue); }
 
         /* Search Results Popovers */
         #search-results, #style-results {
@@ -178,7 +211,7 @@
         }
         .search-item, .style-item { padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;}
         .search-item:last-child, .style-item:last-child { border-bottom: none; }
-        .search-item:hover, .style-item:hover { background: var(--input-bg); color: var(--accent); }
+        .search-item:hover, .style-item:hover { background: var(--input-bg); color: var(--apple-blue); }
         .search-item small { color: var(--text-muted); font-size: 0.75rem; }
 
         /* --- BUTTONS --- */
@@ -307,10 +340,10 @@
         }
         
         .generations-control:focus-within {
-            border-color: var(--accent);
+            border-color: var(--apple-blue);
             background-color: #fff;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
         }
         
         .generations-arrow {
@@ -324,7 +357,7 @@
         }
         
         .generations-arrow:hover {
-            color: var(--accent);
+            color: var(--apple-blue);
         }
         
         .generations-value {
@@ -367,8 +400,8 @@
 
             .logo-area {
                 display: flex;
-                justify-content: space-between;
-                align-items: center;
+                flex-direction: column;
+                align-items: flex-start;
                 border-bottom: 1px solid var(--border-color);
                 padding-bottom: 8px;
             }
@@ -391,8 +424,8 @@
 
     <div id="sidebar">
         <div class="logo-area">
-            <a href="javascript:history.back()" class="back-btn" title="Go back">&#8592;</a>
             <img src="facidra-icon.png" alt="Facidra Logo" class="logo-img">
+            <a href="javascript:history.back()" class="back-btn" title="Go back">&#8592;</a>
         </div>
 
         <!-- STEP 1: DATA IMPORT -->
@@ -462,7 +495,7 @@
             <h2><span>3</span> Design</h2>
             <div class="control-group">
                 <label>Art Style</label>
-                <select id="style-search" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-main); font-size: 0.9rem; font-family: inherit;">
+                <select id="style-search">
                     <option value="" disabled selected>Select a style</option>
                 </select>
                 <input type="hidden" id="selected-style-prompt">
@@ -1375,8 +1408,6 @@
 
             updateT();
         });
-
-        
     </script>
 </body>
 </html>
