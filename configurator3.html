@@ -12,7 +12,7 @@
         :root {
             --primary: #1e293b;
             --primary-light: #334155;
-            --accent: #007aff; /* Apple Blue als Haupt-Akzent */
+            --accent: #007aff;
             --accent-hover: #0062cc;
             --apple-blue: #007aff;
             --bg-main: #f1f5f9;
@@ -22,7 +22,7 @@
             --border-color: #e2e8f0;
             --input-bg: #f8fafc;
             --parchment: #fdfbf7;
-            --font-title: 'Plus Jakarta Sans', sans-serif; /* Harmonische moderne Schriftart */
+            --font-title: 'Plus Jakarta Sans', sans-serif;
             --font-body: 'Plus Jakarta Sans', sans-serif;
             --font-canvas: 'EB Garamond', serif;
         }
@@ -52,7 +52,7 @@
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Verteilt Zurück-Button, Logo und Ausgleichs-Spacer */
+            justify-content: space-between;
             z-index: 30;
             padding: 0 24px;
         }
@@ -92,7 +92,7 @@
         }
 
         .header-spacer {
-            width: 100px; /* Hält das Logo perfekt in der Mitte */
+            width: 100px;
         }
 
         /* Main App Wrapper */
@@ -100,7 +100,7 @@
             display: flex;
             width: 100%;
             height: 100vh;
-            padding-top: 60px; /* Offset for header */
+            padding-top: 60px;
             box-sizing: border-box;
         }
 
@@ -271,11 +271,6 @@
             box-shadow: 0 0 0 2px var(--apple-blue);
         }
 
-        .paper-card.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
         .paper-card h4 {
             margin: 0 0 4px 0;
             font-size: 0.85rem;
@@ -344,7 +339,7 @@
         }
 
         button.btn-primary {
-            background: var(--apple-blue); /* Apple Blue Accent */
+            background: var(--apple-blue);
             color: #fff;
         }
 
@@ -371,7 +366,7 @@
             color: var(--primary);
         }
 
-        /* Warnings & Toast Notifications */
+        /* Warnings */
         #no-image-warning {
             display: none;
             padding: 12px 14px;
@@ -383,7 +378,6 @@
             line-height: 1.4;
         }
 
-        /* Mobile Viewports */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -431,7 +425,7 @@
 </head>
 <body>
 
-    <!-- Header mit Zurück-Button & Centered Logo -->
+    <!-- Header -->
     <div id="header-placeholder">
         <a href="javascript:history.back()" class="header-back-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -450,14 +444,12 @@
 
     <!-- Main Workspace -->
     <div id="main-content">
-        <!-- Live Preview Stage -->
         <div id="preview-area">
             <div id="preview-canvas">
                 <img id="config-tree-img" src="" alt="Dein Stammbaum Design">
             </div>
         </div>
 
-        <!-- Configuration Sidebar -->
         <div id="config-container">
             <div class="header-area">
                 <h1>Deinen Kunstdruck konfigurieren</h1>
@@ -508,9 +500,6 @@
     <script>
         const BACKEND = 'https://heritageprint-backend.onrender.com';
 
-        // =====================================================================
-        // REAL PRODIGI PRODUCT CATALOG
-        // =====================================================================
         const PRODUCTS = [
             // --- A-Formate ---
             {
@@ -963,6 +952,7 @@
         let quoteTimeout;
         const imgEl = document.getElementById('config-tree-img');
         const proceedBtn = document.getElementById('proceed-print-btn');
+        const digitalBtn = document.getElementById('digital-only-btn');
 
         const MAX_SIZE_OPTIONS = 8;
 
@@ -1112,6 +1102,40 @@
                 }
             }, 400);
         }
+
+        // ---------------------------------------------------------------------
+        // CHECKOUT NAVIGATION & EVENT HANDLERS
+        // ---------------------------------------------------------------------
+
+        proceedBtn.addEventListener('click', () => {
+            if (!selectedProduct) return;
+
+            const checkoutData = {
+                type: 'print',
+                sku: selectedProduct.sku,
+                sizeId: selectedProduct.sizeId,
+                paperId: selectedProduct.paperId,
+                countryCode: document.getElementById('shipping-country').value,
+                totalPrice: sessionStorage.getItem('printQuoteTotal')
+            };
+
+            sessionStorage.setItem('checkoutConfig', JSON.stringify(checkoutData));
+            window.location.href = '/checkout.html'; // Oder dein gewüschter Checkout-Pfad
+        });
+
+        digitalBtn.addEventListener('click', () => {
+            const checkoutData = {
+                type: 'digital',
+                totalPrice: '25.00'
+            };
+
+            sessionStorage.setItem('checkoutConfig', JSON.stringify(checkoutData));
+            window.location.href = '/checkout.html'; // Oder dein gewüschter Checkout-Pfad
+        });
+
+        // ---------------------------------------------------------------------
+        // INITIALIZATION
+        // ---------------------------------------------------------------------
 
         const savedImage = localStorage.getItem('finalCompositedImage') || sessionStorage.getItem('finalCompositedImage');
 
