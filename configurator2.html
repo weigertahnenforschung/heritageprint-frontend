@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Facidra</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
 :root{--primary:#1e293b;--primary-light:#334155;--accent:#d97706;--accent-hover:#b45309;--accent-ai:#7c3aed;--accent-ai-hover:#6d28d9;--apple-blue:#007aff;--bg-main:#f1f5f9;--sidebar-bg:#fff;--text-main:#0f172a;--text-muted:#64748b;--border-color:#e2e8f0;--input-bg:#f8fafc;--parchment:#fdfbf7;--font-title:'Cinzel',serif;--font-body:'Plus Jakarta Sans',sans-serif;--font-canvas:'EB Garamond',serif}
-body{margin:0;font-family:var(--font-body);color:var(--text-main);display:flex;height:100vh;background:var(--bg-main);overflow:hidden}
-#sidebar{width:360px;min-width:360px;background:var(--sidebar-bg);border-right:1px solid var(--border-color);padding:24px;box-shadow:4px 0 24px rgba(15,23,42,.05);z-index:20;display:flex;flex-direction:column;gap:20px;overflow-y:auto;box-sizing:border-box}
-.logo-area{display:flex;align-items:center;justify-content:space-between;gap:12px}
+body{margin:0;font-family:var(--font-body);color:var(--text-main);display:flex;height:100vh;height:100dvh;background:var(--bg-main);overflow:hidden}
+#sidebar{width:360px;min-width:360px;background:var(--sidebar-bg);border-right:1px solid var(--border-color);padding:24px;box-shadow:4px 0 24px rgba(15,23,42,.05);z-index:20;display:flex;flex-direction:column;gap:20px;overflow:hidden;box-sizing:border-box}
+#sidebar-scroll{display:flex;flex-direction:column;gap:20px;flex:1;min-height:0}
+#sidebar-content{display:flex;flex-direction:column;gap:20px;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.logo-area{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:0 0 auto}
 .back-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--input-bg);border:1px solid var(--border-color);border-radius:8px;color:var(--text-main);text-decoration:none;font-size:1.1rem;transition:all .2s;cursor:pointer;padding:0;box-sizing:border-box}
 .back-btn:hover{background:var(--bg-main);border-color:var(--apple-blue);color:var(--apple-blue)}
 .logo-img{height:40px;width:auto;object-fit:contain}
@@ -52,7 +54,7 @@ button.secondary:hover:not(:disabled){background:var(--border-color);color:var(-
 button.secondary:disabled{opacity:.45;cursor:not-allowed}
 button.danger{background:#fee2e2;color:#b91c1c;font-size:.8rem;padding:10px}
 button.danger:hover{background:#fecaca}
-.next-wrap{margin-top:auto;padding-top:10px;border-top:1px solid var(--border-color)}
+.next-wrap{flex:0 0 auto;padding-top:10px;border-top:1px solid var(--border-color);background:var(--sidebar-bg)}
 .next-wrap button{background:#10b981;width:100%;color:#fff}
 .next-wrap button:hover{background:#059669}
 #viewport-container{flex-grow:1;position:relative;display:flex;flex-direction:column;overflow:hidden}
@@ -85,12 +87,16 @@ button.danger:hover{background:#fecaca}
 .generations-arrow:hover{color:var(--apple-blue)}
 .generations-value{font-weight:600;color:var(--primary);min-width:20px;text-align:center}
 @media(max-width:768px){
-body{flex-direction:column}
-#viewport-container{height:45vh;width:100%;flex-grow:0;border-bottom:2px solid var(--border-color)}
+/* Mobile: 1. Header (immer sichtbar), 2. Viewer, 3. Sidebar-Content scrollt, Next-Button fixiert unten */
+body{flex-direction:column;height:100vh;height:100dvh}
 #top-ruler,#left-ruler{display:none!important}
+#sidebar{display:contents}
+.logo-area{order:1;flex:0 0 auto;background:var(--sidebar-bg);padding:max(12px,env(safe-area-inset-top)) 16px 12px;border-bottom:1px solid var(--border-color);box-shadow:0 1px 6px rgba(15,23,42,.08);z-index:30}
+#viewport-container{order:2;height:45vh;height:45dvh;width:100%;flex:0 0 auto;border-bottom:2px solid var(--border-color)}
+#sidebar-scroll{order:3;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:var(--sidebar-bg)}
+#sidebar-content{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:16px;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.next-wrap{flex:0 0 auto;margin-top:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--border-color);background:var(--sidebar-bg);box-shadow:0 -2px 10px rgba(15,23,42,.08)}
 #main-area{height:100%}
-#sidebar{width:100%;min-width:0;height:55vh;border-right:none;border-top:1px solid var(--border-color);padding:16px;gap:16px}
-.logo-area{border-bottom:1px solid var(--border-color);padding-bottom:8px}
 button,input[type=text],select{padding:12px 16px;font-size:1rem}
 #canvas-ui{bottom:10px;flex-direction:column;align-items:center}}
 </style>
@@ -101,22 +107,25 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
             <img src="facidra-icon.png" alt="Facidra Logo" class="logo-img">
             <a href="javascript:history.back()" class="back-btn" title="Back">&#8592;</a>
         </div>
-
-        <!-- DESIGN -->
-        <div class="step-card">
-            <h2><span>3</span> Design</h2>
-            <div class="control-group">
-                <label>Art Style</label>
-                <div class="custom-dropdown-container">
-                    <input type="text" id="style-search-input" class="custom-dropdown-input" placeholder="Select a style..." autocomplete="off" readonly>
-                    <div id="style-results"></div>
+        <div id="sidebar-scroll">
+            <div id="sidebar-content">
+            <!-- DESIGN -->
+            <div class="step-card">
+                <h2><span>3</span> Design</h2>
+                <div class="control-group">
+                    <label>Art Style</label>
+                    <div class="custom-dropdown-container">
+                        <input type="text" id="style-search-input" class="custom-dropdown-input" placeholder="Select a style..." autocomplete="off" readonly>
+                        <div id="style-results"></div>
+                    </div>
+                    <input type="hidden" id="selected-style-prompt">
                 </div>
-                <input type="hidden" id="selected-style-prompt">
+                <button class="ai-btn" id="design-btn">Generate</button>
             </div>
-            <button class="ai-btn" id="design-btn">Generate</button>
-        </div>
+            </div>
 
-        <div class="next-wrap"><button id="checkout-btn">Next</button></div>
+            <div class="next-wrap"><button id="checkout-btn">Next</button></div>
+        </div>
     </div>
 
     <div id="viewport-container">
