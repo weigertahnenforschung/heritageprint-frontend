@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facidra</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+:root{--primary:#1e293b;--primary-light:#334155;--accent:#d97706;--accent-hover:#b45309;--accent-ai:#7c3aed;--accent-ai-hover:#6d28d9;--apple-blue:#007aff;--bg-main:#f1f5f9;--sidebar-bg:#fff;--text-main:#0f172a;--text-muted:#64748b;--border-color:#e2e8f0;--input-bg:#f8fafc;--parchment:#fdfbf7;--font-title:'Cinzel',serif;--font-body:'Plus Jakarta Sans',sans-serif;--font-canvas:'EB Garamond',serif}
+body{margin:0;font-family:var(--font-body);color:var(--text-main);display:flex;height:100vh;background:var(--bg-main);overflow:hidden}
+#sidebar{width:360px;min-width:360px;background:var(--sidebar-bg);border-right:1px solid var(--border-color);padding:24px;box-shadow:4px 0 24px rgba(15,23,42,.05);z-index:20;display:flex;flex-direction:column;gap:20px;overflow-y:auto;box-sizing:border-box}
+.logo-area{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.back-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--input-bg);border:1px solid var(--border-color);border-radius:8px;color:var(--text-main);text-decoration:none;font-size:1.1rem;transition:all .2s;cursor:pointer;padding:0;box-sizing:border-box}
+.back-btn:hover{background:var(--bg-main);border-color:var(--apple-blue);color:var(--apple-blue)}
+.logo-img{height:40px;width:auto;object-fit:contain}
+.step-card{background:#fff;border:1px solid var(--border-color);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;transition:all .2s}
+.step-card:focus-within{border-color:var(--apple-blue);box-shadow:0 4px 12px rgba(0,122,255,.08)}
+.step-card h2{margin:0;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:var(--apple-blue);display:flex;align-items:center;gap:8px}
+.step-card h2 span{background:rgba(0,122,255,.1);width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600}
+.control-group{display:flex;flex-direction:column;gap:6px;position:relative;width:100%}
+.row{display:flex;gap:12px;width:100%}
+.row>div{flex:1;display:flex;flex-direction:column;gap:6px}
+.checkbox-row{display:flex;align-items:center;gap:8px}
+label{font-size:.8rem;color:var(--primary);font-weight:500}
+.hint{font-size:.78rem;color:var(--text-muted);line-height:1.4}
+input[type=text]{width:100%;box-sizing:border-box;padding:10px 14px;border-radius:8px;border:1px solid var(--border-color);background:var(--input-bg);color:var(--text-main);font-size:.9rem;transition:all .2s;font-family:inherit}
+input:focus{border-color:var(--apple-blue);background:#fff;outline:none;box-shadow:0 0 0 3px rgba(0,122,255,.15)}
+select{width:100%;box-sizing:border-box;padding:10px 36px 10px 14px;border-radius:8px;border:1px solid var(--border-color);background-color:var(--input-bg);color:var(--text-main);font-size:.9rem;font-weight:500;transition:all .2s;font-family:inherit;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23007aff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer}
+select:hover,select:focus{border-color:var(--apple-blue);background-color:#fff;outline:none}
+select:focus{box-shadow:0 0 0 3px rgba(0,122,255,.15)}
+.file-upload-wrapper{position:relative;border:2px dashed var(--border-color);border-radius:8px;padding:16px;text-align:center;cursor:pointer;background:var(--input-bg);transition:all .2s}
+.file-upload-wrapper:hover{border-color:var(--apple-blue);background:#fff}
+.file-upload-wrapper input[type=file]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.file-upload-text{font-size:.85rem;color:var(--text-muted)}
+.file-upload-text strong{color:var(--apple-blue)}
+.custom-dropdown-container{position:relative;width:100%}
+.custom-dropdown-input{padding-right:36px!important;cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23007aff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");background-repeat:no-repeat;background-position:right 12px center}
+#search-results,#style-results{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border-color);box-shadow:0 10px 25px rgba(0,0,0,.1);max-height:200px;overflow-y:auto;display:none;z-index:100;border-radius:8px;margin-top:4px}
+.search-item,.style-item{padding:12px;cursor:pointer;border-bottom:1px solid var(--border-color);font-size:.85rem;display:flex;justify-content:space-between;align-items:center}
+.search-item:last-child,.style-item:last-child{border-bottom:none}
+.search-item:hover,.style-item:hover{background:var(--input-bg);color:var(--apple-blue)}
+.search-item small{color:var(--text-muted);font-size:.75rem}
+button{font-family:var(--font-body);font-weight:600;font-size:.9rem;padding:12px;border-radius:8px;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+button.main{background:var(--accent);color:#fff;width:100%}
+button.main:hover{background:var(--accent-hover)}
+button.ai-btn{background:var(--accent-ai);color:#fff;width:100%}
+button.ai-btn:hover{background:var(--accent-ai-hover)}
+button.ai-btn:disabled{background:#a5b4fc;cursor:not-allowed}
+button.secondary{background:var(--bg-main);color:var(--primary-light);font-size:.8rem;padding:10px}
+button.secondary:hover:not(:disabled){background:var(--border-color);color:var(--primary)}
+button.secondary:disabled{opacity:.45;cursor:not-allowed}
+button.danger{background:#fee2e2;color:#b91c1c;font-size:.8rem;padding:10px}
+button.danger:hover{background:#fecaca}
+.next-wrap{margin-top:auto;padding-top:10px;border-top:1px solid var(--border-color)}
+.next-wrap button{background:#10b981;width:100%;color:#fff}
+.next-wrap button:hover{background:#059669}
+#viewport-container{flex-grow:1;position:relative;display:flex;flex-direction:column;overflow:hidden}
+#top-ruler{height:24px;background:#e2e8f0;border-bottom:1px solid #cbd5e1;position:relative;margin-left:24px}
+#main-area{display:flex;flex-grow:1;position:relative;overflow:hidden}
+#left-ruler{width:24px;background:#e2e8f0;border-right:1px solid #cbd5e1;position:relative}
+#workspace{flex-grow:1;position:relative;cursor:grab;background-image:radial-gradient(#cbd5e1 1.5px,transparent 1.5px);background-size:24px 24px;overflow:hidden}
+#workspace:active{cursor:grabbing}
+#a4-canvas{background:var(--parchment);box-shadow:0 20px 50px rgba(15,23,42,.15);position:absolute;transform-origin:0 0;border:1px solid #94a3b8;border-radius:4px}
+.ruler-tick{position:absolute;font-size:9px;color:#64748b;border-left:1px solid #cbd5e1;height:100%;padding-left:3px;pointer-events:none}
+.ruler-tick-v{position:absolute;font-size:9px;color:#64748b;border-top:1px solid #cbd5e1;width:100%;padding-top:3px;pointer-events:none}
+.color-palette{display:flex;gap:10px;margin-top:4px;justify-content:center}
+.color-option{width:36px;height:36px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.color-option:hover{transform:scale(1.1)}
+.color-option.selected{border-color:#fff;box-shadow:0 0 0 2px var(--accent-ai);transform:scale(1.05)}
+#canvas-ui{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:12px;flex-wrap:wrap;justify-content:center;z-index:25}
+#canvas-ui:not(:empty){padding:10px;background:rgba(255,255,255,.9);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+#wave-overlay{position:absolute;inset:0;pointer-events:none;z-index:18;display:none;background:linear-gradient(45deg,rgba(124,58,237,.1),rgba(217,119,6,.1),rgba(34,197,94,.1),rgba(59,130,246,.1));background-size:400% 400%;animation:wave 3s ease infinite;border-radius:4px}
+@keyframes wave{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;justify-content:center;align-items:center}
+.modal-box{background:#fff;padding:24px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.2);width:92%;max-width:400px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box}
+.modal-box h3{margin:0;font-size:1.05rem}
+.modal-actions{display:flex;gap:10px}
+.modal-actions button{flex:1}
+#toast-container{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast-message{background:#252526;color:#f1f1f1;border-left:4px solid #f14c4c;padding:12px 16px;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.3);font-size:.85rem;display:flex;align-items:center;gap:10px;min-width:280px;max-width:380px;pointer-events:auto;opacity:0;transform:translateY(20px);transition:opacity .3s,transform .3s}
+.toast-message.show{opacity:1;transform:none}
+.generations-control{display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;padding:10px 14px;border-radius:8px;border:1px solid var(--border-color);background:var(--input-bg);font-size:.9rem}
+.generations-arrow{background:none;border:none;color:var(--text-muted);font-size:.8rem;cursor:pointer;padding:0 8px}
+.generations-arrow:hover{color:var(--apple-blue)}
+.generations-value{font-weight:600;color:var(--primary);min-width:20px;text-align:center}
+@media(max-width:768px){
+body{flex-direction:column}
+#viewport-container{height:45vh;width:100%;flex-grow:0;border-bottom:2px solid var(--border-color)}
+#top-ruler,#left-ruler{display:none!important}
+#main-area{height:100%}
+#sidebar{width:100%;min-width:0;height:55vh;border-right:none;border-top:1px solid var(--border-color);padding:16px;gap:16px}
+.logo-area{border-bottom:1px solid var(--border-color);padding-bottom:8px}
+button,input[type=text],select{padding:12px 16px;font-size:1rem}
+#canvas-ui{bottom:10px;flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="logo-area">
+            <img src="facidra-icon.png" alt="Facidra Logo" class="logo-img">
+            <a href="javascript:history.back()" class="back-btn" title="Go back">&#8592;</a>
+        </div>
+
+        <!-- STEP 1: ENTER DATA -->
+        <div class="step-card">
+            <h2><span>1</span> Family Data</h2>
+            <div class="hint">Click a box in the viewer to edit the person, add parents (max. 2 per person) or delete them. The tree can have up to 5 generations.</div>
+            <button class="secondary" id="reset-btn">Start over</button>
+        </div>
+
+        <!-- STEP 2: STRUCTURE & LAYOUT -->
+        <div class="step-card">
+            <h2><span>2</span> Structure &amp; Layout</h2>
+            <div class="control-group">
+                <label>Document Title</label>
+                <input type="text" id="doc-title-input" placeholder="e.g. Chronicle of the Smith Family">
+            </div>
+            <div class="control-group">
+                <label>Growth Direction</label>
+                <select id="tree-orientation">
+                    <option value="up">Grow upwards</option>
+                    <option value="down">Grow downwards</option>
+                </select>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="show-dates" checked>
+                <label for="show-dates">Show life dates (* / †)</label>
+            </div>
+        </div>
+
+        <div class="next-wrap"><button id="next-btn">Next</button></div>
+    </div>
+
+    <div id="viewport-container">
+        <div id="top-ruler"></div>
+        <div id="main-area">
+            <div id="left-ruler"></div>
+            <div id="workspace">
+                <div id="a4-canvas"><svg id="tree-svg" xmlns="http://www.w3.org/2000/svg"></svg></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Person editor -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-box">
+            <h3>Edit person</h3>
+            <div class="control-group"><label>Name</label><input type="text" id="e-name" placeholder="Full name"></div>
+            <div class="row">
+                <div><label>Born (*)</label><input type="text" id="e-birth" placeholder="e.g. 12 MAR 1950"></div>
+                <div><label>Died (†)</label><input type="text" id="e-death" placeholder="e.g. 3 JUN 2019"></div>
+            </div>
+            <button class="secondary" id="e-add">+ Add parent</button>
+            <div class="hint" id="e-hint"></div>
+            <div class="modal-actions">
+                <button class="main" id="e-save">Save</button>
+                <button class="danger" id="e-del">Delete</button>
+                <button class="secondary" id="e-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script>
+const Facidra = (() => {
+    const PX = 37.795;
+    const v = { scale: 0.8, pX: 80, pY: 80, moved: false, sW: 0 };
+    let ws, cv, img = null;
+    const mob = () => innerWidth <= 768;
+    if (mob()) { v.scale = 0.35; v.pX = 20; v.pY = 40; }
+
+    function toast(msg, d = 4000) {
+        const c = document.getElementById('toast-container'), t = document.createElement('div');
+        t.className = 'toast-message';
+        t.innerHTML = `<span>⚠️</span><span>${msg}</span>`;
+        c.appendChild(t);
+        setTimeout(() => t.classList.add('show'), 10);
+        setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, d);
+    }
+
+    function rulers() {
+        if (mob()) return;
+        const T = document.getElementById('top-ruler'), L = document.getElementById('left-ruler');
+        T.innerHTML = ''; L.innerHTML = '';
+        for (let i = 0; i <= 1000; i += 5) {
+            const x = i * PX * v.scale + v.pX, y = i * PX * v.scale + v.pY;
+            if (x >= 0 && x < T.offsetWidth) {
+                const e = document.createElement('div'); e.className = 'ruler-tick';
+                e.style.left = x + 'px'; e.innerText = i % 10 === 0 ? i : ''; T.appendChild(e);
+            }
+            if (y >= 0 && y < L.offsetHeight) {
+                const e = document.createElement('div'); e.className = 'ruler-tick-v';
+                e.style.top = y + 'px'; e.innerText = i % 10 === 0 ? i : ''; L.appendChild(e);
+            }
+        }
+    }
+
+    function updateT() {
+        const t = `translate(${v.pX}px, ${v.pY}px) scale(${v.scale})`;
+        cv.style.transform = t;
+        if (img) img.style.transform = t;
+        rulers();
+    }
+
+    function fit() {
+        if (mob()) { v.pX = (ws.offsetWidth - v.sW * v.scale) / 2; v.pY = 30; }
+        else { v.pX = 80; v.pY = 80; }
+        updateT();
+    }
+
+    function setImage(el) { img = el; updateT(); }
+
+    function init(workspace, canvas) {
+        ws = workspace; cv = canvas;
+        let drag = false, sx, sy, mx, my, d0 = null, s0 = null;
+        const ds = (x, y) => { drag = true; v.moved = false; sx = x - v.pX; sy = y - v.pY; mx = x; my = y; };
+        const dm = (x, y) => {
+            if (!drag) return;
+            if (Math.abs(x - mx) + Math.abs(y - my) > 5) v.moved = true;
+            v.pX = x - sx; v.pY = y - sy; updateT();
+        };
+        const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+
+        ws.addEventListener('wheel', e => {
+            e.preventDefault();
+            const n = Math.min(Math.max(0.05, v.scale - e.deltaY * 0.0015), 5);
+            const r = ws.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+            v.pX = x - (x - v.pX) * (n / v.scale);
+            v.pY = y - (y - v.pY) * (n / v.scale);
+            v.scale = n; updateT();
+        }, { passive: false });
+        ws.addEventListener('mousedown', e => { if (e.button === 0) ds(e.clientX, e.clientY); });
+        ws.addEventListener('mousemove', e => dm(e.clientX, e.clientY));
+        addEventListener('mouseup', () => drag = false);
+        ws.addEventListener('touchstart', e => {
+            if (e.touches.length === 2) { drag = false; d0 = dist(e.touches); s0 = v.scale; }
+            else if (e.touches.length === 1) ds(e.touches[0].clientX, e.touches[0].clientY);
+        });
+        ws.addEventListener('touchmove', e => {
+            if (e.touches.length === 2 && d0) {
+                e.preventDefault();
+                v.scale = Math.min(Math.max(0.05, s0 * dist(e.touches) / d0), 5); updateT();
+            } else if (e.touches.length === 1) dm(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: false });
+        addEventListener('touchend', () => { drag = false; d0 = null; });
+        updateT();
+    }
+
+    function wrapText(text, maxWidth, fs, bold = false) {
+        const ctx = document.createElement('canvas').getContext('2d');
+        ctx.font = `${bold ? 'bold ' : ''}${fs}px Georgia, serif`;
+        const words = text.split(' '), lines = [];
+        let cur = '';
+        for (let w of words) {
+            const test = cur ? cur + ' ' + w : w;
+            if (ctx.measureText(test).width <= maxWidth) { cur = test; continue; }
+            if (cur) { lines.push(cur); cur = ''; }
+            while (ctx.measureText(w).width > maxWidth) {
+                const h = hyphenate(w, maxWidth, ctx);
+                lines.push(h.head); w = h.tail;
+            }
+            cur = w;
+        }
+        if (cur) lines.push(cur);
+        return lines;
+    }
+
+    function hyphenate(word, maxWidth, ctx) {
+        const vowels = 'AEIOUaeiouÄÖÜäöü';
+        let at = word.length - 1;
+        for (let i = word.length - 1; i >= 1; i--) {
+            if (ctx.measureText(word.substring(0, i) + '-').width <= maxWidth) { at = i; break; }
+        }
+        for (let j = at; j >= Math.max(1, at - 3); j--) {
+            if (vowels.includes(word[j - 1])) { at = j; break; }
+        }
+        return { head: word.substring(0, at) + '-', tail: word.substring(at) };
+    }
+
+    /* data: {name, birth, death, children:[...]}; o: {title, orientation, showDates, onNodeClick} */
+    function render(data, o) {
+        const svg = d3.select('#tree-svg'), canvas = document.getElementById('a4-canvas');
+        const sd = o.showDates, up = o.orientation === 'up';
+        const nf = 13, df = 10, PH = 10, PV = 8, LG = 4, CW = 210, bw = 180, taw = bw - PH * 2;
+        const DL = sd ? 2 : 0;
+        const bh = PV * 2 + 2 * nf * 1.35 + (sd ? LG : 0) + DL * df * 1.4;
+        const CH = bh + 70;
+
+        const root = d3.hierarchy(data);
+        d3.tree().nodeSize([CW, CH])(root);
+        const Y = d => up ? -d.y : d.y;
+        const xs = root.descendants().map(d => d.x), ys = root.descendants().map(Y);
+        const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+        const sW = Math.round(maxX - minX + CW + 100), sH = Math.round(maxY - minY + CH + 250);
+        v.sW = sW;
+        canvas.style.width = sW + 'px'; canvas.style.height = sH + 'px';
+
+        svg.selectAll('*').remove();
+        svg.attr('width', sW).attr('height', sH);
+        svg.append('rect').attr('width', sW).attr('height', sH).attr('fill', '#fdfbf7');
+        if (o.title) {
+            svg.append('text').attr('class', 'doc-title').attr('x', sW / 2).attr('y', 60)
+                .attr('text-anchor', 'middle').attr('font-family', 'Georgia, serif')
+                .attr('font-size', '36px').attr('font-weight', 'bold').attr('fill', '#1a1a1a')
+                .text(o.title.toUpperCase());
+        }
+
+        const g = svg.append('g').attr('id', 'main-group');
+        const offX = sW / 2 - (maxX + minX) / 2, offY = up ? sH - 100 : 180;
+        g.attr('transform', `translate(${offX}, ${offY})`);
+
+        const nodes = root.descendants().slice()
+            .sort((a, b) => a.depth !== b.depth ? a.depth - b.depth : a.x - b.x)
+            .map(d => ({ svgX: d.x + offX, svgY: Y(d) + offY, depth: d.depth, data: d.data }));
+
+        g.selectAll('.link').data(root.links()).enter().append('path')
+            .attr('fill', 'none').attr('stroke', '#4a3c31').attr('stroke-width', '2.5px')
+            .attr('d', d3.linkVertical().x(d => d.x).y(Y));
+
+        const node = g.selectAll('.node').data(root.descendants()).enter().append('g')
+            .attr('class', 'node-g').attr('transform', d => `translate(${d.x},${Y(d)})`);
+        if (o.onNodeClick) {
+            node.style('cursor', 'pointer').on('click', (e, d) => { if (!v.moved) o.onNodeClick(d.data); });
+        }
+
+        node.append('rect').attr('class', 'node-box').attr('width', bw).attr('height', bh)
+            .attr('x', -bw / 2).attr('y', -bh / 2).attr('rx', 3).attr('fill', '#fff')
+            .attr('stroke', '#4a3c31').attr('stroke-width', '2.5px');
+
+        node.each(function (d) {
+            const gEl = d3.select(this);
+            let lines = wrapText((d.data.name || '?').toUpperCase().replace(/_/g, ' '), taw, nf, true);
+            if (lines.length > 2) lines = [lines[0], lines[1], lines.slice(2).join(' ')];
+            const total = lines.length * nf * 1.35 + (sd ? LG : 0) + (sd ? DL * df * 1.4 : 0);
+            let y = -total / 2 + nf * 0.85;
+            const txt = (s, size, extra) => {
+                const t = gEl.append('text').attr('class', 'node-text').attr('x', 0).attr('y', y)
+                    .attr('text-anchor', 'middle').attr('font-family', 'Georgia, serif')
+                    .attr('font-size', size + 'px').text(s);
+                Object.entries(extra).forEach(([k, val]) => t.attr(k, val));
+            };
+            lines.forEach(l => { txt(l, nf, { 'font-weight': 'bold', fill: '#1a1a1a' }); y += nf * 1.35; });
+            if (sd) {
+                y += LG;
+                const b = d.data.birth ? `* ${d.data.birth}` : '', t = d.data.death ? `† ${d.data.death}` : '';
+                if (b || t) {
+                    txt(b, df, { 'font-style': 'italic', fill: '#333' }); y += df * 1.4;
+                    txt(t, df, { 'font-style': 'italic', fill: '#333' });
+                }
+            }
+        });
+        return { nodes, boxW: bw, boxH: bh };
+    }
+
+    function toPng(svgEl, maxPx = 800) {
+        return new Promise((resolve, reject) => {
+            const W = parseInt(svgEl.getAttribute('width')) || 800, H = parseInt(svgEl.getAttribute('height')) || 600;
+            let oW, oH;
+            if (W >= H) { oW = Math.min(W, maxPx); oH = Math.round(oW * H / W); }
+            else { oH = Math.min(H, maxPx); oW = Math.round(oH * W / H); }
+
+            const clone = svgEl.cloneNode(true);
+            clone.querySelectorAll('path').forEach(p => { p.setAttribute('stroke-width', '6px'); p.setAttribute('stroke', '#000'); });
+            clone.querySelectorAll('.node-box').forEach(b => { b.setAttribute('stroke-width', '4px'); b.setAttribute('fill', '#eee'); });
+            clone.querySelectorAll('.node-text').forEach(e => e.remove());
+            const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            bg.setAttribute('width', W); bg.setAttribute('height', H); bg.setAttribute('fill', '#fff');
+            clone.insertBefore(bg, clone.firstChild);
+
+            const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml;charset=utf-8' }));
+            const im = new Image();
+            im.onload = () => {
+                const c = document.createElement('canvas'); c.width = oW; c.height = oH;
+                const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, oW, oH);
+                ctx.drawImage(im, 0, 0, oW, oH); URL.revokeObjectURL(url);
+                try { resolve({ base64: c.toDataURL('image/png').split(',')[1], mimeType: 'image/png' }); }
+                catch (e) { reject(new Error('Failed to convert SVG to PNG: ' + e.message)); }
+            };
+            im.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Failed to load SVG as image.')); };
+            im.src = url;
+        });
+    }
+
+    return { toast, init, render, fit, setImage, toPng, view: v };
+})();
+</script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const $ = id => document.getElementById(id);
+        const MAX_GEN = 5;            // max. generations above the starting person
+        const KEY = 'facidraCustomTree';
+        let uid = 1, root = null, editId = null;
+
+        Facidra.init($('workspace'), $('a4-canvas'));
+
+        /* ---------- Data model: each person has up to 2 parents ---------- */
+        const mk = name => ({ id: uid++, name: name || 'New Person', birth: '', death: '', parents: [] });
+        const toH = n => ({ id: n.id, name: n.name, birth: n.birth, death: n.death, children: n.parents.length ? n.parents.map(toH) : null });
+        const count = n => 1 + n.parents.reduce((s, p) => s + count(p), 0);
+        function find(n, id, parent = null, depth = 0) {
+            if (n.id === id) return { n, parent, depth };
+            for (const p of n.parents) { const r = find(p, id, n, depth + 1); if (r) return r; }
+            return null;
+        }
+
+        function load() {
+            try {
+                const s = JSON.parse(localStorage.getItem(KEY));
+                if (s && s.root) { root = s.root; uid = s.uid; return; }
+            } catch (e) {}
+            root = mk('Starting Person');
+        }
+
+        /* ---------- Rendering ---------- */
+        let state = null;
+        function draw(first) {
+            state = {
+                hierarchy: toH(root), lineageMode: 'ancestors',
+                title: $('doc-title-input').value,
+                orientation: $('tree-orientation').value,
+                showDates: $('show-dates').checked
+            };
+            Facidra.render(state.hierarchy, { ...state, onNodeClick: d => openEdit(d.id) });
+            if (first) Facidra.fit();
+            try { localStorage.setItem(KEY, JSON.stringify({ root, uid })); } catch (e) {}
+        }
+        $('doc-title-input').addEventListener('input', () => draw());
+        ['tree-orientation', 'show-dates'].forEach(id => $(id).addEventListener('change', () => draw()));
+
+        /* ---------- Editor ---------- */
+        function openEdit(id) {
+            const r = find(root, id);
+            if (!r) return;
+            editId = id;
+            $('e-name').value = r.n.name; $('e-birth').value = r.n.birth; $('e-death').value = r.n.death;
+            const full = r.n.parents.length >= 2, tooDeep = r.depth >= MAX_GEN;
+            $('e-add').disabled = full || tooDeep;
+            $('e-hint').textContent = tooDeep ? `Maximum of ${MAX_GEN} generations reached.`
+                : full ? 'This person already has 2 parents.' : `Parents: ${r.n.parents.length} / 2`;
+            $('e-del').style.display = r.parent ? '' : 'none';
+            $('edit-modal').style.display = 'flex';
+            $('e-name').focus();
+        }
+        const closeEdit = () => { $('edit-modal').style.display = 'none'; editId = null; };
+
+        function applyFields() {
+            const r = find(root, editId);
+            if (!r) return null;
+            r.n.name = $('e-name').value.trim() || 'Unknown';
+            r.n.birth = $('e-birth').value.trim();
+            r.n.death = $('e-death').value.trim();
+            return r;
+        }
+
+        $('e-save').onclick = () => { if (applyFields()) draw(); closeEdit(); };
+        $('e-cancel').onclick = closeEdit;
+        $('edit-modal').addEventListener('mousedown', e => { if (e.target.id === 'edit-modal') closeEdit(); });
+
+        $('e-add').onclick = () => {
+            const r = applyFields();
+            if (!r || r.n.parents.length >= 2 || r.depth >= MAX_GEN) return;
+            r.n.parents.push(mk(r.n.parents.length === 0 ? 'Father' : 'Mother'));
+            draw();
+            openEdit(r.n.id);
+        };
+
+        $('e-del').onclick = () => {
+            const r = find(root, editId);
+            if (!r || !r.parent) return;
+            const others = count(r.n) - 1;
+            const msg = others ? `Delete ${r.n.name} and all ${others} person(s) above them?` : `Delete ${r.n.name}?`;
+            if (!confirm(msg)) return;
+            r.parent.parents = r.parent.parents.filter(p => p.id !== r.n.id);
+            closeEdit();
+            draw();
+        };
+
+        $('reset-btn').onclick = () => {
+            if (count(root) > 1 && !confirm('Delete the whole tree and start over?')) return;
+            uid = 1; root = mk('Starting Person'); draw(true);
+        };
+
+        /* ---------- Next ---------- */
+        $('next-btn').onclick = () => {
+            draw();
+            localStorage.setItem('facidraTreeState', JSON.stringify(state));
+            window.location.href = 'configurator2.html';
+        };
+
+        load();
+        draw(true);
+    });
+    </script>
+</body>
+</html>
