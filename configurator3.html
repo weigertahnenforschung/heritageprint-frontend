@@ -9,8 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
-
         :root {
             --primary: #1e293b;
             --primary-light: #334155;
@@ -45,86 +43,96 @@
             overflow: hidden;
         }
 
-        /* Top Header */
-        #header-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
+        /* Sidebar Navigation & Controls Container */
+        #sidebar {
+            width: 440px;
+            min-width: 440px;
             background: var(--sidebar-bg);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 30;
-            padding: 0 24px;
-        }
-
-        #header-placeholder img {
-            height: 36px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        /* Main App Wrapper */
-        #main-content {
-            display: flex;
-            width: 100%;
-            height: 100vh;
-            padding-top: 60px; /* Offset for header */
-            box-sizing: border-box;
-        }
-
-        /* Preview Area (Left Side Canvas Workspace) */
-        #preview-area {
-            flex-grow: 1;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--bg-main);
-            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
-            overflow: hidden;
-            padding: 40px;
-        }
-
-        #preview-canvas {
-            background: var(--parchment);
-            box-shadow: 0 20px 50px rgba(15, 23, 42, .15);
-            border: 1px solid #94a3b8;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            transition: width 0.25s ease, height 0.25s ease;
-            max-width: 100%;
-            max-height: 100%;
-        }
-
-        #preview-canvas img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: object-fit 0.1s;
-        }
-
-        /* Config Sidebar (Right Side Panel) */
-        #config-container {
-            width: 420px;
-            min-width: 420px;
-            background: var(--sidebar-bg);
-            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
             padding: 24px;
-            box-shadow: -4px 0 24px rgba(15, 23, 42, .05);
+            box-shadow: 4px 0 24px rgba(15, 23, 42, 0.05);
             z-index: 20;
             display: flex;
             flex-direction: column;
             gap: 20px;
             overflow-y: auto;
             box-sizing: border-box;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .back-btn:hover {
+            background: var(--bg-main);
+            border-color: var(--apple-blue);
+            color: var(--apple-blue);
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .step-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+
+        .step-card:focus-within {
+            border-color: var(--apple-blue);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.08);
+        }
+
+        .step-card h2 {
+            margin: 0;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--apple-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-card h2 span {
+            background: rgba(0, 122, 255, 0.1);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
         .header-area h1 {
@@ -142,49 +150,39 @@
             line-height: 1.4;
         }
 
-        /* Card Step Wrapper */
-        .step-card {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            transition: all .2s;
-        }
-
-        .step-card:focus-within {
-            border-color: var(--apple-blue);
-            box-shadow: 0 4px 12px rgba(0, 122, 255, .08);
-        }
-
-        .form-group {
+        .control-group {
             display: flex;
             flex-direction: column;
             gap: 6px;
+            position: relative;
             width: 100%;
         }
 
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .row {
+            display: flex;
             gap: 12px;
+            width: 100%;
+        }
+
+        .row > div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         label {
-            font-size: .8rem;
+            font-size: 0.8rem;
             color: var(--primary);
             font-weight: 500;
         }
 
-        .field-hint {
-            font-size: .78rem;
+        .hint {
+            font-size: 0.78rem;
             color: var(--text-muted);
             line-height: 1.4;
         }
 
-        /* Inputs & Selects */
         select {
             width: 100%;
             box-sizing: border-box;
@@ -193,9 +191,9 @@
             border: 1px solid var(--border-color);
             background-color: var(--input-bg);
             color: var(--text-main);
-            font-size: .9rem;
+            font-size: 0.9rem;
             font-weight: 500;
-            transition: all .2s;
+            transition: all 0.2s;
             font-family: inherit;
             appearance: none;
             -webkit-appearance: none;
@@ -207,18 +205,22 @@
 
         select:hover, select:focus {
             border-color: var(--apple-blue);
-            background-color: #fff;
+            background-color: #ffffff;
             outline: none;
         }
 
         select:focus {
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, .15);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
         }
 
-        /* Paper Selection Grid */
+        select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .paper-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 10px;
         }
 
@@ -233,17 +235,17 @@
 
         .paper-card:hover {
             border-color: var(--apple-blue);
-            background: #fff;
+            background: #ffffff;
         }
 
         .paper-card.selected {
-            border-color: var(--accent);
-            background: #fff;
-            box-shadow: 0 0 0 2px var(--accent);
+            border-color: var(--apple-blue);
+            background: #ffffff;
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
         }
 
         .paper-card.disabled {
-            opacity: 0.4;
+            opacity: 0.45;
             cursor: not-allowed;
         }
 
@@ -251,16 +253,16 @@
             margin: 0 0 4px 0;
             font-size: 0.85rem;
             color: var(--primary);
+            font-weight: 600;
         }
 
         .paper-card p {
             margin: 0;
             font-size: 0.75rem;
             color: var(--text-muted);
-            line-height: 1.3;
+            line-height: 1.35;
         }
 
-        /* Price Box Component */
         .price-box {
             display: flex;
             flex-direction: column;
@@ -274,6 +276,7 @@
         .price-box .label {
             font-size: 0.78rem;
             color: var(--text-muted);
+            font-weight: 500;
         }
 
         .price-box .value {
@@ -284,28 +287,28 @@
         }
 
         .price-box .value.loading {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
             font-family: var(--font-body);
+            font-weight: 500;
         }
 
-        /* Button System */
         .actions {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-top: auto;
+            margin-top: 4px;
         }
 
         button {
             font-family: var(--font-body);
             font-weight: 600;
-            font-size: .9rem;
+            font-size: 0.9rem;
             padding: 12px;
             border-radius: 8px;
             border: none;
             cursor: pointer;
-            transition: all .2s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -313,146 +316,223 @@
             width: 100%;
         }
 
-        button.btn-primary {
+        button.main {
             background: var(--accent);
-            color: #fff;
+            color: #ffffff;
         }
 
-        button.btn-primary:hover:not(:disabled) {
+        button.main:hover:not(:disabled) {
             background: var(--accent-hover);
         }
 
-        button.btn-primary:disabled {
-            background: var(--border-color);
-            color: var(--text-muted);
+        button.main:disabled {
+            background: #cbd5e1;
             cursor: not-allowed;
         }
 
-        button.btn-secondary {
+        button.secondary {
             background: var(--bg-main);
             color: var(--primary-light);
-            font-size: .85rem;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
         }
 
-        button.btn-secondary:hover:not(:disabled) {
+        button.secondary:hover:not(:disabled) {
             background: var(--border-color);
             color: var(--primary);
         }
 
-        /* Warnings & Toast Notifications */
+        button.secondary:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
         #no-image-warning {
             display: none;
             padding: 12px 14px;
             border-radius: 8px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             background: #fee2e2;
             border: 1px solid #fecaca;
             color: #b91c1c;
             line-height: 1.4;
         }
 
-        /* Mobile Viewports */
+        /* Viewport Canvas Preview Area */
+        #viewport-container {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #top-ruler {
+            height: 24px;
+            background: #e2e8f0;
+            border-bottom: 1px solid #cbd5e1;
+            position: relative;
+            margin-left: 24px;
+        }
+
+        #main-area {
+            display: flex;
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #left-ruler {
+            width: 24px;
+            background: #e2e8f0;
+            border-right: 1px solid #cbd5e1;
+            position: relative;
+        }
+
+        #workspace {
+            flex-grow: 1;
+            position: relative;
+            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #preview-canvas {
+            background: var(--parchment);
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+            border: 1px solid #94a3b8;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: width 0.25s ease, height 0.25s ease;
+        }
+
+        #preview-canvas img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: object-fit 0.1s;
+        }
+
+        /* Responsive Mobile Layout */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
+                height: auto;
                 overflow: auto;
             }
 
-            #header-placeholder {
-                position: relative;
-            }
-
-            #main-content {
-                flex-direction: column;
-                height: auto;
-                padding-top: 0;
-            }
-
-            #preview-area {
+            #viewport-container {
                 height: 40vh;
+                min-height: 280px;
                 width: 100%;
                 flex-grow: 0;
                 border-bottom: 2px solid var(--border-color);
-                padding: 16px;
             }
 
-            #config-container {
+            #top-ruler, #left-ruler {
+                display: none !important;
+            }
+
+            #main-area {
+                height: 100%;
+            }
+
+            #sidebar {
                 width: 100%;
                 min-width: 0;
                 height: auto;
-                border-left: none;
-                box-shadow: none;
+                border-right: none;
                 padding: 16px;
                 gap: 16px;
+                box-shadow: none;
+            }
+
+            .logo-area {
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 8px;
             }
 
             button, select {
                 padding: 12px 16px;
-                font-size: 1rem;
+                font-size: 0.95rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Logo -->
-    <div id="header-placeholder">
-        <img src="facidra-icon.png" alt="Facidra Logo">
-    </div>
+    <!-- Left Sidebar: Controls & Options -->
+    <div id="sidebar">
+        <div class="logo-area">
+            <a href="index.html" class="back-btn" title="Zurück zum Editor">←</a>
+            <img src="facidra-icon.png" alt="Facidra Logo" class="logo-img">
+        </div>
 
-    <!-- Main Workspace -->
-    <div id="main-content">
-        <!-- Live Preview Stage -->
-        <div id="preview-area">
-            <div id="preview-canvas">
-                <img id="config-tree-img" src="" alt="Dein Stammbaum Design">
+        <div class="header-area">
+            <h1>Kunstdruck Konfiguration</h1>
+            <p>Wähle deine bevorzugten Druckoptionen oder lade deine hochauflösende digitale Datei herunter.</p>
+        </div>
+
+        <div id="no-image-warning">
+            Es wurde noch kein Stammbaum-Design gefunden. Bitte kehre zum Editor zurück und erstelle zuerst dein Design.
+        </div>
+
+        <div class="step-card">
+            <h2><span>1</span> Format & Versand</h2>
+            <div class="row">
+                <div class="control-group">
+                    <label for="print-size">Format</label>
+                    <select id="print-size"></select>
+                    <span class="hint" id="dimension-note"></span>
+                </div>
+                <div class="control-group">
+                    <label for="shipping-country">Lieferland</label>
+                    <select id="shipping-country">
+                        <option value="DE">Deutschland</option>
+                        <option value="AT">Österreich</option>
+                        <option value="CH">Schweiz</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <!-- Configuration Sidebar -->
-        <div id="config-container">
-            <div class="header-area">
-                <h1>Deinen Kunstdruck konfigurieren</h1>
-                <p>Wähle Größe und Papierart für deinen Stammbaum – oder entscheide dich für die digitale Kopie.</p>
+        <div class="step-card">
+            <h2><span>2</span> Papierqualität</h2>
+            <div class="control-group">
+                <div class="paper-grid" id="paper-grid"></div>
             </div>
+        </div>
 
-            <div id="no-image-warning">
-                Es wurde noch kein Stammbaum-Design gefunden. Bitte kehre zum Editor zurück und erstelle zuerst dein Design.
-            </div>
-
-            <div class="step-card">
-                <div class="options-grid">
-                    <div class="form-group">
-                        <label for="print-size">Format</label>
-                        <select id="print-size"></select>
-                        <span class="field-hint" id="dimension-note"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="shipping-country">Lieferland</label>
-                        <select id="shipping-country">
-                            <option value="DE">Deutschland</option>
-                            <option value="AT">Österreich</option>
-                            <option value="CH">Schweiz</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="step-card">
-                <div class="form-group">
-                    <label>Papierart</label>
-                    <div class="paper-grid" id="paper-grid"></div>
-                </div>
-            </div>
-
+        <div class="step-card">
+            <h2><span>3</span> Übersicht & Kauf</h2>
             <div class="price-box">
                 <span class="label">Gesamtpreis (inkl. digitaler Lizenz &amp; Versand)</span>
                 <span class="value loading" id="total-price">Lädt...</span>
             </div>
 
             <div class="actions">
-                <button class="btn-primary" id="proceed-print-btn" disabled>Weiter zur Bezahlung (Druck)</button>
-                <button class="btn-secondary" id="digital-only-btn">Nur digitale Kopie kaufen (25,00 €)</button>
+                <button class="main" id="proceed-print-btn" disabled>Weiter zur Bezahlung (Druck)</button>
+                <button class="secondary" id="digital-only-btn">Nur digitale Kopie kaufen (25,00 €)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Viewport Area: Live Interactive Preview Canvas -->
+    <div id="viewport-container">
+        <div id="top-ruler"></div>
+        <div id="main-area">
+            <div id="left-ruler"></div>
+            <div id="workspace">
+                <div id="preview-canvas">
+                    <img id="config-tree-img" src="" alt="Dein Stammbaum Design">
+                </div>
             </div>
         </div>
     </div>
@@ -1001,10 +1081,12 @@
             if (!match) return;
 
             const targetRatio = match.widthCm / match.heightCm;
-            const maxH = 380;
-            const maxW = canvas.parentElement.clientWidth - 40 || 700;
+            const workspace = document.getElementById('workspace');
+            const maxH = Math.min(workspace.clientHeight - 60, 500);
+            const maxW = Math.min(workspace.clientWidth - 60, 800);
             let boxH = maxH;
             let boxW = boxH * targetRatio;
+
             if (boxW > maxW) {
                 boxW = maxW;
                 boxH = boxW / targetRatio;
@@ -1012,7 +1094,6 @@
 
             canvas.style.width = `${boxW}px`;
             canvas.style.height = `${boxH}px`;
-            canvas.style.maxHeight = 'none';
             imgEl.style.objectFit = 'cover';
         }
 
@@ -1078,11 +1159,15 @@
                 updatePrintQuote();
             };
             probe.onerror = () => {
-                document.getElementById('no-image-warning').style.display = 'block';
+                buildSizeOptions();
             };
             probe.src = savedImage;
         } else {
+            imgEl.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300'><rect width='800' height='300' fill='%23fdfbf7'/><text x='400' y='150' font-family='sans-serif' font-size='16' text-anchor='middle' fill='%2364748b'>Kein Stammbaum-Design geladen</text></svg>";
             document.getElementById('no-image-warning').style.display = 'block';
+            proceedBtn.disabled = true;
+            document.getElementById('digital-only-btn').disabled = true;
+            buildSizeOptions();
         }
 
         document.getElementById('print-size').addEventListener('change', () => {
@@ -1091,8 +1176,27 @@
             updateCropPreview();
             updatePrintQuote();
         });
-
         document.getElementById('shipping-country').addEventListener('change', updatePrintQuote);
+
+        document.getElementById('digital-only-btn').addEventListener('click', () => {
+            sessionStorage.setItem('checkoutMode', 'digital');
+            window.location.href = 'checkout.html';
+        });
+
+        proceedBtn.addEventListener('click', () => {
+            if (!selectedProduct) return;
+
+            sessionStorage.setItem('checkoutMode', 'print');
+            sessionStorage.setItem('printSku', selectedProduct.sku);
+            sessionStorage.setItem('printSizeLabel', `${selectedProduct.widthCm} × ${selectedProduct.heightCm} cm`);
+            sessionStorage.setItem('printPaperName', selectedProduct.paperName);
+            sessionStorage.setItem('printPaperId', selectedProduct.paperId);
+            sessionStorage.setItem('printCountry', document.getElementById('shipping-country').value);
+
+            window.location.href = 'checkout.html';
+        });
+
+        window.addEventListener('resize', updateCropPreview);
     </script>
 </body>
 </html>
