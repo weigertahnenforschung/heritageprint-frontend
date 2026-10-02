@@ -234,7 +234,7 @@ const Facidra = (() => {
 
     function init(workspace, canvas) {
         ws = workspace; cv = canvas;
-        let drag = false, sx, sy, mx, my, d0 = null, s0 = null;
+        let drag = false, sx, sy, mx, my, d0 = null, s0 = null, m0 = null, p0 = null;
         const ds = (x, y) => { drag = true; v.moved = false; sx = x - v.pX; sy = y - v.pY; mx = x; my = y; };
         const dm = (x, y) => {
             if (!drag) return;
@@ -242,6 +242,10 @@ const Facidra = (() => {
             v.pX = x - sx; v.pY = y - sy; updateT();
         };
         const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+        const mid = t => {
+            const r = ws.getBoundingClientRect();
+            return { x: (t[0].clientX + t[1].clientX) / 2 - r.left, y: (t[0].clientY + t[1].clientY) / 2 - r.top };
+        };
 
         ws.addEventListener('wheel', e => {
             e.preventDefault();
@@ -255,16 +259,20 @@ const Facidra = (() => {
         ws.addEventListener('mousemove', e => dm(e.clientX, e.clientY));
         addEventListener('mouseup', () => drag = false);
         ws.addEventListener('touchstart', e => {
-            if (e.touches.length === 2) { drag = false; d0 = dist(e.touches); s0 = v.scale; }
+            if (e.touches.length === 2) { drag = false; d0 = dist(e.touches); s0 = v.scale; m0 = mid(e.touches); p0 = { x: v.pX, y: v.pY }; }
             else if (e.touches.length === 1) ds(e.touches[0].clientX, e.touches[0].clientY);
         });
         ws.addEventListener('touchmove', e => {
-            if (e.touches.length === 2 && d0) {
+            if (e.touches.length === 2 && d0 && m0) {
                 e.preventDefault();
-                v.scale = Math.min(Math.max(0.05, s0 * dist(e.touches) / d0), 5); updateT();
+                const n = Math.min(Math.max(0.05, s0 * dist(e.touches) / d0), 5);
+                const m = mid(e.touches);
+                v.pX = m.x - (m0.x - p0.x) * (n / s0);
+                v.pY = m.y - (m0.y - p0.y) * (n / s0);
+                v.scale = n; updateT();
             } else if (e.touches.length === 1) dm(e.touches[0].clientX, e.touches[0].clientY);
         }, { passive: false });
-        addEventListener('touchend', () => { drag = false; d0 = null; });
+        addEventListener('touchend', () => { drag = false; d0 = null; m0 = null; });
         updateT();
     }
 
