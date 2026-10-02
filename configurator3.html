@@ -543,7 +543,452 @@
         // =====================================================================
         // REAL PRODIGI PRODUCT CATALOG
         // =====================================================================
-        const PRODUCTS = [...];
+        const PRODUCTS = [
+            // --- A-Formate ---
+            {
+                sizeId: 'A5-EMA',
+                widthCm: 14.8,
+                heightCm: 21.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A5'
+            },
+            {
+                sizeId: 'A5-HGE',
+                widthCm: 14.8,
+                heightCm: 21.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A5'
+            },
+            {
+                sizeId: 'A4-EMA',
+                widthCm: 21.0,
+                heightCm: 29.7,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A4'
+            },
+            {
+                sizeId: 'A4-HGE',
+                widthCm: 21.0,
+                heightCm: 29.7,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A4'
+            },
+            {
+                sizeId: 'A3-EMA',
+                widthCm: 29.7,
+                heightCm: 42.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A3'
+            },
+            {
+                sizeId: 'A3-HGE',
+                widthCm: 29.7,
+                heightCm: 42.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A3'
+            },
+            {
+                sizeId: 'A2-EMA',
+                widthCm: 42.0,
+                heightCm: 59.4,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A2'
+            },
+            {
+                sizeId: 'A2-HGE',
+                widthCm: 42.0,
+                heightCm: 59.4,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A2'
+            },
+            {
+                sizeId: 'A1-EMA',
+                widthCm: 59.4,
+                heightCm: 84.1,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A1'
+            },
+            {
+                sizeId: 'A1-HGE',
+                widthCm: 59.4,
+                heightCm: 84.1,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A1'
+            },
+            {
+                sizeId: 'A0-EMA',
+                widthCm: 84.1,
+                heightCm: 118.9,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-A0'
+            },
+            {
+                sizeId: 'A0-HGE',
+                widthCm: 84.1,
+                heightCm: 118.9,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-A0'
+            },
+
+            // --- Landscape / Panorama-Formate (bis 6:1) ---
+            {
+                sizeId: '4:3-S-EMA',
+                widthCm: 20.0,
+                heightCm: 15.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-6X8'
+            },
+            {
+                sizeId: '4:3-M-EMA',
+                widthCm: 48.0,
+                heightCm: 36.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-19X14'
+            },
+            {
+                sizeId: '4:3-L-EMA',
+                widthCm: 100.0,
+                heightCm: 75.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-30X40'
+            },
+            {
+                sizeId: '4:3-XL-EMA',
+                widthCm: 142.0,
+                heightCm: 107.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-42X56'
+            },
+            {
+                sizeId: '3:2-S-EMA',
+                widthCm: 15.0,
+                heightCm: 10.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-4X6'
+            },
+            {
+                sizeId: '3:2-M-EMA',
+                widthCm: 60.0,
+                heightCm: 40.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-16X24'
+            },
+            {
+                sizeId: '3:2-L-EMA',
+                widthCm: 90.0,
+                heightCm: 60.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-24X36'
+            },
+            {
+                sizeId: '3:2-XL-EMA',
+                widthCm: 150.0,
+                heightCm: 100.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-40X60'
+            },
+            {
+                sizeId: '16:9-S-EMA',
+                widthCm: 40.6,
+                heightCm: 22.9,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-9X16'
+            },
+            {
+                sizeId: '16:9-L-EMA',
+                widthCm: 114.0,
+                heightCm: 64.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-25X45'
+            },
+            {
+                sizeId: '16:9-XL-EMA',
+                widthCm: 150.0,
+                heightCm: 84.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-33X60'
+            },
+            {
+                sizeId: '2:1-S-EMA',
+                widthCm: 40.0,
+                heightCm: 20.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-8X16'
+            },
+            {
+                sizeId: '2:1-M-EMA',
+                widthCm: 60.0,
+                heightCm: 30.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-12X24'
+            },
+            {
+                sizeId: '2:1-L-EMA',
+                widthCm: 100.0,
+                heightCm: 50.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-20X40'
+            },
+            {
+                sizeId: '2:1-XL-EMA',
+                widthCm: 142.0,
+                heightCm: 71.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-28X56'
+            },
+            {
+                sizeId: '5:2-M-EMA',
+                widthCm: 51.0,
+                heightCm: 20.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-8X20'
+            },
+            {
+                sizeId: '3:1-M-EMA',
+                widthCm: 75.0,
+                heightCm: 25.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-10X30'
+            },
+            {
+                sizeId: '3:1-L-EMA',
+                widthCm: 90.0,
+                heightCm: 30.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-12X36'
+            },
+            {
+                sizeId: '4:3-S-HGE',
+                widthCm: 20.0,
+                heightCm: 15.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-6X8'
+            },
+            {
+                sizeId: '4:3-M-HGE',
+                widthCm: 60.0,
+                heightCm: 45.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-18X24'
+            },
+            {
+                sizeId: '4:3-L-HGE',
+                widthCm: 100.0,
+                heightCm: 75.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-30X40'
+            },
+            {
+                sizeId: '4:3-XL-HGE',
+                widthCm: 142.0,
+                heightCm: 107.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-42X56'
+            },
+            {
+                sizeId: '3:2-S-HGE',
+                widthCm: 15.0,
+                heightCm: 10.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-6X4'
+            },
+            {
+                sizeId: '3:2-M-HGE',
+                widthCm: 60.0,
+                heightCm: 40.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-16X24'
+            },
+            {
+                sizeId: '3:2-L-HGE',
+                widthCm: 90.0,
+                heightCm: 60.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-24X36'
+            },
+            {
+                sizeId: '3:2-XL-HGE',
+                widthCm: 150.0,
+                heightCm: 100.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-40X60'
+            },
+            {
+                sizeId: '16:9-L-HGE',
+                widthCm: 91.0,
+                heightCm: 51.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-20X36'
+            },
+            {
+                sizeId: '2:1-S-HGE',
+                widthCm: 40.0,
+                heightCm: 20.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-8X16'
+            },
+            {
+                sizeId: '2:1-M-HGE',
+                widthCm: 46.0,
+                heightCm: 23.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-9X18'
+            },
+            {
+                sizeId: '2:1-L-HGE',
+                widthCm: 100.0,
+                heightCm: 50.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-20X40'
+            },
+            {
+                sizeId: '2:1-XL-HGE',
+                widthCm: 150.0,
+                heightCm: 75.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-30X60'
+            },
+            {
+                sizeId: '3:1-M-HGE',
+                widthCm: 76.0,
+                heightCm: 25.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-10X30'
+            },
+            {
+                sizeId: '3:1-L-HGE',
+                widthCm: 90.0,
+                heightCm: 30.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-12X36'
+            },
+            {
+                sizeId: 'ultra---EMA',
+                widthCm: 106.0,
+                heightCm: 22.0,
+                paperId: 'EMA',
+                paperName: 'Enhanced Matte Art',
+                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
+                sku: 'GLOBAL-FAP-8X42'
+            },
+            {
+                sizeId: 'ultra---HGE',
+                widthCm: 140.0,
+                heightCm: 23.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-55X9'
+            },
+            {
+                sizeId: 'ultra---HGE',
+                widthCm: 295.0,
+                heightCm: 48.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-116X19'
+            },
+            {
+                sizeId: 'ultra---HGE',
+                widthCm: 210.0,
+                heightCm: 34.0,
+                paperId: 'HGE',
+                paperName: 'Hahnemühle German Etching',
+                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
+                sku: 'GLOBAL-HGE-83X13'
+            },
+        ];
 
         let selectedProduct = null;
         let imageAspect = null;
