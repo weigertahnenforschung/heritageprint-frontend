@@ -6,14 +6,17 @@
     <title>Facidra</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary: #1e293b;
             --primary-light: #334155;
-            --accent: #0066cc; /* Changed to apple-blue */
-            --accent-hover: #0077ed; /* Adjusted hover color */
+            --accent: #d97706;
+            --accent-hover: #b45309;
+            --accent-ai: #7c3aed;
+            --accent-ai-hover: #6d28d9;
+            --apple-blue: #007aff;
             --bg-main: #f1f5f9;
             --sidebar-bg: #ffffff;
             --text-main: #0f172a;
@@ -23,212 +26,473 @@
             --parchment: #fdfbf7;
             --font-title: 'Cinzel', serif;
             --font-body: 'Plus Jakarta Sans', sans-serif;
+            --font-canvas: 'EB Garamond', serif;
         }
-        * { box-sizing: border-box; }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             font-family: var(--font-body);
             color: var(--text-main);
-            background-color: var(--bg-main);
-            min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            height: 100vh;
+            background: var(--bg-main);
+            overflow: hidden;
         }
 
-        /* Header Styles */
-        #header-placeholder {
-            padding: 16px 24px;
-            background-color: var(--sidebar-bg);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #header-placeholder img {
-            height: 40px;
-            width: auto;
-        }
-
-        #main-content {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Sidebar Navigation & Controls Container */
+        #sidebar {
+            width: 440px;
+            min-width: 440px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
             padding: 24px;
-            gap: 32px;
+            box-shadow: 4px 0 24px rgba(15, 23, 42, 0.05);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            box-sizing: border-box;
         }
-        #preview-area {
-            width: 100%;
-            background-color: #cbd5e1;
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .back-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            width: 36px;
+            height: 36px;
+            background: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            overflow: hidden;
-            background-image: radial-gradient(#94a3b8 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
-            padding: 40px 20px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        .back-btn:hover {
+            background: var(--bg-main);
+            border-color: var(--apple-blue);
+            color: var(--apple-blue);
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .step-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+
+        .step-card:focus-within {
+            border-color: var(--apple-blue);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.08);
+        }
+
+        .step-card h2 {
+            margin: 0;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--apple-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-card h2 span {
+            background: rgba(0, 122, 255, 0.1);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .header-area h1 {
+            margin: 0;
+            font-family: var(--font-title);
+            font-size: 1.4rem;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        .header-area p {
+            margin: 6px 0 0 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+            width: 100%;
+        }
+
+        .row {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .row > div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 36px 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23007aff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            cursor: pointer;
+        }
+
+        select:hover, select:focus {
+            border-color: var(--apple-blue);
+            background-color: #ffffff;
+            outline: none;
+        }
+
+        select:focus {
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+        }
+
+        select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .paper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+        }
+
+        .paper-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--input-bg);
+        }
+
+        .paper-card:hover {
+            border-color: var(--apple-blue);
+            background: #ffffff;
+        }
+
+        .paper-card.selected {
+            border-color: var(--apple-blue);
+            background: #ffffff;
+            box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+        }
+
+        .paper-card.disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .paper-card h4 {
+            margin: 0 0 4px 0;
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .paper-card p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        .price-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .price-box .label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .price-box .value {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .price-box .value.loading {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-weight: 500;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        button {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        button.main {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        button.main:hover:not(:disabled) {
+            background: var(--accent-hover);
+        }
+
+        button.main:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        button.secondary {
+            background: var(--bg-main);
+            color: var(--primary-light);
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+        }
+
+        button.secondary:hover:not(:disabled) {
+            background: var(--border-color);
+            color: var(--primary);
+        }
+
+        button.secondary:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        #no-image-warning {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            line-height: 1.4;
+        }
+
+        /* Viewport Canvas Preview Area */
+        #viewport-container {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #top-ruler {
+            height: 24px;
+            background: #e2e8f0;
+            border-bottom: 1px solid #cbd5e1;
+            position: relative;
+            margin-left: 24px;
+        }
+
+        #main-area {
+            display: flex;
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #left-ruler {
+            width: 24px;
+            background: #e2e8f0;
+            border-right: 1px solid #cbd5e1;
+            position: relative;
+        }
+
+        #workspace {
+            flex-grow: 1;
+            position: relative;
+            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
         #preview-canvas {
-            background-color: var(--parchment);
+            background: var(--parchment);
             box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
             border: 1px solid #94a3b8;
             border-radius: 4px;
-            width: 100%;
-            max-height: 400px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             transition: width 0.25s ease, height 0.25s ease;
         }
-        #preview-canvas img { width: 100%; height: 100%; object-fit: contain; transition: object-fit 0.1s; }
-        #config-container {
+
+        #preview-canvas img {
             width: 100%;
-            background-color: var(--sidebar-bg);
-            padding: 40px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 28px;
-            border: 1px solid var(--border-color);
+            height: 100%;
+            object-fit: cover;
+            transition: object-fit 0.1s;
         }
-        .header-area h1 {
-            margin: 0;
-            font-family: var(--font-title);
-            font-size: 2rem;
-            color: var(--primary);
-            letter-spacing: 0.5px;
-        }
-        .header-area p { margin: 8px 0 0 0; font-size: 1rem; color: var(--text-muted); }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        label { font-size: 0.85rem; color: var(--primary); font-weight: 500; }
-        select {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: #ffffff;
-            font-size: 0.95rem;
-        }
-        select:focus { border-color: var(--accent); outline: none; }
-        select:disabled { opacity: 0.5; cursor: not-allowed; }
-        .field-hint { font-size: 0.78rem; color: var(--text-muted); }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 700px) { .options-grid { grid-template-columns: 1fr; } }
-        .paper-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
-        .paper-card {
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            padding: 14px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            background: #fff;
-        }
-        .paper-card:hover { border-color: var(--text-muted); }
-        .paper-card.selected {
-            border-color: var(--accent);
-            background: #fffdf9;
-            box-shadow: 0 3px 10px rgba(0, 102, 204, 0.1);
-        }
-        .paper-card.disabled { opacity: 0.4; cursor: not-allowed; }
-        .paper-card h4 { margin: 0 0 4px 0; font-size: 0.95rem; color: var(--primary); }
-        .paper-card p { margin: 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; }
-        .price-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px 24px;
-        }
-        .price-box .label { font-size: 0.95rem; color: var(--text-muted); }
-        .price-box .value { font-family: var(--font-title); font-size: 1.8rem; font-weight: bold; color: var(--primary); }
-        .price-box .value.loading { font-size: 1.1rem; color: var(--text-muted); font-family: var(--font-body); }
-        .actions { display: flex; flex-direction: column; gap: 12px; }
-        @media (min-width: 600px) { .actions { flex-direction: row; } }
-        button.btn {
-            font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 1rem;
-            padding: 14px 20px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.2s, border-color 0.2s, color 0.2s;
-        }
-        button.btn-primary {
-            background-color: var(--accent);
-            color: white;
-        }
-        button.btn-primary:hover {
-            background-color: var(--accent-hover);
-        }
-        button.btn-primary:disabled {
-            background-color: #d6d3d1;
-            cursor: not-allowed;
-        }
-        button.btn-secondary {
-            background-color: #ffffff;
-            color: var(--primary);
-            border: 1.5px solid var(--border-color);
-        }
-        button.btn-secondary:hover {
-            border-color: var(--text-muted);
-        }
-        #dimension-note {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: -8px;
-        }
-        #no-image-warning {
-            display: none;
-            padding: 14px 18px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-        #no-image-warning {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #b91c1c;
+
+        /* Responsive Mobile Layout */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                height: auto;
+                overflow: auto;
+            }
+
+            #viewport-container {
+                height: 40vh;
+                min-height: 280px;
+                width: 100%;
+                flex-grow: 0;
+                border-bottom: 2px solid var(--border-color);
+            }
+
+            #top-ruler, #left-ruler {
+                display: none !important;
+            }
+
+            #main-area {
+                height: 100%;
+            }
+
+            #sidebar {
+                width: 100%;
+                min-width: 0;
+                height: auto;
+                border-right: none;
+                padding: 16px;
+                gap: 16px;
+                box-shadow: none;
+            }
+
+            .logo-area {
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 8px;
+            }
+
+            button, select {
+                padding: 12px 16px;
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Updated Header with Only Logo -->
-    <div id="header-placeholder">
-        <img src="facidra-icon.png" alt="Facidra Logo">
-    </div>
 
-    <div id="main-content">
-        <div id="preview-area">
-            <div id="preview-canvas">
-                <img id="config-tree-img" src="" alt="Dein Stammbaum Design">
-            </div>
+    <!-- Left Sidebar: Controls & Options -->
+    <div id="sidebar">
+        <div class="logo-area">
+            <a href="index.html" class="back-btn" title="Zurück zum Editor">←</a>
+            <img src="facidra-icon.png" alt="Facidra Logo" class="logo-img">
         </div>
 
-        <div id="config-container">
-            <div class="header-area">
-                <h1>Deinen Kunstdruck konfigurieren</h1>
-                <p>Wähle Größe und Papierart für deinen Stammbaum - oder entscheide dich für die digitale Kopie ohne Druck.</p>
-            </div>
+        <div class="header-area">
+            <h1>Kunstdruck Konfiguration</h1>
+            <p>Wähle deine bevorzugten Druckoptionen oder lade deine hochauflösende digitale Datei herunter.</p>
+        </div>
 
-            <div id="no-image-warning">
-                Es wurde noch kein Stammbaum-Design gefunden. Bitte kehre zum Editor zurück und erstelle zuerst dein Design.
-            </div>
+        <div id="no-image-warning">
+            Es wurde noch kein Stammbaum-Design gefunden. Bitte kehre zum Editor zurück und erstelle zuerst dein Design.
+        </div>
 
-            <div class="options-grid">
-                <div class="form-group">
+        <div class="step-card">
+            <h2><span>1</span> Format & Versand</h2>
+            <div class="row">
+                <div class="control-group">
                     <label for="print-size">Format</label>
                     <select id="print-size"></select>
-                    <span class="field-hint" id="dimension-note"></span>
+                    <span class="hint" id="dimension-note"></span>
                 </div>
-                <div class="form-group">
+                <div class="control-group">
                     <label for="shipping-country">Lieferland</label>
                     <select id="shipping-country">
                         <option value="DE">Deutschland</option>
@@ -237,487 +501,49 @@
                     </select>
                 </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Papierart</label>
+        <div class="step-card">
+            <h2><span>2</span> Papierqualität</h2>
+            <div class="control-group">
                 <div class="paper-grid" id="paper-grid"></div>
             </div>
+        </div>
 
+        <div class="step-card">
+            <h2><span>3</span> Übersicht & Kauf</h2>
             <div class="price-box">
                 <span class="label">Gesamtpreis (inkl. digitaler Lizenz &amp; Versand)</span>
                 <span class="value loading" id="total-price">Lädt...</span>
             </div>
 
             <div class="actions">
-                <button class="btn btn-secondary" id="digital-only-btn">Nur digitale Kopie kaufen (25,00 €)</button>
-                <button class="btn btn-primary" id="proceed-print-btn" disabled>Weiter zur Bezahlung (Druck)</button>
+                <button class="main" id="proceed-print-btn" disabled>Weiter zur Bezahlung (Druck)</button>
+                <button class="secondary" id="digital-only-btn">Nur digitale Kopie kaufen (25,00 €)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Viewport Area: Live Interactive Preview Canvas -->
+    <div id="viewport-container">
+        <div id="top-ruler"></div>
+        <div id="main-area">
+            <div id="left-ruler"></div>
+            <div id="workspace">
+                <div id="preview-canvas">
+                    <img id="config-tree-img" src="" alt="Dein Stammbaum Design">
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-
         const BACKEND = 'https://heritageprint-backend.onrender.com';
 
         // =====================================================================
         // REAL PRODIGI PRODUCT CATALOG
-        // -------------------------------------------------------------------
-        // Every entry here MUST correspond to one real, orderable Prodigi
-        // product. Get these from https://dash.prodigi.com (Product Catalogue)
-        // or GET https://api.prodigi.com/v4.0/products with your API key.
-        // Do NOT construct SKUs by string concatenation anywhere in this app —
-        // Prodigi SKUs are opaque catalog identifiers, not a pattern.
-        //
-        // Fill this array in with SKUs you copy from your dashboard. Each
-        // "paperOptions" entry is itself a full product (Prodigi ties paper/
-        // substrate to the SKU, it is not a separate parameter you can bolt on).
         // =====================================================================
-        const PRODUCTS = [
-            // --- A-Formate ---
-            {
-                sizeId: 'A5-EMA',
-                widthCm: 14.8,
-                heightCm: 21.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-A5'
-            },
-            {
-                sizeId: 'A5-HGE',
-                widthCm: 14.8,
-                heightCm: 21.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-A5'
-            },
-            {
-                sizeId: 'A4-EMA',
-                widthCm: 21.0,
-                heightCm: 29.7,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-A4'
-            },
-            {
-                sizeId: 'A4-HGE',
-                widthCm: 21.0,
-                heightCm: 29.7,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-A4'
-            },
-            {
-                sizeId: 'A3-EMA',
-                widthCm: 29.7,
-                heightCm: 42.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-A3'
-            },
-            {
-                sizeId: 'A3-HGE',
-                widthCm: 29.7,
-                heightCm: 42.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-A3'
-            },
-            {
-                sizeId: 'A2-EMA',
-                widthCm: 42.0,
-                heightCm: 59.4,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-A2'
-            },
-            {
-                sizeId: 'A2-HGE',
-                widthCm: 42.0,
-                heightCm: 59.4,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-A2'
-            },
-            {
-                sizeId: 'A1-EMA',
-                widthCm: 59.4,
-                heightCm: 84.1,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-A1'
-            },
-            {
-                sizeId: 'A1-HGE',
-                widthCm: 59.4,
-                heightCm: 84.1,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-A1'
-            },
-            {
-                sizeId: 'A0-EMA',
-                widthCm: 84.1,
-                heightCm: 118.9,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-A0'
-            },
-            {
-                sizeId: 'A0-HGE',
-                widthCm: 84.1,
-                heightCm: 118.9,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-A0'
-            },
-
-            // --- Landscape / Panorama-Formate (bis 6:1) ---
-            {
-                sizeId: '4:3-S-EMA',
-                widthCm: 20.0,
-                heightCm: 15.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-6X8'
-            },
-            {
-                sizeId: '4:3-M-EMA',
-                widthCm: 48.0,
-                heightCm: 36.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-19X14'
-            },
-            {
-                sizeId: '4:3-L-EMA',
-                widthCm: 100.0,
-                heightCm: 75.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-30X40'
-            },
-            {
-                sizeId: '4:3-XL-EMA',
-                widthCm: 142.0,
-                heightCm: 107.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-42X56'
-            },
-            {
-                sizeId: '3:2-S-EMA',
-                widthCm: 15.0,
-                heightCm: 10.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-4X6'
-            },
-            {
-                sizeId: '3:2-M-EMA',
-                widthCm: 60.0,
-                heightCm: 40.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-16X24'
-            },
-            {
-                sizeId: '3:2-L-EMA',
-                widthCm: 90.0,
-                heightCm: 60.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-24X36'
-            },
-            {
-                sizeId: '3:2-XL-EMA',
-                widthCm: 150.0,
-                heightCm: 100.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-40X60'
-            },
-            {
-                sizeId: '16:9-S-EMA',
-                widthCm: 40.6,
-                heightCm: 22.9,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-9X16'
-            },
-            {
-                sizeId: '16:9-L-EMA',
-                widthCm: 114.0,
-                heightCm: 64.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-25X45'
-            },
-            {
-                sizeId: '16:9-XL-EMA',
-                widthCm: 150.0,
-                heightCm: 84.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-33X60'
-            },
-            {
-                sizeId: '2:1-S-EMA',
-                widthCm: 40.0,
-                heightCm: 20.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-8X16'
-            },
-            {
-                sizeId: '2:1-M-EMA',
-                widthCm: 60.0,
-                heightCm: 30.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-12X24'
-            },
-            {
-                sizeId: '2:1-L-EMA',
-                widthCm: 100.0,
-                heightCm: 50.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-20X40'
-            },
-            {
-                sizeId: '2:1-XL-EMA',
-                widthCm: 142.0,
-                heightCm: 71.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-28X56'
-            },
-            {
-                sizeId: '5:2-M-EMA',
-                widthCm: 51.0,
-                heightCm: 20.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-8X20'
-            },
-            {
-                sizeId: '3:1-M-EMA',
-                widthCm: 75.0,
-                heightCm: 25.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-10X30'
-            },
-            {
-                sizeId: '3:1-L-EMA',
-                widthCm: 90.0,
-                heightCm: 30.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-12X36'
-            },
-            {
-                sizeId: '4:3-S-HGE',
-                widthCm: 20.0,
-                heightCm: 15.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-6X8'
-            },
-            {
-                sizeId: '4:3-M-HGE',
-                widthCm: 60.0,
-                heightCm: 45.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-18X24'
-            },
-            {
-                sizeId: '4:3-L-HGE',
-                widthCm: 100.0,
-                heightCm: 75.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-30X40'
-            },
-            {
-                sizeId: '4:3-XL-HGE',
-                widthCm: 142.0,
-                heightCm: 107.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-42X56'
-            },
-            {
-                sizeId: '3:2-S-HGE',
-                widthCm: 15.0,
-                heightCm: 10.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-6X4'
-            },
-            {
-                sizeId: '3:2-M-HGE',
-                widthCm: 60.0,
-                heightCm: 40.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-16X24'
-            },
-            {
-                sizeId: '3:2-L-HGE',
-                widthCm: 90.0,
-                heightCm: 60.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-24X36'
-            },
-            {
-                sizeId: '3:2-XL-HGE',
-                widthCm: 150.0,
-                heightCm: 100.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-40X60'
-            },
-            {
-                sizeId: '16:9-L-HGE',
-                widthCm: 91.0,
-                heightCm: 51.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-20X36'
-            },
-            {
-                sizeId: '2:1-S-HGE',
-                widthCm: 40.0,
-                heightCm: 20.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-8X16'
-            },
-            {
-                sizeId: '2:1-M-HGE',
-                widthCm: 46.0,
-                heightCm: 23.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-9X18'
-            },
-            {
-                sizeId: '2:1-L-HGE',
-                widthCm: 100.0,
-                heightCm: 50.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-20X40'
-            },
-            {
-                sizeId: '2:1-XL-HGE',
-                widthCm: 150.0,
-                heightCm: 75.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-30X60'
-            },
-            {
-                sizeId: '3:1-M-HGE',
-                widthCm: 76.0,
-                heightCm: 25.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-10X30'
-            },
-            {
-                sizeId: '3:1-L-HGE',
-                widthCm: 90.0,
-                heightCm: 30.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-12X36'
-            },
-            {
-                sizeId: 'ultra---EMA',
-                widthCm: 106.0,
-                heightCm: 22.0,
-                paperId: 'EMA',
-                paperName: 'Enhanced Matte Art',
-                paperDesc: '200gsm, mattes Fine-Art-Papier – gestochen scharfe Details.',
-                sku: 'GLOBAL-FAP-8X42'
-            },
-            {
-                sizeId: 'ultra---HGE',
-                widthCm: 140.0,
-                heightCm: 23.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-55X9'
-            },
-            {
-                sizeId: 'ultra---HGE',
-                widthCm: 295.0,
-                heightCm: 48.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-116X19'
-            },
-            {
-                sizeId: 'ultra---HGE',
-                widthCm: 210.0,
-                heightCm: 34.0,
-                paperId: 'HGE',
-                paperName: 'Hahnemühle German Etching',
-                paperDesc: '310gsm strukturiertes Büttenpapier – warmer, künstlerischer Charakter.',
-                sku: 'GLOBAL-HGE-83X13'
-            },
-        ];
+        const PRODUCTS = [...];
 
         let selectedProduct = null;
         let imageAspect = null;
@@ -725,18 +551,8 @@
         const imgEl = document.getElementById('config-tree-img');
         const proceedBtn = document.getElementById('proceed-print-btn');
 
-        // How many best-matching formats to offer in the dropdown. Every
-        // format in PRODUCTS still exists and can be quoted — this constant
-        // only controls how many show up so the list stays scannable instead
-        // of listing all 49 catalog entries.
         const MAX_SIZE_OPTIONS = 8;
 
-        // Group products by size so paper options only show what's valid for
-        // the currently selected size, and rank sizes by how closely their
-        // own aspect ratio matches the uploaded image. Only the closest
-        // MAX_SIZE_OPTIONS are shown — this is a real filter now (not just a
-        // sort), since with 49 catalog entries listing everything defeats
-        // the point of "show me what actually fits my panorama design."
         function sizesRankedByFit() {
             const seen = new Map();
             PRODUCTS.forEach(p => { if (!seen.has(p.sizeId)) seen.set(p.sizeId, p); });
@@ -751,6 +567,7 @@
             }
             return list.slice(0, MAX_SIZE_OPTIONS);
         }
+
         function papersForSize(sizeId) {
             return PRODUCTS.filter(p => p.sizeId === sizeId);
         }
@@ -770,7 +587,6 @@
             sizesRankedByFit().forEach(p => {
                 const opt = document.createElement('option');
                 opt.value = p.sizeId;
-                // cm only, nothing else — e.g. "20 × 40 cm"
                 opt.textContent = `${p.widthCm} × ${p.heightCm} cm`;
                 select.appendChild(opt);
             });
@@ -813,12 +629,6 @@
             selectedProduct = options[0] || null;
         }
 
-        // --- Live crop preview -------------------------------------------
-        // Shows the customer what will actually get cropped off if their
-        // image doesn't exactly match the selected print's aspect ratio.
-        // Pure CSS: the image is scaled to cover a box shaped like the
-        // selected format, so anything outside the box is clipped exactly
-        // the way a print lab crops to fill a fixed-size sheet.
         function updateCropPreview() {
             const select = document.getElementById('print-size');
             const match = PRODUCTS.find(p => p.sizeId === select.value);
@@ -826,12 +636,12 @@
             if (!match) return;
 
             const targetRatio = match.widthCm / match.heightCm;
-            // Keep the preview box within the available preview area by
-            // capping its height, then deriving width from the target ratio.
-            const maxH = 380;
-            const maxW = canvas.parentElement.clientWidth - 40 || 700;
+            const workspace = document.getElementById('workspace');
+            const maxH = Math.min(workspace.clientHeight - 60, 500);
+            const maxW = Math.min(workspace.clientWidth - 60, 800);
             let boxH = maxH;
             let boxW = boxH * targetRatio;
+
             if (boxW > maxW) {
                 boxW = maxW;
                 boxH = boxW / targetRatio;
@@ -839,7 +649,6 @@
 
             canvas.style.width = `${boxW}px`;
             canvas.style.height = `${boxH}px`;
-            canvas.style.maxHeight = 'none';
             imgEl.style.objectFit = 'cover';
         }
 
@@ -859,10 +668,6 @@
                 const countryCode = document.getElementById('shipping-country').value;
 
                 try {
-                    // Body shape must match the backend's actual contract:
-                    // app.post('/api/get-print-quote') reads req.body.sku and
-                    // req.body.countryCode directly (not a nested items/
-                    // shippingAddress structure) — see get-print-quote route.
                     const response = await fetch(`${BACKEND}/api/get-print-quote`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -875,12 +680,6 @@
                     if (!response.ok) throw new Error('Fehler beim Abrufen des Preises');
 
                     const data = await response.json();
-
-                    // Real Prodigi quote shape (the backend forwards this
-                    // response unmodified): data.quotes[0].costSummary has
-                    // separate "items" and "shipping" cost objects, each
-                    // { amount: "12.34", currency: "EUR" } — there is no
-                    // top-level totalCost field.
                     const quote = data.quotes && data.quotes[0];
                     if (!quote || !quote.costSummary) {
                         throw new Error('Unerwartetes Antwortformat von Prodigi');
@@ -910,15 +709,11 @@
             const probe = new Image();
             probe.onload = () => {
                 imageAspect = probe.naturalWidth / probe.naturalHeight;
-                // Build the size list now that imageAspect is known, so only
-                // the best-matching formats (e.g. panorama sizes for a wide
-                // tree) are offered, instead of the full catalog.
                 buildSizeOptions();
                 proceedBtn.disabled = false;
                 updatePrintQuote();
             };
             probe.onerror = () => {
-                // Aspect ratio unknown — still show the default-ordered list.
                 buildSizeOptions();
             };
             probe.src = savedImage;
@@ -946,9 +741,6 @@
         proceedBtn.addEventListener('click', () => {
             if (!selectedProduct) return;
 
-            // The image itself is NOT uploaded here. checkout.html /
-            // your cloud backend is responsible for uploading the design
-            // and sending it to Prodigi only after successful payment.
             sessionStorage.setItem('checkoutMode', 'print');
             sessionStorage.setItem('printSku', selectedProduct.sku);
             sessionStorage.setItem('printSizeLabel', `${selectedProduct.widthCm} × ${selectedProduct.heightCm} cm`);
@@ -958,6 +750,8 @@
 
             window.location.href = 'checkout.html';
         });
+
+        window.addEventListener('resize', updateCropPreview);
     </script>
 </body>
 </html>
