@@ -9,8 +9,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
 :root{--primary:#1e293b;--primary-light:#334155;--accent:#d97706;--accent-hover:#b45309;--accent-ai:#7c3aed;--accent-ai-hover:#6d28d9;--apple-blue:#007aff;--bg-main:#f1f5f9;--sidebar-bg:#fff;--text-main:#0f172a;--text-muted:#64748b;--border-color:#e2e8f0;--input-bg:#f8fafc;--parchment:#fdfbf7;--font-title:'Cinzel',serif;--font-body:'Plus Jakarta Sans',sans-serif;--font-canvas:'EB Garamond',serif}
 body{margin:0;font-family:var(--font-body);color:var(--text-main);display:flex;height:100vh;background:var(--bg-main);overflow:hidden}
-#sidebar{width:360px;min-width:360px;background:var(--sidebar-bg);border-right:1px solid var(--border-color);padding:24px;box-shadow:4px 0 24px rgba(15,23,42,.05);z-index:20;display:flex;flex-direction:column;gap:20px;overflow-y:auto;box-sizing:border-box}
-.logo-area{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#sidebar{width:360px;min-width:360px;background:var(--sidebar-bg);border-right:1px solid var(--border-color);padding:24px;box-shadow:4px 0 24px rgba(15,23,42,.05);z-index:20;display:flex;flex-direction:column;gap:20px;overflow:hidden;box-sizing:border-box}
+#sidebar-scroll{display:flex;flex-direction:column;gap:20px;flex:1;min-height:0;overflow-y:auto}
+.logo-area{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:0 0 auto}
 .back-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--input-bg);border:1px solid var(--border-color);border-radius:8px;color:var(--text-main);text-decoration:none;font-size:1.1rem;transition:all .2s;cursor:pointer;padding:0;box-sizing:border-box}
 .back-btn:hover{background:var(--bg-main);border-color:var(--apple-blue);color:var(--apple-blue)}
 .logo-img{height:40px;width:auto;object-fit:contain}
@@ -85,12 +86,14 @@ button.danger:hover{background:#fecaca}
 .generations-arrow:hover{color:var(--apple-blue)}
 .generations-value{font-weight:600;color:var(--primary);min-width:20px;text-align:center}
 @media(max-width:768px){
+/* Mobile: Reihenfolge fix -> 1. Header, 2. Viewer, 3. Seitenleiste (scrollbar) */
 body{flex-direction:column}
-#viewport-container{height:45vh;width:100%;flex-grow:0;border-bottom:2px solid var(--border-color)}
 #top-ruler,#left-ruler{display:none!important}
+#sidebar{display:contents}
+.logo-area{order:1;flex:0 0 auto;background:var(--sidebar-bg);padding:12px 16px;border-bottom:1px solid var(--border-color);box-shadow:0 1px 6px rgba(15,23,42,.08)}
+#viewport-container{order:2;height:45vh;width:100%;flex:0 0 auto;border-bottom:2px solid var(--border-color)}
+#sidebar-scroll{order:3;flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:16px;padding:16px;background:var(--sidebar-bg)}
 #main-area{height:100%}
-#sidebar{width:100%;min-width:0;height:55vh;border-right:none;border-top:1px solid var(--border-color);padding:16px;gap:16px}
-.logo-area{border-bottom:1px solid var(--border-color);padding-bottom:8px}
 button,input[type=text],select{padding:12px 16px;font-size:1rem}
 #canvas-ui{bottom:10px;flex-direction:column;align-items:center}}
 </style>
@@ -101,35 +104,36 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
             <img src="facidra-icon.png" alt="Facidra Logo" class="logo-img">
             <a href="javascript:history.back()" class="back-btn" title="Go back">&#8592;</a>
         </div>
+        <div id="sidebar-scroll">
+            <!-- STEP 1: ENTER DATA -->
+            <div class="step-card">
+                <h2><span>1</span> Family Data</h2>
+                <div class="hint">Click a box in the viewer to edit the person, add parents (max. 2 per person) or delete them. The tree can have up to 4 generations.</div>
+                <button class="secondary" id="reset-btn">Start over</button>
+            </div>
 
-        <!-- STEP 1: ENTER DATA -->
-        <div class="step-card">
-            <h2><span>1</span> Family Data</h2>
-            <div class="hint">Click a box in the viewer to edit the person, add parents (max. 2 per person) or delete them. The tree can have up to 4 generations.</div>
-            <button class="secondary" id="reset-btn">Start over</button>
+            <!-- STEP 2: STRUCTURE & LAYOUT -->
+            <div class="step-card">
+                <h2><span>2</span> Structure &amp; Layout</h2>
+                <div class="control-group">
+                    <label>Document Title</label>
+                    <input type="text" id="doc-title-input" placeholder="e.g. Chronicle of the Smith Family">
+                </div>
+                <div class="control-group">
+                    <label>Growth Direction</label>
+                    <select id="tree-orientation">
+                        <option value="up">Grow upwards</option>
+                        <option value="down">Grow downwards</option>
+                    </select>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="show-dates" checked>
+                    <label for="show-dates">Show life dates (* / †)</label>
+                </div>
+            </div>
+
+            <div class="next-wrap"><button id="next-btn">Next</button></div>
         </div>
-
-        <!-- STEP 2: STRUCTURE & LAYOUT -->
-        <div class="step-card">
-            <h2><span>2</span> Structure &amp; Layout</h2>
-            <div class="control-group">
-                <label>Document Title</label>
-                <input type="text" id="doc-title-input" placeholder="e.g. Chronicle of the Smith Family">
-            </div>
-            <div class="control-group">
-                <label>Growth Direction</label>
-                <select id="tree-orientation">
-                    <option value="up">Grow upwards</option>
-                    <option value="down">Grow downwards</option>
-                </select>
-            </div>
-            <div class="checkbox-row">
-                <input type="checkbox" id="show-dates" checked>
-                <label for="show-dates">Show life dates (* / †)</label>
-            </div>
-        </div>
-
-        <div class="next-wrap"><button id="next-btn">Next</button></div>
     </div>
 
     <div id="viewport-container">
@@ -384,7 +388,7 @@ const Facidra = (() => {
 
     return { toast, init, render, fit, setImage, toPng, view: v };
 })();
-</script>
+    </script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const $ = id => document.getElementById(id);
