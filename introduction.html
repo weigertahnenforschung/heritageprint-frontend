@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facidra</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+        :root{--primary:#1e293b;--accent:#d97706;--apple-blue:#007aff;--bg-main:#f1f5f9;--text-main:#0f172a;--text-muted:#64748b;--border-color:#e2e8f0;--input-bg:#f8fafc;--font-title:'Cinzel',serif;--font-body:'Plus Jakarta Sans',sans-serif}
+        *{box-sizing:border-box}
+        body{margin:0;min-height:100vh;font-family:var(--font-body);color:var(--text-main);background-color:var(--bg-main);background-image:radial-gradient(#cbd5e1 1.5px,transparent 1.5px);background-size:24px 24px;display:flex;align-items:center;justify-content:center;padding:20px}
+        .panel{background:#fff;border:1px solid var(--border-color);border-radius:12px;box-shadow:0 20px 50px rgba(15,23,42,.15);padding:40px 32px;width:100%;max-width:560px;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center}
+        .logo-img{height:48px;width:auto;object-fit:contain}
+        h1{margin:0;font-family:var(--font-title);font-size:1.8rem;font-weight:600;color:var(--primary);letter-spacing:.04em}
+        p{margin:8px 0 0;font-size:.95rem;color:var(--text-muted);line-height:1.5}
+        .options{display:flex;gap:16px;width:100%}
+        .option{flex:1;background:#fff;border:1px solid var(--border-color);border-radius:12px;padding:24px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;font-family:inherit;color:var(--text-main);transition:all .2s}
+        .option:hover,.option:focus-visible{border-color:var(--apple-blue);box-shadow:0 4px 12px rgba(0,122,255,.12);transform:translateY(-2px);outline:none}
+        .option .icon{width:44px;height:44px;border-radius:50%;background:rgba(0,122,255,.1);color:var(--apple-blue);display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+        .option strong{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:var(--apple-blue)}
+        .option span.desc{font-size:.8rem;color:var(--text-muted);font-weight:400;line-height:1.4}
+        @media(max-width:600px){.options{flex-direction:column}.panel{padding:28px 20px}}
+    </style>
+</head>
+<body>
+    <div class="panel">
+        <img src="facidra-icon.png" alt="Facidra Logo" class="logo-img">
+        <div>
+            <h1>Welcome</h1>
+            <p>Let's turn your family history into a work of art. How would you like to start?</p>
+        </div>
+        <div class="options">
+            <button class="option" onclick="window.location.href='configurator1custom.html'">
+                <div class="icon">✎</div>
+                <strong>Custom</strong>
+                <span class="desc">Enter your family members by hand</span>
+            </button>
+            <button class="option" onclick="window.location.href='configurator1gedcom.html'">
+                <div class="icon">⇪</div>
+                <strong>GEDCOM</strong>
+                <span class="desc">Import a family tree file</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
