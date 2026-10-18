@@ -6,7 +6,7 @@
     <title>Facidra</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,6 +14,7 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
                     },
                     colors: {
                         apple: {
@@ -124,8 +125,8 @@
         <div class="max-w-6xl mx-auto px-6 w-full relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 <div class="lg:col-span-6 space-y-6 text-center lg:text-left bg-white/40 backdrop-blur-xs p-6 rounded-2xl lg:bg-transparent lg:backdrop-blur-none lg:p-0">
-                    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-apple-gray-900 leading-[1.15]">
-                        Turn your family tree into <span class="text-apple-blue">museum-grade art</span>.
+                    <h1 class="text-4xl sm:text-5xl font-bold font-serif tracking-tight text-apple-gray-900 leading-[1.15]">
+                        Turn your family tree into <span class="text-apple-blue font-serif italic">museum-grade art</span>.
                     </h1>
                     <p class="text-apple-gray-800 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
                         Upload your GEDCOM file or build your family tree from scratch to design elegant, custom family trees.
@@ -147,7 +148,7 @@
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-12">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue mb-2">HOW IT WORKS</h2>
-                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Five simple steps</p>
+                <p class="text-3xl sm:text-4xl font-bold font-serif tracking-tight text-apple-gray-900">Five simple steps</p>
             </div>
 
             <div id="steps-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 relative">
@@ -208,7 +209,7 @@
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-12">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue mb-2">OVER 10 STYLES TO CHOOSE FROM</h2>
-                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Style Examples</h2>
+                <h2 class="text-3xl sm:text-4xl font-bold font-serif tracking-tight text-apple-gray-900">Style Examples</h2>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
@@ -258,8 +259,8 @@
     <section class="py-16 lg:py-24 bg-apple-gray-50 border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">WHY CHOOSE US?</h2>
-                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Product Benefits</p>
+                <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue mb-2">WHY CHOOSE US?</h2>
+                <p class="text-3xl sm:text-4xl font-bold font-serif tracking-tight text-apple-gray-900">Product Benefits</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -278,7 +279,7 @@
                 <div class="bg-white p-8 rounded-2xl border border-apple-gray-100 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                     <div class="space-y-4">
                         <div class="w-9 h-9 bg-apple-gray-50 flex items-center justify-center rounded-lg text-apple-blue border border-apple-gray-100">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
                         </div>
                         <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">We can work with complex family trees</h3>
                         <p class="text-apple-gray-400 text-sm font-normal leading-relaxed">
@@ -317,7 +318,7 @@
     <section id="gedcom-guide" class="py-16 lg:py-24 bg-white border-b border-apple-gray-100">
         <div class="max-w-4xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
-                <h2 class="text-2xl sm:text-3xl font-bold text-apple-gray-900 tracking-tight">Download Your Family Data</h2>
+                <h2 class="text-3xl sm:text-4xl font-bold font-serif text-apple-gray-900 tracking-tight">Download Your Family Data</h2>
                 <p class="text-apple-gray-400 text-sm font-normal">How to quickly extract your family tree data from standard historical portals.</p>
             </div>
 
@@ -363,7 +364,6 @@
                         <li>Access the export options from the main tree interface. FamilySearch uses a unified family tree structure, so exporting your tree may require a specialized export tool.</li>
                         <li>Use an authorized FamilySearch-compatible export tool to select the branches or family members you want to export.</li>
                         <li>Export your family tree as a <code class="bg-white border border-apple-gray-100 px-1 py-0.5 rounded text-xs text-apple-gray-800">.ged</code> file (GEDCOM). This file contains the family relationships and genealogical data in a format that can be imported into our genealogy software.</li>
-                             
                     </ol>
                 </div>
             </div>
@@ -374,7 +374,7 @@
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
                 <h2 class="text-xs font-bold uppercase tracking-widest text-apple-blue">SIMPLE PRICING</h2>
-                <p class="text-2xl sm:text-3xl font-bold tracking-tight text-apple-gray-900">Provided Services</p>
+                <p class="text-3xl sm:text-4xl font-bold font-serif tracking-tight text-apple-gray-900">Provided Services</p>
                 <p class="text-apple-gray-400 text-sm">Choose either a digital copy or order a professional museum-grade print.</p>
             </div>
 
@@ -433,7 +433,7 @@
         </div>
     </section>
 
-     <footer class="bg-white text-apple-gray-400 py-12 border-t border-apple-gray-50 text-xs">
+    <footer class="bg-white text-apple-gray-400 py-12 border-t border-apple-gray-50 text-xs">
         <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div>
                 <p class="font-medium text-apple-gray-900 mb-1">© 2026 Facidra</p>
