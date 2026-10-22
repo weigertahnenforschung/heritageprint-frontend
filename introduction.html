@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,10 +48,10 @@
         }
     </style>
 </head>
-<body class="bg-apple-gray-50 text-apple-gray-800 font-sans antialiased min-h-screen flex flex-col selection:bg-apple-blue selection:text-white">
+<body class="bg-apple-gray-50 text-apple-gray-800 font-sans antialiased h-full overflow-hidden flex flex-col selection:bg-apple-blue selection:text-white">
 
     <!-- Header from Index -->
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-apple-gray-100 transition-all duration-300">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-apple-gray-100 transition-all duration-300">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center space-x-2.5 group">
                 <img src="facidra-icon.png" alt="Facidra Logo" class="h-7 w-auto object-contain">
@@ -59,8 +59,8 @@
         </div>
     </header>
 
-    <!-- Main Content Area (No Container Panel) -->
-    <main class="flex-1 flex items-center justify-center px-6 py-12">
+    <!-- Main Content Area (Centering everything perfectly between header and bottom) -->
+    <main class="flex-1 flex items-center justify-center px-6 pt-16">
         <div class="w-full max-w-md flex flex-col items-center text-center space-y-8">
             
             <div class="space-y-2">
