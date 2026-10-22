@@ -92,7 +92,6 @@ button.danger:hover{background:#fecaca}
 .generations-arrow:hover{color:var(--apple-blue)}
 .generations-value{font-weight:600;color:var(--primary);min-width:20px;text-align:center}
 @media(max-width:768px){
-/* Mobile: 1. Header (immer sichtbar), 2. Viewer, 3. Sidebar-Content scrollt, Next-Button fixiert unten */
 body{flex-direction:column;height:100vh;height:100dvh}
 #top-ruler,#left-ruler{display:none!important}
 #sidebar{display:contents}
@@ -117,7 +116,6 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
         </div>
         <div id="sidebar-scroll">
             <div id="sidebar-content">
-            <!-- DESIGN -->
             <div class="step-card">
                 <h2><span>3</span> Design</h2>
                 <div class="control-group">
@@ -131,7 +129,6 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
                 <button class="ai-btn" id="design-btn">Generate</button>
             </div>
             </div>
-
             <div class="next-wrap"><button id="checkout-btn">Next</button></div>
         </div>
     </div>
@@ -285,7 +282,6 @@ const Facidra = (() => {
         return { head: word.substring(0, at) + '-', tail: word.substring(at) };
     }
 
-    /* data: {name, birth, death, children:[...]}; o: {title, orientation, showDates, onNodeClick} */
     function render(data, o) {
         const svg = d3.select('#tree-svg'), canvas = document.getElementById('a4-canvas');
         const sd = o.showDates, up = o.orientation === 'up';
@@ -369,7 +365,13 @@ const Facidra = (() => {
 
             const clone = svgEl.cloneNode(true);
             clone.querySelectorAll('path').forEach(p => { p.setAttribute('stroke-width', '6px'); p.setAttribute('stroke', '#000'); });
-            clone.querySelectorAll('.node-box').forEach(b => { b.setAttribute('stroke-width', '4px'); b.setAttribute('fill', '#eee'); });
+            
+            // FIX: Removed stroke-width for perfect text bounding box. Changed fill to #ff0000 (Pure Red) for flawless backend detection.
+            clone.querySelectorAll('.node-box').forEach(b => { 
+                b.setAttribute('stroke-width', '0px'); 
+                b.setAttribute('fill', '#ff0000'); 
+            });
+            
             clone.querySelectorAll('.node-text').forEach(e => e.remove());
             const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             bg.setAttribute('width', W); bg.setAttribute('height', H); bg.setAttribute('fill', '#fff');
@@ -410,7 +412,6 @@ const Facidra = (() => {
         Facidra.init($('workspace'), $('a4-canvas'));
         $('reset-view-btn').addEventListener('click', () => Facidra.resetView());
 
-        /* ---------- Load tree from configurator 1 ---------- */
         try { state = JSON.parse(localStorage.getItem('facidraTreeState')); } catch (e) {}
         if (state && state.hierarchy) {
             treeInfo = Facidra.render(state.hierarchy, state);
@@ -419,7 +420,6 @@ const Facidra = (() => {
             Facidra.toast('No family tree found. Please go back and create one first.', 8000);
         }
 
-        /* ---------- Art style dropdown ---------- */
         const styleInput = $('style-search-input'), styleResults = $('style-results');
         styleInput.addEventListener('click', () => {
             if (!stylesDB.length) return;
@@ -439,7 +439,6 @@ const Facidra = (() => {
             .then(d => { if (!Array.isArray(d) || !d.length) throw new Error('File empty'); stylesDB = d; })
             .catch(() => { styleInput.placeholder = 'No styles available'; styleInput.disabled = true; });
 
-        /* ---------- Generate ---------- */
         $('design-btn').addEventListener('click', async () => {
             if (!treeInfo.nodes.length) { Facidra.toast('No family tree found. Please go back first.'); return; }
             const stylePrompt = $('selected-style-prompt').value.trim();
@@ -506,7 +505,6 @@ const Facidra = (() => {
                 .catch(() => updatePalette(FALLBACK));
         }
 
-        /* ---------- Box color palette ---------- */
         function updatePalette(colors) {
             let dom = (colors || []).filter(c => c && !['#ff0000', '#ffffff'].includes(c.toLowerCase()));
             if (!dom.length) dom = FALLBACK;
@@ -520,15 +518,23 @@ const Facidra = (() => {
                     document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
                     o.classList.add('selected');
                     selectedBoxColor = color;
-                    if (!finalImage || !lastDetection) return;
+                    
+                    // FIX: Check and pass `rawAiUrl` instead of `finalImage`. This ensures the 
+                    // coloring happens smoothly onto the clean box rather than over pre-existing composited text.
+                    if (!rawAiUrl || !lastDetection) return; 
                     try {
                         const res = await post('apply-color', {
-                            imageUrl: finalImage, color, boxPositions: lastDetection.deduped,
-                            currentNodes: treeInfo.nodes, showDates: state.showDates, lineageMode: state.lineageMode
+                            imageUrl: rawAiUrl, // Applies color and text cleanly to the raw AI background
+                            color, 
+                            boxPositions: lastDetection.deduped,
+                            currentNodes: treeInfo.nodes, 
+                            showDates: state.showDates, 
+                            lineageMode: state.lineageMode
                         });
                         if (!res.ok) throw new Error();
                         const d = await res.json();
-                        finalImage = d.coloredImageUrl; aiImg.src = finalImage;
+                        finalImage = d.coloredImageUrl; 
+                        aiImg.src = finalImage;
                     } catch (err) { Facidra.toast('Failed to apply color.'); }
                 };
                 pal.appendChild(o);
@@ -537,7 +543,6 @@ const Facidra = (() => {
             ui.appendChild(pal);
         }
 
-        /* ---------- Next ---------- */
         $('checkout-btn').addEventListener('click', async () => {
             if (!finalImage || !rawAiUrl || !lastDetection) {
                 Facidra.toast('Please generate a design first to continue!');
@@ -551,7 +556,7 @@ const Facidra = (() => {
                 });
                 if (!res.ok) throw new Error('Error saving tree configuration.');
                 localStorage.setItem('currentTreeId', (await res.json()).treeId);
-                window.location.href = 'configurator3.html'; // your former "configurator2.html" (next step)
+                window.location.href = 'configurator3.html';
             } catch (err) {
                 Facidra.toast('Checkout error: ' + err.message);
             }
