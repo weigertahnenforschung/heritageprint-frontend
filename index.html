@@ -352,54 +352,83 @@
     <section id="gedcom-guide" class="py-12 lg:py-16 bg-white border-b border-apple-gray-100">
         <div class="max-w-4xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-10">
-                <h2 class="text-3xl sm:text-4xl font-bold font-serif text-apple-gray-900 tracking-tight">Download Your Family Data</h2>
-                <p class="text-apple-gray-400 text-sm font-normal">How to quickly extract your family tree data from standard historical portals.</p>
+                <h2 class="text-3xl sm:text-4xl font-bold font-serif text-apple-gray-900 tracking-tight">How to Get Your GEDCOM File</h2>
+                <p class="text-apple-gray-400 text-sm font-normal">Select your platform below for simple, step-by-step instructions to export your family tree file.</p>
             </div>
 
-            <div class="border-b border-apple-gray-100">
-                <div class="flex justify-center space-x-2 sm:space-x-8" role="tablist">
-                    <button onclick="switchGedcomTab('ancestry')" id="tab-btn-ancestry" class="border-b-2 border-apple-blue px-4 pb-3 text-sm font-medium text-apple-gray-900 outline-none transition-all" role="tab">
-                        Ancestry.com
-                    </button>
-                    <button onclick="switchGedcomTab('myheritage')" id="tab-btn-myheritage" class="border-b-2 border-transparent px-4 pb-3 text-sm font-medium text-apple-gray-400 hover:text-apple-gray-900 tracking-wide outline-none transition-all" role="tab">
-                        MyHeritage
-                    </button>
-                    <button onclick="switchGedcomTab('familysearch')" id="tab-btn-familysearch" class="border-b-2 border-transparent px-4 pb-3 text-sm font-medium text-apple-gray-400 hover:text-apple-gray-900 tracking-wide outline-none transition-all" role="tab">
-                        FamilySearch
-                    </button>
-                </div>
+            <!-- Platform Tabs -->
+            <div class="flex justify-center border-b border-apple-gray-100 mb-8" role="tablist">
+                <button onclick="switchGedcomTab('ancestry')" id="tab-btn-ancestry" class="border-b-2 border-apple-blue px-6 pb-3 text-sm font-semibold text-apple-gray-900 outline-none transition-all" role="tab">
+                    Ancestry.com
+                </button>
+                <button onclick="switchGedcomTab('myheritage')" id="tab-btn-myheritage" class="border-b-2 border-transparent px-6 pb-3 text-sm font-semibold text-apple-gray-400 hover:text-apple-gray-900 outline-none transition-all" role="tab">
+                    MyHeritage
+                </button>
+                <button onclick="switchGedcomTab('familysearch')" id="tab-btn-familysearch" class="border-b-2 border-transparent px-6 pb-3 text-sm font-semibold text-apple-gray-400 hover:text-apple-gray-900 outline-none transition-all" role="tab">
+                    FamilySearch
+                </button>
             </div>
 
-            <div class="mt-6 bg-apple-gray-50 border border-apple-gray-100 p-6 sm:p-8 rounded-lg">
-                <div id="tab-content-ancestry" class="space-y-4 transition-opacity duration-300">
-                    <h3 class="text-sm font-semibold text-apple-gray-900">Export Steps for Ancestry</h3>
-                    <ol class="space-y-3 text-sm text-apple-gray-400 font-normal list-decimal list-inside">
-                        <li>Log into your database tree page dashboard on <code class="bg-apple-gray-200 border border-apple-gray-100 px-1 py-0.5 rounded-xs text-xs text-apple-gray-800">Ancestry.com</code>.</li>
-                        <li>Open your tree drop menu array setup controls and click on <strong class="font-medium text-apple-gray-900">Tree Settings</strong>.</li>
-                        <li>Locate the panel configuration option marked explicitly as <strong class="font-medium text-apple-gray-900">Export Tree</strong>.</li>
-                        <li>Allow processing to finalize, then hit the link <span class="text-apple-blue underline font-medium">Download your GEDCOM file</span>.</li>
-                    </ol>
+            <!-- Instructions Content Container -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- Ancestry Steps -->
+                <div id="tab-content-ancestry" class="contents">
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-apple-blue font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">1</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Go to Tree Settings</h4>
+                        <p class="text-xs text-apple-gray-400 leading-relaxed">Open your family tree on Ancestry, click your tree name in the top left corner, and select <strong class="text-apple-gray-800">Tree Settings</strong>.</p>
+                    </div>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-apple-blue font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">2</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Export Tree</h4>
+                        <p class="text-xs text-apple-gray-400 leading-relaxed">On the right side of the settings page, look for the banner and click <strong class="text-apple-gray-800">Export Tree</strong>.</p>
+                    </div>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-apple-blue font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">3</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Download File</h4>
+                        <p class="text-xs text-apple-gray-400 leading-relaxed">Wait a few seconds for the file to generate, then click the green <strong class="text-apple-gray-800">Download GEDCOM</strong> button.</p>
+                    </div>
                 </div>
 
-                <div id="tab-content-myheritage" class="space-y-4 hidden transition-opacity duration-300">
-                    <h3 class="text-sm font-semibold text-apple-gray-900">Export Steps for MyHeritage</h3>
-                    <ol class="space-y-3 text-sm text-apple-gray-400 font-normal list-decimal list-inside">
-                        <li>Open up your family workspace layout view on the primary site dashboard.</li>
-                        <li>Hover path maps directly over the secondary nav anchor item labeled <strong class="font-medium text-apple-gray-900">Family Tree</strong>.</li>
-                        <li>Click on the specific submenu control layer line link item titled <strong class="font-medium text-apple-gray-900">Manage Trees</strong>.</li>
-                        <li>Look across the configuration list and trigger the action titled <span class="text-apple-blue underline font-medium">Export to GEDCOM</span>.</li>
-                    </ol>
+                <!-- MyHeritage Steps -->
+                <div id="tab-content-myheritage" class="contents hidden">
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-apple-blue font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">1</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Manage Trees</h4>
+                        <p class="text-xs text-apple-gray-400 leading-relaxed">Hover over the <strong class="text-apple-gray-800">Family Tree</strong> tab in the top menu and click on <strong class="text-apple-gray-800">Manage Trees</strong>.</p>
+                    </div>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-apple-blue font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">2</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Find Your Tree</h4>
+                        <p class="text-xs text-apple-gray-400 leading-relaxed">Locate your family tree in the list displayed on your screen.</p>
+                    </div>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-apple-blue font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">3</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Export GEDCOM</h4>
+                        <p class="text-xs text-apple-gray-400 leading-relaxed">Click <strong class="text-apple-gray-800">Export GEDCOM</strong> next to your tree name to download the file directly to your device.</p>
+                    </div>
                 </div>
 
-                <div id="tab-content-familysearch" class="space-y-4 hidden transition-opacity duration-300">
-                    <h3 class="text-sm font-semibold text-apple-gray-900">Export Steps for FamilySearch</h3>
-                    <ol class="space-y-3 text-sm text-apple-gray-400 font-normal list-decimal list-inside">
-                        <li>Open your FamilySearch profile and go to your family tree dashboard.</li>
-                        <li>Access the export options from the main tree interface. FamilySearch uses a unified family tree structure, so exporting your tree may require a specialized export tool.</li>
-                        <li>Use an authorized FamilySearch-compatible export tool to select the branches or family members you want to export.</li>
-                        <li>Export your family tree as a <code class="bg-white border border-apple-gray-100 px-1 py-0.5 rounded-xs text-xs text-apple-gray-800">.ged</code> file (GEDCOM). This file contains the family relationships and genealogical data in a format that can be imported into our genealogy software.</li>
-                    </ol>
+                <!-- FamilySearch Steps -->
+                <div id="tab-content-familysearch" class="contents hidden">
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-apple-blue font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">1</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Unified Tree</h4>
+                        <p class="text-xs text-apple-gray-400 leading-relaxed">FamilySearch uses a shared collaborative tree, so standard direct GEDCOM exports aren't built directly into the main interface.</p>
+                    </div>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-apple-blue font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">2</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Use Partner Tool</h4>
+                        <p class="text-xs text-apple-gray-400 leading-relaxed">Log into an approved partner desktop software (like RootsMagic or Legacy) using your FamilySearch account.</p>
+                    </div>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-apple-blue font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">3</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Sync & Export</h4>
+                        <p class="text-xs text-apple-gray-400 leading-relaxed">Sync your ancestors into the software and export a clean <strong class="text-apple-gray-800">.ged</strong> file ready for Facidra.</p>
+                    </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -495,10 +524,12 @@
                     btn.classList.remove('border-transparent', 'text-apple-gray-400');
                     btn.classList.add('border-apple-blue', 'text-apple-gray-900');
                     content.classList.remove('hidden');
+                    content.classList.add('contents');
                 } else {
                     btn.classList.remove('border-apple-blue', 'text-apple-gray-900');
                     btn.classList.add('border-transparent', 'text-apple-gray-400');
                     content.classList.add('hidden');
+                    content.classList.remove('contents');
                 }
             });
         }
