@@ -129,6 +129,7 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
                 <button class="ai-btn" id="design-btn">Generate</button>
             </div>
             </div>
+
             <div class="next-wrap"><button id="checkout-btn">Next</button></div>
         </div>
     </div>
@@ -366,9 +367,10 @@ const Facidra = (() => {
             const clone = svgEl.cloneNode(true);
             clone.querySelectorAll('path').forEach(p => { p.setAttribute('stroke-width', '6px'); p.setAttribute('stroke', '#000'); });
             
-            // FIX: Removed stroke-width for perfect text bounding box. Changed fill to #ff0000 (Pure Red) for flawless backend detection.
+            // FIX 1: Set boxes to pure red (#ff0000) so the AI preserves them perfectly for the color-replacer backend
             clone.querySelectorAll('.node-box').forEach(b => { 
-                b.setAttribute('stroke-width', '0px'); 
+                b.setAttribute('stroke-width', '4px'); 
+                b.setAttribute('stroke', '#ff0000');
                 b.setAttribute('fill', '#ff0000'); 
             });
             
@@ -404,9 +406,10 @@ const Facidra = (() => {
             method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
         });
 
+        // FIX 2: Store baseCompositedUrl to prevent the color API from drifting/failing on subsequent color clicks
         let state = null, treeInfo = { nodes: [] };
         let stylesDB = [], selectedBoxColor = '#ffffff';
-        let finalImage = null, aiImg = null, rawAiUrl = null, lastDetection = null;
+        let finalImage = null, aiImg = null, rawAiUrl = null, lastDetection = null, baseCompositedUrl = null;
         let isGenerating = false, lastGen = 0;
 
         Facidra.init($('workspace'), $('a4-canvas'));
@@ -475,7 +478,11 @@ const Facidra = (() => {
                     showDates: state.showDates, lineageMode: state.lineageMode
                 });
                 if (!compRes.ok) throw new Error('Failed to composite text.');
-                showResult((await compRes.json()).compositedImageUrl);
+                
+                // Store the base text layout to use as the base for the color changer
+                baseCompositedUrl = (await compRes.json()).compositedImageUrl;
+                
+                showResult(baseCompositedUrl);
                 lastGen = Date.now();
             } catch (err) {
                 $('wave-overlay').style.display = 'none';
@@ -518,23 +525,16 @@ const Facidra = (() => {
                     document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
                     o.classList.add('selected');
                     selectedBoxColor = color;
-                    
-                    // FIX: Check and pass `rawAiUrl` instead of `finalImage`. This ensures the 
-                    // coloring happens smoothly onto the clean box rather than over pre-existing composited text.
-                    if (!rawAiUrl || !lastDetection) return; 
+                    if (!finalImage || !lastDetection || !baseCompositedUrl) return;
                     try {
                         const res = await post('apply-color', {
-                            imageUrl: rawAiUrl, // Applies color and text cleanly to the raw AI background
-                            color, 
-                            boxPositions: lastDetection.deduped,
-                            currentNodes: treeInfo.nodes, 
-                            showDates: state.showDates, 
-                            lineageMode: state.lineageMode
+                            imageUrl: baseCompositedUrl, // Fix: Always base the color-replacement on the original composite, never a previously colored one
+                            color, boxPositions: lastDetection.deduped,
+                            currentNodes: treeInfo.nodes, showDates: state.showDates, lineageMode: state.lineageMode
                         });
                         if (!res.ok) throw new Error();
                         const d = await res.json();
-                        finalImage = d.coloredImageUrl; 
-                        aiImg.src = finalImage;
+                        finalImage = d.coloredImageUrl; aiImg.src = finalImage;
                     } catch (err) { Facidra.toast('Failed to apply color.'); }
                 };
                 pal.appendChild(o);
