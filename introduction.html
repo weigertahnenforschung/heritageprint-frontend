@@ -7,144 +7,87 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        apple: {
+                            gray: {
+                                50: '#f5f5f7',
+                                100: '#e8e8ed',
+                                200: '#d2d2d7',
+                                400: '#86868b',
+                                800: '#1d1d1f',
+                                900: '#000000'
+                            },
+                            blue: 'rgb(201, 68, 86)',
+                            btn: 'rgb(175, 52, 69)',
+                            btnHover: 'rgb(150, 40, 56)',
+                            btnBorder: 'rgb(145, 38, 53)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --apple-gray-50: #f5f5f7;
-            --apple-gray-100: #e8e8ed;
-            --apple-gray-200: #d2d2d7;
-            --apple-gray-400: #86868b;
-            --apple-gray-800: #1d1d1f;
-            --apple-gray-900: #000000;
-            --apple-blue: rgb(201, 68, 86);
-            --apple-btn: rgb(175, 52, 69);
-            --apple-btnHover: rgb(150, 40, 56);
-            --apple-btnBorder: rgb(145, 38, 53);
-            --font-title: 'Playfair Display', Georgia, serif;
-            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: var(--font-body);
-            color: var(--apple-gray-800);
-            background-color: var(--apple-gray-50);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            -webkit-font-smoothing: antialiased;
-        }
-        .panel {
-            background: #fff;
-            border: 1px solid var(--apple-gray-100);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
-            padding: 40px 32px;
-            width: 100%;
-            max-width: 560px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 28px;
-            text-align: center;
-        }
-        .logo-img {
-            height: 32px;
-            width: auto;
-            object-fit: contain;
-        }
-        h1 {
-            margin: 0;
-            font-family: var(--font-title);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--apple-gray-900);
-            letter-spacing: -0.02em;
-        }
-        p {
-            margin: 8px 0 0;
-            font-size: 0.95rem;
-            color: var(--apple-gray-400);
-            line-height: 1.5;
-            font-weight: 400;
-        }
-        .options {
-            display: flex;
-            gap: 16px;
-            width: 100%;
-        }
         .option {
-            flex: 1;
-            background: #fff;
-            border: 1px solid var(--apple-gray-200);
-            border-radius: 8px;
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-family: inherit;
-            color: var(--apple-gray-800);
             transition: all 0.2s ease;
         }
         .option:hover, .option:focus-visible {
-            border-color: var(--apple-blue);
+            border-color: rgb(201, 68, 86);
             box-shadow: 0 4px 16px rgba(201, 68, 86, 0.12);
             transform: translateY(-2px);
             outline: none;
         }
-        .option .icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--apple-gray-50);
-            color: var(--apple-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            border: 1px solid var(--apple-gray-100);
-        }
-        .option strong {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--apple-gray-900);
-            font-weight: 600;
-        }
-        .option span.desc {
-            font-size: 0.8rem;
-            color: var(--apple-gray-400);
-            font-weight: 400;
-            line-height: 1.4;
-        }
-        @media(max-width: 600px) {
-            .options { flex-direction: column; }
-            .panel { padding: 28px 20px; }
-        }
     </style>
 </head>
-<body>
-    <div class="panel">
-        <img src="facidra-icon.png" alt="Facidra Logo" class="logo-img">
-        <div>
-            <h1>First step</h1>
-            <p>How would you like to start?</p>
+<body class="bg-apple-gray-50 text-apple-gray-800 font-sans antialiased min-h-screen flex flex-col selection:bg-apple-blue selection:text-white">
+
+    <!-- Header from Index -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-apple-gray-100 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2.5 group">
+                <img src="facidra-icon.png" alt="Facidra Logo" class="h-7 w-auto object-contain">
+            </a>
         </div>
-        <div class="options">
-            <button class="option" onclick="window.location.href='configurator1custom.html'">
-                <div class="icon">✎</div>
-                <strong>Custom</strong>
-                <span class="desc">Enter your family members by hand</span>
-            </button>
-            <button class="option" onclick="window.location.href='configurator1gedcom.html'">
-                <div class="icon">⇪</div>
-                <strong>GEDCOM</strong>
-                <span class="desc">Import a family tree file</span>
-            </button>
+    </header>
+
+    <!-- Main Content Area (No Container Panel) -->
+    <main class="flex-1 flex items-center justify-center px-6 py-12">
+        <div class="w-full max-w-md flex flex-col items-center text-center space-y-8">
+            
+            <div class="space-y-2">
+                <h1 class="text-3xl sm:text-4xl font-bold font-serif tracking-tight text-apple-gray-900">First step</h1>
+                <p class="text-apple-gray-400 text-sm font-normal">How would you like to start?</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                <button onclick="window.location.href='configurator1custom.html'" class="option bg-white border border-apple-gray-200 rounded-lg p-6 flex flex-col items-center text-center gap-3 cursor-pointer">
+                    <div class="w-11 h-11 rounded-full bg-apple-gray-50 text-apple-blue flex items-center justify-center text-lg border border-apple-gray-100">✎</div>
+                    <div class="space-y-1">
+                        <strong class="block text-xs uppercase tracking-wider text-apple-gray-900 font-semibold">Custom</strong>
+                        <span class="text-xs text-apple-gray-400 font-normal leading-relaxed block">Enter your family members by hand</span>
+                    </div>
+                </button>
+
+                <button onclick="window.location.href='configurator1gedcom.html'" class="option bg-white border border-apple-gray-200 rounded-lg p-6 flex flex-col items-center text-center gap-3 cursor-pointer">
+                    <div class="w-11 h-11 rounded-full bg-apple-gray-50 text-apple-blue flex items-center justify-center text-lg border border-apple-gray-100">⇪</div>
+                    <div class="space-y-1">
+                        <strong class="block text-xs uppercase tracking-wider text-apple-gray-900 font-semibold">GEDCOM</strong>
+                        <span class="text-xs text-apple-gray-400 font-normal leading-relaxed block">Import a family tree file</span>
+                    </div>
+                </button>
+            </div>
+
         </div>
-    </div>
+    </main>
+
 </body>
 </html>
