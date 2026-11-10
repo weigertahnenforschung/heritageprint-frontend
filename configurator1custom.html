@@ -171,7 +171,14 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
                 <div><label>Born (*)</label><input type="text" id="e-birth" placeholder="DD. MM. YYYY"></div>
                 <div><label>Died (†)</label><input type="text" id="e-death" placeholder="DD. MM. YYYY"></div>
             </div>
-            <button class="secondary" id="e-add">+ Add parent</button>
+            
+            <!-- Aufgeteilte Eltern-Buttons -->
+            <div class="row">
+                <button class="secondary" id="e-add-father">+ Add Father</button>
+                <button class="secondary" id="e-add-mother">+ Add Mother</button>
+            </div>
+            <button class="secondary" id="e-add-both">+ Add Both</button>
+
             <div class="hint" id="e-hint"></div>
             <div class="modal-actions">
                 <button class="main" id="e-save">Save</button>
@@ -447,7 +454,7 @@ const Facidra = (() => {
             root = mk('Starting Person');
         }
 
-        /* ---------- Date Formatting Helpers ---------- */
+        /* ---------- Date Formatting & Smooth Backspace Helpers ---------- */
         const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
         function formatInputMask(val) {
@@ -480,9 +487,8 @@ const Facidra = (() => {
                 const month = parseInt(match[2], 10);
                 const year = match[3];
 
-                // Datum-Validierung: Tag max 31, Monat max 12
                 if (day > 31 || month > 12 || day < 1 || month < 1) {
-                    return null; // Ungültiges Datum
+                    return null;
                 }
                 const formattedDay = day < 10 ? '0' + day : '' + day;
                 return `${formattedDay} ${MONTHS[month - 1]} ${year}`;
@@ -490,7 +496,6 @@ const Facidra = (() => {
             return str;
         }
 
-        // Wandelt "11 DEC 1980" wieder zurück in "11. 12. 1980" für das Editieren
         function convertToNumericDate(str) {
             if (!str) return '';
             const parts = str.trim().split(/\s+/);
@@ -508,6 +513,22 @@ const Facidra = (() => {
 
         ['e-birth', 'e-death'].forEach(id => {
             const input = $(id);
+
+            // Flüssiges Löschen über Trennzeichen hinweg bei Backspace
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace') {
+                    const cursor = input.selectionStart;
+                    if (cursor === input.selectionEnd && cursor > 0) {
+                        const val = input.value;
+                        if (val.substring(cursor - 2, cursor) === '. ') {
+                            e.preventDefault();
+                            input.value = val.substring(0, cursor - 2) + val.substring(cursor);
+                            input.setSelectionRange(cursor - 2, cursor - 2);
+                        }
+                    }
+                }
+            });
+
             input.addEventListener('input', (e) => {
                 const cursor = input.selectionStart;
                 const oldLen = input.value.length;
@@ -517,6 +538,7 @@ const Facidra = (() => {
                     input.setSelectionRange(cursor + (newLen - oldLen), cursor + (newLen - oldLen));
                 }
             });
+
             input.addEventListener('blur', () => {
                 const converted = convertToStandardDate(input.value);
                 if (converted === null) {
@@ -549,19 +571,23 @@ const Facidra = (() => {
             if (!r) return;
             editId = id;
             
-            // 1. Namensfeld: Nur leeren, wenn es ein automatischer Platzhalter ist
             if (DEFAULT_NAMES.includes(r.n.name)) {
                 $('e-name').value = '';
             } else {
                 $('e-name').value = r.n.name;
             }
 
-            // 2. Datum für das Input-Feld wieder in numerisches Format umwandeln (z.B. 11. 12. 1980)
             $('e-birth').value = convertToNumericDate(r.n.birth); 
             $('e-death').value = convertToNumericDate(r.n.death);
 
+            const hasFather = r.n.parents.some(p => p.name.startsWith('Father') || r.n.parents.indexOf(p) === 0 && r.n.parents.length === 1);
+            const hasMother = r.n.parents.length === 2 || (r.n.parents.length === 1 && !hasFather);
             const full = r.n.parents.length >= 2, tooDeep = r.depth >= MAX_GEN;
-            $('e-add').disabled = full || tooDeep;
+
+            $('e-add-father').disabled = full || tooDeep;
+            $('e-add-mother').disabled = full || tooDeep;
+            $('e-add-both').disabled = r.n.parents.length > 0 || tooDeep;
+
             $('e-hint').textContent = tooDeep ? `Maximum of ${MAX_GEN} generations reached.`
                 : full ? 'This person already has 2 parents.' : `Parents: ${r.n.parents.length} / 2`;
             $('e-del').style.display = r.parent ? '' : 'none';
@@ -574,7 +600,6 @@ const Facidra = (() => {
             const r = find(root, editId);
             if (!r) return null;
 
-            // Validierung vor dem Speichern durchführen
             const bRaw = $('e-birth').value.trim();
             const dRaw = $('e-death').value.trim();
             const bFormatted = convertToStandardDate(bRaw);
@@ -600,10 +625,28 @@ const Facidra = (() => {
         $('e-cancel').onclick = closeEdit;
         $('edit-modal').addEventListener('mousedown', e => { if (e.target.id === 'edit-modal') closeEdit(); });
 
-        $('e-add').onclick = () => {
+        /* Eltern Hinzufügen Logik */
+        $('e-add-father').onclick = () => {
             const r = applyFields();
             if (!r || r.n.parents.length >= 2 || r.depth >= MAX_GEN) return;
-            r.n.parents.push(mk(r.n.parents.length === 0 ? 'Father' : 'Mother'));
+            r.n.parents.unshift(mk('Father'));
+            draw();
+            openEdit(r.n.id);
+        };
+
+        $('e-add-mother').onclick = () => {
+            const r = applyFields();
+            if (!r || r.n.parents.length >= 2 || r.depth >= MAX_GEN) return;
+            r.n.parents.push(mk('Mother'));
+            draw();
+            openEdit(r.n.id);
+        };
+
+        $('e-add-both').onclick = () => {
+            const r = applyFields();
+            if (!r || r.n.parents.length > 0 || r.depth >= MAX_GEN) return;
+            r.n.parents.push(mk('Father'));
+            r.n.parents.push(mk('Mother'));
             draw();
             openEdit(r.n.id);
         };
