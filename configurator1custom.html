@@ -429,6 +429,7 @@ const Facidra = (() => {
         $('reset-view-btn').addEventListener('click', () => Facidra.resetView());
 
         /* ---------- Data model: each person has up to 2 parents ---------- */
+        const DEFAULT_NAMES = ['Starting Person', 'Father', 'Mother', 'New Person', 'Unknown'];
         const mk = name => ({ id: uid++, name: name || 'New Person', birth: '', death: '', parents: [] });
         const toH = n => ({ id: n.id, name: n.name, birth: n.birth, death: n.death, children: n.parents.length ? n.parents.map(toH) : null });
         const count = n => 1 + n.parents.reduce((s, p) => s + count(p), 0);
@@ -478,8 +479,28 @@ const Facidra = (() => {
                 const day = parseInt(match[1], 10);
                 const month = parseInt(match[2], 10);
                 const year = match[3];
-                if (month >= 1 && month <= 12) {
-                    return `${day} ${MONTHS[month - 1]} ${year}`;
+
+                // Datum-Validierung: Tag max 31, Monat max 12
+                if (day > 31 || month > 12 || day < 1 || month < 1) {
+                    return null; // Ungültiges Datum
+                }
+                const formattedDay = day < 10 ? '0' + day : '' + day;
+                return `${formattedDay} ${MONTHS[month - 1]} ${year}`;
+            }
+            return str;
+        }
+
+        // Wandelt "11 DEC 1980" wieder zurück in "11. 12. 1980" für das Editieren
+        function convertToNumericDate(str) {
+            if (!str) return '';
+            const parts = str.trim().split(/\s+/);
+            if (parts.length === 3) {
+                const day = parts[0].padStart(2, '0');
+                const mIdx = MONTHS.indexOf(parts[1].toUpperCase());
+                const year = parts[2];
+                if (mIdx !== -1 && !isNaN(day) && !isNaN(year)) {
+                    const month = String(mIdx + 1).padStart(2, '0');
+                    return `${day}. ${month}. ${year}`;
                 }
             }
             return str;
@@ -497,7 +518,12 @@ const Facidra = (() => {
                 }
             });
             input.addEventListener('blur', () => {
-                input.value = convertToStandardDate(input.value);
+                const converted = convertToStandardDate(input.value);
+                if (converted === null) {
+                    Facidra.toast('Ungültiges Datum! Tag max. 31, Monat max. 12.');
+                } else {
+                    input.value = converted;
+                }
             });
         });
 
@@ -522,10 +548,18 @@ const Facidra = (() => {
             const r = find(root, id);
             if (!r) return;
             editId = id;
-            // Das Namensfeld ist beim Öffnen des Modals jetzt immer leer
-            $('e-name').value = '';
-            $('e-birth').value = r.n.birth; 
-            $('e-death').value = r.n.death;
+            
+            // 1. Namensfeld: Nur leeren, wenn es ein automatischer Platzhalter ist
+            if (DEFAULT_NAMES.includes(r.n.name)) {
+                $('e-name').value = '';
+            } else {
+                $('e-name').value = r.n.name;
+            }
+
+            // 2. Datum für das Input-Feld wieder in numerisches Format umwandeln (z.B. 11. 12. 1980)
+            $('e-birth').value = convertToNumericDate(r.n.birth); 
+            $('e-death').value = convertToNumericDate(r.n.death);
+
             const full = r.n.parents.length >= 2, tooDeep = r.depth >= MAX_GEN;
             $('e-add').disabled = full || tooDeep;
             $('e-hint').textContent = tooDeep ? `Maximum of ${MAX_GEN} generations reached.`
@@ -539,13 +573,30 @@ const Facidra = (() => {
         function applyFields() {
             const r = find(root, editId);
             if (!r) return null;
+
+            // Validierung vor dem Speichern durchführen
+            const bRaw = $('e-birth').value.trim();
+            const dRaw = $('e-death').value.trim();
+            const bFormatted = convertToStandardDate(bRaw);
+            const dFormatted = convertToStandardDate(dRaw);
+
+            if (bFormatted === null || dFormatted === null) {
+                Facidra.toast('Bitte ein gültiges Datum eingeben (Tag ≤ 31, Monat ≤ 12).');
+                return null;
+            }
+
             r.n.name = $('e-name').value.trim() || 'Unknown';
-            r.n.birth = convertToStandardDate($('e-birth').value.trim());
-            r.n.death = convertToStandardDate($('e-death').value.trim());
+            r.n.birth = bFormatted;
+            r.n.death = dFormatted;
             return r;
         }
 
-        $('e-save').onclick = () => { if (applyFields()) draw(); closeEdit(); };
+        $('e-save').onclick = () => { 
+            if (applyFields()) {
+                draw(); 
+                closeEdit(); 
+            }
+        };
         $('e-cancel').onclick = closeEdit;
         $('edit-modal').addEventListener('mousedown', e => { if (e.target.id === 'edit-modal') closeEdit(); });
 
