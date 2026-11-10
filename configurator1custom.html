@@ -6,7 +6,7 @@
     <title>Facidra</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=UnifrakturMaguntia&display=swap');
 :root{--primary:#1e293b;--primary-light:#334155;--accent:#d97706;--accent-hover:#b45309;--accent-ai:#7c3aed;--accent-ai-hover:#6d28d9;--apple-blue:#007aff;--bg-main:#f1f5f9;--sidebar-bg:#fff;--text-main:#0f172a;--text-muted:#64748b;--border-color:#e2e8f0;--input-bg:#f8fafc;--parchment:#fdfbf7;--font-title:'Cinzel',serif;--font-body:'Plus Jakarta Sans',sans-serif;--font-canvas:'EB Garamond',serif}
 body{margin:0;font-family:var(--font-body);color:var(--text-main);display:flex;height:100vh;height:100dvh;background:var(--bg-main);overflow:hidden}
 #sidebar{width:360px;min-width:360px;background:var(--sidebar-bg);border-right:1px solid var(--border-color);padding:24px;box-shadow:4px 0 24px rgba(15,23,42,.05);z-index:20;display:flex;flex-direction:column;gap:20px;overflow:hidden;box-sizing:border-box}
@@ -138,6 +138,21 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
                         <option value="down">Grow downwards</option>
                     </select>
                 </div>
+                <div class="control-group">
+                    <label>Font Family</label>
+                    <select id="tree-font">
+                        <option value="'EB Garamond', serif">EB Garamond (Classic)</option>
+                        <option value="'Georgia', serif">Georgia (Serif)</option>
+                        <option value="'Times New Roman', serif">Times New Roman</option>
+                        <option value="'UnifrakturMaguntia', cursive">Fraktur (Historic)</option>
+                        <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Modern)</option>
+                        <option value="'Arial', sans-serif">Arial (Clean)</option>
+                    </select>
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="font-uppercase" checked>
+                    <label for="font-uppercase">UPPERCASE text</label>
+                </div>
                 <div class="checkbox-row">
                     <input type="checkbox" id="show-dates" checked>
                     <label for="show-dates">Show life dates (* / †)</label>
@@ -173,7 +188,7 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
                 <div><label>Died (†)</label><input type="text" id="e-death" placeholder="DD. MM. YYYY"></div>
             </div>
             
-            <!-- Aufgeteilte Eltern-Buttons (nebeneinander & gleiche Gesamtbreite wie Add Both) -->
+            <!-- Aufgeteilte Eltern-Buttons -->
             <div class="row">
                 <button class="secondary" id="e-add-father">+ Add Father</button>
                 <button class="secondary" id="e-add-mother">+ Add Mother</button>
@@ -288,9 +303,9 @@ const Facidra = (() => {
         updateT();
     }
 
-    function wrapText(text, maxWidth, fs, bold = false) {
+    function wrapText(text, maxWidth, fs, fontFam, bold = false) {
         const ctx = document.createElement('canvas').getContext('2d');
-        ctx.font = `${bold ? 'bold ' : ''}${fs}px Georgia, serif`;
+        ctx.font = `${bold ? 'bold ' : ''}${fs}px ${fontFam}`;
         const words = text.split(' '), lines = [];
         let cur = '';
         for (let w of words) {
@@ -319,10 +334,13 @@ const Facidra = (() => {
         return { head: word.substring(0, at) + '-', tail: word.substring(at) };
     }
 
-    /* data: {name, birth, death, children:[...]}; o: {title, orientation, showDates, onNodeClick} */
+    /* data: {name, birth, death, children:[...]}; o: {title, orientation, showDates, font, uppercase, onNodeClick} */
     function render(data, o) {
         const svg = d3.select('#tree-svg'), canvas = document.getElementById('a4-canvas');
         const sd = o.showDates, up = o.orientation === 'up';
+        const fontFam = o.font || "'EB Garamond', serif";
+        const isUppercase = o.uppercase !== false;
+
         const nf = 13, df = 10, PH = 10, PV = 8, LG = 4, CW = 210, bw = 180, taw = bw - PH * 2;
         const DL = sd ? 2 : 0;
         const bh = PV * 2 + 2 * nf * 1.35 + (sd ? LG : 0) + DL * df * 1.4;
@@ -341,10 +359,11 @@ const Facidra = (() => {
         svg.attr('width', sW).attr('height', sH);
         svg.append('rect').attr('width', sW).attr('height', sH).attr('fill', '#fdfbf7');
         if (o.title) {
+            const titleText = isUppercase ? o.title.toUpperCase() : o.title;
             svg.append('text').attr('class', 'doc-title').attr('x', sW / 2).attr('y', 60)
-                .attr('text-anchor', 'middle').attr('font-family', 'Georgia, serif')
+                .attr('text-anchor', 'middle').attr('font-family', fontFam)
                 .attr('font-size', '36px').attr('font-weight', 'bold').attr('fill', '#1a1a1a')
-                .text(o.title.toUpperCase());
+                .text(titleText);
         }
 
         const g = svg.append('g').attr('id', 'main-group');
@@ -371,13 +390,16 @@ const Facidra = (() => {
 
         node.each(function (d) {
             const gEl = d3.select(this);
-            let lines = wrapText((d.data.name || '?').toUpperCase().replace(/_/g, ' '), taw, nf, true);
+            let rawName = (d.data.name || '?').replace(/_/g, ' ');
+            let formattedName = isUppercase ? rawName.toUpperCase() : rawName;
+            
+            let lines = wrapText(formattedName, taw, nf, fontFam, true);
             if (lines.length > 2) lines = [lines[0], lines[1], lines.slice(2).join(' ')];
             const total = lines.length * nf * 1.35 + (sd ? LG : 0) + (sd ? DL * df * 1.4 : 0);
             let y = -total / 2 + nf * 0.85;
             const txt = (s, size, extra) => {
                 const t = gEl.append('text').attr('class', 'node-text').attr('x', 0).attr('y', y)
-                    .attr('text-anchor', 'middle').attr('font-family', 'Georgia, serif')
+                    .attr('text-anchor', 'middle').attr('font-family', fontFam)
                     .attr('font-size', size + 'px').text(s);
                 Object.entries(extra).forEach(([k, val]) => t.attr(k, val));
             };
@@ -455,11 +477,31 @@ const Facidra = (() => {
             root = mk('Starting Person');
         }
 
-        /* ---------- Strikte & flüssige Datumsmaske ---------- */
+        /* ---------- Strikte & Intelligente Datumsmaske ---------- */
         const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-        // Erzeugt aus einer reinen Ziffernkette (max. 8 Stellen) den String "DD. MM. YYYY"
-        function formatDigitsToDateMask(digits) {
+        // Konvertiert die getippten Ziffern mit Auto-Zero-Padding
+        function processDigitInput(rawDigits) {
+            let digits = rawDigits;
+            
+            // Intelligentes Padding für Tag (Stelle 1)
+            // Wenn erste Stelle 4-9 ist, mache automatisch "0X"
+            if (digits.length === 1 && /[4-9]/.test(digits)) {
+                digits = '0' + digits;
+            }
+
+            // Intelligentes Padding für Monat (Stelle 3)
+            // Wenn nach dem Tag an Stelle 3 eine 2-9 getippt wird, mache "0X"
+            if (digits.length === 3) {
+                const dayPart = digits.substring(0, 2);
+                const monthFirstChar = digits.charAt(2);
+                if (/[2-9]/.test(monthFirstChar)) {
+                    digits = dayPart + '0' + monthFirstChar;
+                }
+            }
+
+            if (digits.length > 8) digits = digits.substring(0, 8);
+
             let res = '';
             if (digits.length > 0) {
                 res += digits.substring(0, 2);
@@ -514,31 +556,26 @@ const Facidra = (() => {
         ['e-birth', 'e-death'].forEach(id => {
             const input = $(id);
 
-            // Strikte Tastaturüberwachung & flüssiges Löschen
             input.addEventListener('keydown', (e) => {
-                // Erlaube Steuerungstasten (Backspace, Tab, Delete, Pfeiltasten etc.)
                 if (e.key.length > 1 || e.ctrlKey || e.metaKey || e.altKey) {
                     if (e.key === 'Backspace') {
                         let digits = input.value.replace(/\D/g, '');
                         if (digits.length > 0) {
                             e.preventDefault();
                             digits = digits.substring(0, digits.length - 1);
-                            input.value = formatDigitsToDateMask(digits);
+                            input.value = processDigitInput(digits);
                         }
                     }
                     return;
                 }
-                // Blockiere alles, was KEINE Zahl (0-9) ist
                 if (!/[0-9]/.test(e.key)) {
                     e.preventDefault();
                 }
             });
 
             input.addEventListener('input', () => {
-                // Nur Ziffern extrahieren, max 8
                 let digits = input.value.replace(/\D/g, '');
-                if (digits.length > 8) digits = digits.substring(0, 8);
-                input.value = formatDigitsToDateMask(digits);
+                input.value = processDigitInput(digits);
             });
 
             input.addEventListener('blur', () => {
@@ -559,6 +596,8 @@ const Facidra = (() => {
                 hierarchy: toH(root), lineageMode: 'ancestors',
                 title: $('doc-title-input').value,
                 orientation: $('tree-orientation').value,
+                font: $('tree-font').value,
+                uppercase: $('font-uppercase').checked,
                 showDates: $('show-dates').checked
             };
             Facidra.render(state.hierarchy, { ...state, onNodeClick: d => openEdit(d.id) });
@@ -566,7 +605,7 @@ const Facidra = (() => {
             try { localStorage.setItem(KEY, JSON.stringify({ root, uid })); } catch (e) {}
         }
         $('doc-title-input').addEventListener('input', () => draw());
-        ['tree-orientation', 'show-dates'].forEach(id => $(id).addEventListener('change', () => draw()));
+        ['tree-orientation', 'tree-font', 'font-uppercase', 'show-dates'].forEach(id => $(id).addEventListener('change', () => draw()));
 
         /* ---------- Editor ---------- */
         function openEdit(id) {
@@ -583,14 +622,12 @@ const Facidra = (() => {
             $('e-birth').value = convertToNumericDate(r.n.birth); 
             $('e-death').value = convertToNumericDate(r.n.death);
 
-            // Prüfen, welche Elternteile bereits existieren
             const hasFather = r.n.parents.some(p => p.type === 'father' || p.name.startsWith('Father') || (r.n.parents.indexOf(p) === 0 && p.name !== 'Mother'));
             const hasMother = r.n.parents.some(p => p.type === 'mother' || p.name.startsWith('Mother') || (r.n.parents.indexOf(p) === 1 && p.name !== 'Father'));
 
             const countParents = r.n.parents.length;
             const tooDeep = r.depth >= MAX_GEN;
 
-            // Strikte Ausgrau-Logik für Buttons
             $('e-add-father').disabled = hasFather || countParents >= 2 || tooDeep;
             $('e-add-mother').disabled = hasMother || countParents >= 2 || tooDeep;
             $('e-add-both').disabled = countParents > 0 || tooDeep;
