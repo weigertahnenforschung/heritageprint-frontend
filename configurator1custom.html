@@ -92,7 +92,6 @@ button.danger:hover{background:#fecaca}
 .generations-arrow:hover{color:var(--apple-blue)}
 .generations-value{font-weight:600;color:var(--primary);min-width:20px;text-align:center}
 @media(max-width:768px){
-/* Mobile: 1. Header (immer sichtbar), 2. Viewer, 3. Sidebar-Content scrollt, Next-Button fixiert unten */
 body{flex-direction:column;height:100vh;height:100dvh}
 #top-ruler,#left-ruler{display:none!important}
 #sidebar{display:contents}
@@ -169,8 +168,8 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
             <h3>Edit person</h3>
             <div class="control-group"><label>Name</label><input type="text" id="e-name" placeholder="Full name"></div>
             <div class="row">
-                <div><label>Born (*)</label><input type="text" id="e-birth" placeholder="e.g. 12 MAR 1950"></div>
-                <div><label>Died (†)</label><input type="text" id="e-death" placeholder="e.g. 3 JUN 2019"></div>
+                <div><label>Born (*)</label><input type="text" id="e-birth" placeholder="DD. MM. YYYY"></div>
+                <div><label>Died (†)</label><input type="text" id="e-death" placeholder="DD. MM. YYYY"></div>
             </div>
             <button class="secondary" id="e-add">+ Add parent</button>
             <div class="hint" id="e-hint"></div>
@@ -447,6 +446,61 @@ const Facidra = (() => {
             root = mk('Starting Person');
         }
 
+        /* ---------- Date Formatting Helpers ---------- */
+        const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+        function formatInputMask(val) {
+            let digits = val.replace(/\D/g, '');
+            if (digits.length > 8) digits = digits.substring(0, 8);
+            let res = '';
+            if (digits.length > 0) {
+                res += digits.substring(0, 2);
+            }
+            if (digits.length >= 2) {
+                res += '. ';
+                if (digits.length > 2) {
+                    res += digits.substring(2, 4);
+                }
+            }
+            if (digits.length >= 4) {
+                res += '. ';
+                if (digits.length > 4) {
+                    res += digits.substring(4, 8);
+                }
+            }
+            return res;
+        }
+
+        function convertToStandardDate(str) {
+            if (!str) return '';
+            const match = str.match(/^(\d{1,2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{4})$/);
+            if (match) {
+                const day = parseInt(match[1], 10);
+                const month = parseInt(match[2], 10);
+                const year = match[3];
+                if (month >= 1 && month <= 12) {
+                    return `${day} ${MONTHS[month - 1]} ${year}`;
+                }
+            }
+            return str;
+        }
+
+        ['e-birth', 'e-death'].forEach(id => {
+            const input = $(id);
+            input.addEventListener('input', (e) => {
+                const cursor = input.selectionStart;
+                const oldLen = input.value.length;
+                input.value = formatInputMask(input.value);
+                const newLen = input.value.length;
+                if (cursor) {
+                    input.setSelectionRange(cursor + (newLen - oldLen), cursor + (newLen - oldLen));
+                }
+            });
+            input.addEventListener('blur', () => {
+                input.value = convertToStandardDate(input.value);
+            });
+        });
+
         /* ---------- Rendering ---------- */
         let state = null;
         function draw(first) {
@@ -468,7 +522,10 @@ const Facidra = (() => {
             const r = find(root, id);
             if (!r) return;
             editId = id;
-            $('e-name').value = r.n.name; $('e-birth').value = r.n.birth; $('e-death').value = r.n.death;
+            // Das Namensfeld ist beim Öffnen des Modals jetzt immer leer
+            $('e-name').value = '';
+            $('e-birth').value = r.n.birth; 
+            $('e-death').value = r.n.death;
             const full = r.n.parents.length >= 2, tooDeep = r.depth >= MAX_GEN;
             $('e-add').disabled = full || tooDeep;
             $('e-hint').textContent = tooDeep ? `Maximum of ${MAX_GEN} generations reached.`
@@ -483,8 +540,8 @@ const Facidra = (() => {
             const r = find(root, editId);
             if (!r) return null;
             r.n.name = $('e-name').value.trim() || 'Unknown';
-            r.n.birth = $('e-birth').value.trim();
-            r.n.death = $('e-death').value.trim();
+            r.n.birth = convertToStandardDate($('e-birth').value.trim());
+            r.n.death = convertToStandardDate($('e-death').value.trim());
             return r;
         }
 
