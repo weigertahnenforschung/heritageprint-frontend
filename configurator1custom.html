@@ -21,8 +21,9 @@ body{margin:0;font-family:var(--font-body);color:var(--text-main);display:flex;h
 .step-card h2{margin:0;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:var(--apple-blue);display:flex;align-items:center;gap:8px}
 .step-card h2 span{background:rgba(0,122,255,.1);width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600}
 .control-group{display:flex;flex-direction:column;gap:6px;position:relative;width:100%}
-.row{display:flex;gap:12px;width:100%}
+.row{display:flex;gap:10px;width:100%;box-sizing:border-box}
 .row>div{flex:1;display:flex;flex-direction:column;gap:6px}
+.row>button{flex:1;width:50%}
 .checkbox-row{display:flex;align-items:center;gap:8px}
 label{font-size:.8rem;color:var(--primary);font-weight:500}
 .hint{font-size:.78rem;color:var(--text-muted);line-height:1.4}
@@ -49,7 +50,7 @@ button.main:hover{background:var(--accent-hover)}
 button.ai-btn{background:var(--accent-ai);color:#fff;width:100%}
 button.ai-btn:hover{background:var(--accent-ai-hover)}
 button.ai-btn:disabled{background:#a5b4fc;cursor:not-allowed}
-button.secondary{background:var(--bg-main);color:var(--primary-light);font-size:.8rem;padding:10px}
+button.secondary{background:var(--bg-main);color:var(--primary-light);font-size:.8rem;padding:10px;width:100%;box-sizing:border-box}
 button.secondary:hover:not(:disabled){background:var(--border-color);color:var(--primary)}
 button.secondary:disabled{opacity:.45;cursor:not-allowed}
 button.danger{background:#fee2e2;color:#b91c1c;font-size:.8rem;padding:10px}
@@ -172,7 +173,7 @@ button,input[type=text],select{padding:12px 16px;font-size:1rem}
                 <div><label>Died (†)</label><input type="text" id="e-death" placeholder="DD. MM. YYYY"></div>
             </div>
             
-            <!-- Aufgeteilte Eltern-Buttons -->
+            <!-- Aufgeteilte Eltern-Buttons (nebeneinander & gleiche Gesamtbreite wie Add Both) -->
             <div class="row">
                 <button class="secondary" id="e-add-father">+ Add Father</button>
                 <button class="secondary" id="e-add-mother">+ Add Mother</button>
@@ -454,12 +455,11 @@ const Facidra = (() => {
             root = mk('Starting Person');
         }
 
-        /* ---------- Date Formatting & Smooth Backspace Helpers ---------- */
+        /* ---------- Strikte & flüssige Datumsmaske ---------- */
         const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-        function formatInputMask(val) {
-            let digits = val.replace(/\D/g, '');
-            if (digits.length > 8) digits = digits.substring(0, 8);
+        // Erzeugt aus einer reinen Ziffernkette (max. 8 Stellen) den String "DD. MM. YYYY"
+        function formatDigitsToDateMask(digits) {
             let res = '';
             if (digits.length > 0) {
                 res += digits.substring(0, 2);
@@ -514,32 +514,35 @@ const Facidra = (() => {
         ['e-birth', 'e-death'].forEach(id => {
             const input = $(id);
 
-            // Flüssiges Löschen über Trennzeichen hinweg bei Backspace
+            // Strikte Tastaturüberwachung & flüssiges Löschen
             input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace') {
-                    const cursor = input.selectionStart;
-                    if (cursor === input.selectionEnd && cursor > 0) {
-                        const val = input.value;
-                        if (val.substring(cursor - 2, cursor) === '. ') {
+                // Erlaube Steuerungstasten (Backspace, Tab, Delete, Pfeiltasten etc.)
+                if (e.key.length > 1 || e.ctrlKey || e.metaKey || e.altKey) {
+                    if (e.key === 'Backspace') {
+                        let digits = input.value.replace(/\D/g, '');
+                        if (digits.length > 0) {
                             e.preventDefault();
-                            input.value = val.substring(0, cursor - 2) + val.substring(cursor);
-                            input.setSelectionRange(cursor - 2, cursor - 2);
+                            digits = digits.substring(0, digits.length - 1);
+                            input.value = formatDigitsToDateMask(digits);
                         }
                     }
+                    return;
+                }
+                // Blockiere alles, was KEINE Zahl (0-9) ist
+                if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
                 }
             });
 
-            input.addEventListener('input', (e) => {
-                const cursor = input.selectionStart;
-                const oldLen = input.value.length;
-                input.value = formatInputMask(input.value);
-                const newLen = input.value.length;
-                if (cursor) {
-                    input.setSelectionRange(cursor + (newLen - oldLen), cursor + (newLen - oldLen));
-                }
+            input.addEventListener('input', () => {
+                // Nur Ziffern extrahieren, max 8
+                let digits = input.value.replace(/\D/g, '');
+                if (digits.length > 8) digits = digits.substring(0, 8);
+                input.value = formatDigitsToDateMask(digits);
             });
 
             input.addEventListener('blur', () => {
+                if (!input.value.trim()) return;
                 const converted = convertToStandardDate(input.value);
                 if (converted === null) {
                     Facidra.toast('Ungültiges Datum! Tag max. 31, Monat max. 12.');
@@ -580,16 +583,20 @@ const Facidra = (() => {
             $('e-birth').value = convertToNumericDate(r.n.birth); 
             $('e-death').value = convertToNumericDate(r.n.death);
 
-            const hasFather = r.n.parents.some(p => p.name.startsWith('Father') || r.n.parents.indexOf(p) === 0 && r.n.parents.length === 1);
-            const hasMother = r.n.parents.length === 2 || (r.n.parents.length === 1 && !hasFather);
-            const full = r.n.parents.length >= 2, tooDeep = r.depth >= MAX_GEN;
+            // Prüfen, welche Elternteile bereits existieren
+            const hasFather = r.n.parents.some(p => p.type === 'father' || p.name.startsWith('Father') || (r.n.parents.indexOf(p) === 0 && p.name !== 'Mother'));
+            const hasMother = r.n.parents.some(p => p.type === 'mother' || p.name.startsWith('Mother') || (r.n.parents.indexOf(p) === 1 && p.name !== 'Father'));
 
-            $('e-add-father').disabled = full || tooDeep;
-            $('e-add-mother').disabled = full || tooDeep;
-            $('e-add-both').disabled = r.n.parents.length > 0 || tooDeep;
+            const countParents = r.n.parents.length;
+            const tooDeep = r.depth >= MAX_GEN;
+
+            // Strikte Ausgrau-Logik für Buttons
+            $('e-add-father').disabled = hasFather || countParents >= 2 || tooDeep;
+            $('e-add-mother').disabled = hasMother || countParents >= 2 || tooDeep;
+            $('e-add-both').disabled = countParents > 0 || tooDeep;
 
             $('e-hint').textContent = tooDeep ? `Maximum of ${MAX_GEN} generations reached.`
-                : full ? 'This person already has 2 parents.' : `Parents: ${r.n.parents.length} / 2`;
+                : countParents >= 2 ? 'This person already has 2 parents.' : `Parents: ${countParents} / 2`;
             $('e-del').style.display = r.parent ? '' : 'none';
             $('edit-modal').style.display = 'flex';
             $('e-name').focus();
@@ -625,11 +632,13 @@ const Facidra = (() => {
         $('e-cancel').onclick = closeEdit;
         $('edit-modal').addEventListener('mousedown', e => { if (e.target.id === 'edit-modal') closeEdit(); });
 
-        /* Eltern Hinzufügen Logik */
+        /* Hinzufügen von Vater / Mutter / Beide */
         $('e-add-father').onclick = () => {
             const r = applyFields();
             if (!r || r.n.parents.length >= 2 || r.depth >= MAX_GEN) return;
-            r.n.parents.unshift(mk('Father'));
+            const fatherNode = mk('Father');
+            fatherNode.type = 'father';
+            r.n.parents.unshift(fatherNode);
             draw();
             openEdit(r.n.id);
         };
@@ -637,7 +646,9 @@ const Facidra = (() => {
         $('e-add-mother').onclick = () => {
             const r = applyFields();
             if (!r || r.n.parents.length >= 2 || r.depth >= MAX_GEN) return;
-            r.n.parents.push(mk('Mother'));
+            const motherNode = mk('Mother');
+            motherNode.type = 'mother';
+            r.n.parents.push(motherNode);
             draw();
             openEdit(r.n.id);
         };
@@ -645,8 +656,10 @@ const Facidra = (() => {
         $('e-add-both').onclick = () => {
             const r = applyFields();
             if (!r || r.n.parents.length > 0 || r.depth >= MAX_GEN) return;
-            r.n.parents.push(mk('Father'));
-            r.n.parents.push(mk('Mother'));
+            const f = mk('Father'); f.type = 'father';
+            const m = mk('Mother'); m.type = 'mother';
+            r.n.parents.push(f);
+            r.n.parents.push(m);
             draw();
             openEdit(r.n.id);
         };
