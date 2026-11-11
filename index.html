@@ -8,32 +8,35 @@
     <link rel="shortcut icon" href="/favicon.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-                        serif: ['Source Serif 4', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
                     },
                     colors: {
                         brand: {
-                            50: '#fcf7f7',
-                            100: '#f7eded',
-                            200: '#efdedf',
-                            400: '#c94456',
-                            800: '#af3445',
-                            900: '#7a222f',
+                            DEFAULT: '#914D4D',
+                            hover: '#783E3E',
+                            border: '#6A3737',
                         },
-                        neutral: {
-                            50: '#faf9f8',
-                            100: '#f2f0ed',
-                            200: '#e5e2dc',
-                            400: '#8c877d',
-                            700: '#403d39',
-                            900: '#1c1a17'
+                        apple: {
+                            gray: {
+                                50: '#f5f5f7',
+                                100: '#e8e8ed',
+                                200: '#d2d2d7',
+                                400: '#6e6e73',
+                                800: '#1d1d1f',
+                                900: '#000000'
+                            },
+                            blue: '#914D4D',
+                            btn: '#914D4D',
+                            btnHover: '#783E3E',
+                            btnBorder: '#6A3737'
                         }
                     },
                     aspectRatio: {
@@ -69,15 +72,15 @@
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .step-box.active-highlight {
-            border-color: rgba(201, 68, 86, 0.5) !important;
-            box-shadow: 0 8px 20px -4px rgba(201, 68, 86, 0.15) !important;
+            border-color: rgba(145, 77, 77, 0.5) !important;
+            box-shadow: 0 8px 20px -4px rgba(145, 77, 77, 0.15) !important;
             transform: translateY(-2px);
         }
         .step-badge {
             transition: all 0.3s ease;
         }
         .step-box.active-highlight .step-badge {
-            background-color: rgb(201, 68, 86) !important;
+            background-color: #914D4D !important;
             color: #ffffff !important;
         }
         .step-content {
@@ -94,36 +97,36 @@
         }
     </style>
 </head>
-<body class="bg-white text-neutral-700 font-sans antialiased selection:bg-brand-400 selection:text-white">
+<body class="bg-white text-apple-gray-800 font-sans antialiased selection:bg-brand selection:text-white">
 
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200/60 transition-all duration-300">
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-apple-gray-100 transition-all duration-300">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="#" class="flex items-center space-x-2.5 group">
                 <img src="facidra-icon.png" alt="Facidra Logo" class="h-7 w-auto object-contain">
             </a>
-            <nav class="hidden md:flex space-x-8 text-sm font-semibold tracking-wide text-neutral-700">
-                <a href="#how-it-works" class="hover:text-brand-400 transition-colors duration-200">How it Works</a>
-                <a href="#style-examples" class="hover:text-brand-400 transition-colors duration-200">Style Examples</a>
-                <a href="#gedcom-guide" class="hover:text-brand-400 transition-colors duration-200">GEDCOM Export</a>
-                <a href="#products" class="hover:text-brand-400 transition-colors duration-200">Pricing</a>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-apple-gray-400">
+                <a href="#how-it-works" class="hover:text-apple-gray-900 transition-colors duration-200">How it Works</a>
+                <a href="#style-examples" class="hover:text-apple-gray-900 transition-colors duration-200">Style Examples</a>
+                <a href="#gedcom-guide" class="hover:text-apple-gray-900 transition-colors duration-200">GEDCOM Export</a>
+                <a href="#products" class="hover:text-apple-gray-900 transition-colors duration-200">Pricing</a>
             </nav>
 
             <div class="flex items-center space-x-4">
-                <a href="https://www.facidra.com/introduction.html" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-bold uppercase tracking-wider bg-brand-800 text-white rounded-md hover:bg-brand-900 transition-all duration-200 shadow-sm">
+                <a href="https://www.facidra.com/introduction.html" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold bg-brand text-white border border-brand-border rounded-sm hover:bg-brand-hover transition-all duration-200 shadow-xs">
                     Start Building
                 </a>
-                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-neutral-700 hover:text-neutral-900" aria-label="Toggle Navigation">
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-apple-gray-400 hover:text-apple-gray-900" aria-label="Toggle Navigation">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-neutral-200 px-6 py-4 space-y-3">
-            <a href="#how-it-works" onclick="toggleMobileMenu()" class="block py-2 text-neutral-700 font-semibold hover:text-brand-400 text-sm">How it Works</a>
-            <a href="#style-examples" onclick="toggleMobileMenu()" class="block py-2 text-neutral-700 font-semibold hover:text-brand-400 text-sm">Style Examples</a>
-            <a href="#gedcom-guide" onclick="toggleMobileMenu()" class="block py-2 text-neutral-700 font-semibold hover:text-brand-400 text-sm">GEDCOM Export Guide</a>
-            <a href="#products" onclick="toggleMobileMenu()" class="block py-2 text-neutral-700 font-semibold hover:text-brand-400 text-sm">Pricing</a>
-            <a href="https://www.facidra.com/introduction.html" onclick="toggleMobileMenu()" class="block w-full text-center py-2 text-xs font-bold uppercase tracking-wider bg-brand-800 text-white rounded-md">Start Building</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-apple-gray-100 px-6 py-4 space-y-3">
+            <a href="#how-it-works" onclick="toggleMobileMenu()" class="block py-2 text-apple-gray-400 hover:text-apple-gray-900 text-sm">How it Works</a>
+            <a href="#style-examples" onclick="toggleMobileMenu()" class="block py-2 text-apple-gray-400 hover:text-apple-gray-900 text-sm">Style Examples</a>
+            <a href="#gedcom-guide" onclick="toggleMobileMenu()" class="block py-2 text-apple-gray-400 hover:text-apple-gray-900 text-sm">GEDCOM Export Guide</a>
+            <a href="#products" onclick="toggleMobileMenu()" class="block py-2 text-apple-gray-400 hover:text-apple-gray-900 text-sm">Pricing</a>
+            <a href="https://www.facidra.com/introduction.html" onclick="toggleMobileMenu()" class="block w-full text-center py-2 text-sm bg-brand text-white font-semibold border border-brand-border rounded-sm">Start Building</a>
         </div>
     </header>
 
@@ -142,18 +145,18 @@
     
         <div class="max-w-6xl mx-auto px-6 w-full relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-7 space-y-5 text-center lg:text-left bg-white/40 backdrop-blur-xs p-6 rounded-lg lg:bg-transparent lg:backdrop-blur-none lg:p-0">
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-sans tracking-tight text-neutral-900 leading-[1.2]">
-                        Turn your family tree into <span class="text-brand-400 font-serif italic font-normal">art</span>.
+                <div class="lg:col-span-6 space-y-5 text-center lg:text-left bg-white/40 backdrop-blur-xs p-6 rounded-lg lg:bg-transparent lg:backdrop-blur-none lg:p-0">
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold font-serif tracking-tight text-apple-gray-900 leading-[1.1]">
+                        Turn your family tree into <span class="text-brand font-serif italic">art</span>.
                     </h1>
-                    <p class="text-neutral-700 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-serif leading-relaxed">
+                    <p class="text-apple-gray-800 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
                         Upload your GEDCOM file or build your family tree from scratch to design elegant, custom family trees.
                     </p>
-                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
-                        <a href="https://www.facidra.com/introduction.html" class="w-full sm:w-auto px-6 py-3 bg-brand-800 text-white font-semibold text-xs tracking-wider uppercase hover:bg-brand-900 transition-all rounded-md shadow-sm text-center">
+                    <div class="pt-1 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+                        <a href="https://www.facidra.com/introduction.html" class="w-full sm:w-auto px-6 py-3 bg-brand text-white font-semibold text-sm border border-brand-border hover:bg-brand-hover transition-all rounded-sm shadow-xs text-center">
                             Create Your Own
                         </a>
-                        <a href="#style-examples" class="w-full sm:w-auto px-6 py-3 bg-white hover:bg-neutral-50 text-neutral-900 font-semibold text-xs tracking-wider uppercase border border-neutral-300 transition-all rounded-md text-center">
+                        <a href="#style-examples" class="w-full sm:w-auto px-6 py-3 bg-white/90 backdrop-blur-xs hover:bg-apple-gray-50 text-apple-gray-800 font-medium text-sm border border-apple-gray-200 transition-all rounded-sm text-center">
                             Explore Styles
                         </a>
                     </div>
@@ -162,70 +165,70 @@
         </div>
     </section>
 
-    <section id="how-it-works" class="py-12 lg:py-16 bg-neutral-50 border-t border-b border-neutral-200/80">
+    <section id="how-it-works" class="py-10 lg:py-14 bg-apple-gray-50 border-t border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-10">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-2">HOW IT WORKS</h2>
-                <p class="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900">Five simple steps</p>
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brand mb-2">HOW IT WORKS</h2>
+                <p class="text-3xl sm:text-4xl font-semibold font-serif tracking-tight text-apple-gray-900">Five simple steps</p>
             </div>
 
             <div id="steps-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 relative items-start">
                 
-                <div data-step="1" class="step-box bg-white p-5 rounded-md border border-neutral-200 shadow-xs relative group hover:border-brand-400/50 transition-all">
+                <div data-step="1" class="step-box bg-white p-5 rounded-lg border border-apple-gray-100 shadow-xs relative group hover:border-brand/30 transition-all">
                     <div class="flex items-center space-x-3">
-                        <div class="step-badge w-7 h-7 shrink-0 bg-neutral-100 rounded-md flex items-center justify-center text-brand-800 font-bold text-xs border border-neutral-200 group-hover:bg-brand-400 group-hover:text-white transition-colors">1</div>
-                        <h3 class="text-sm font-bold text-neutral-900 tracking-tight">Add Data</h3>
+                        <div class="step-badge w-7 h-7 shrink-0 bg-apple-gray-50 rounded-sm flex items-center justify-center text-brand font-bold text-xs border border-apple-gray-100 group-hover:bg-brand group-hover:text-white transition-colors">1</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Add Data</h3>
                     </div>
                     <div class="step-content">
-                        <p class="text-neutral-600 text-xs font-serif leading-relaxed">
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             Upload your GEDCOM file and choose your starting person, or start building your family tree completely from scratch right on our website.
                         </p>
                     </div>
                 </div>
 
-                <div data-step="2" class="step-box bg-white p-5 rounded-md border border-neutral-200 shadow-xs relative group hover:border-brand-400/50 transition-all">
+                <div data-step="2" class="step-box bg-white p-5 rounded-lg border border-apple-gray-100 shadow-xs relative group hover:border-brand/30 transition-all">
                     <div class="flex items-center space-x-3">
-                        <div class="step-badge w-7 h-7 shrink-0 bg-neutral-100 rounded-md flex items-center justify-center text-brand-800 font-bold text-xs border border-neutral-200 group-hover:bg-brand-400 group-hover:text-white transition-colors">2</div>
-                        <h3 class="text-sm font-bold text-neutral-900 tracking-tight">Choose Options</h3>
+                        <div class="step-badge w-7 h-7 shrink-0 bg-apple-gray-50 rounded-sm flex items-center justify-center text-brand font-bold text-xs border border-apple-gray-100 group-hover:bg-brand group-hover:text-white transition-colors">2</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Choose Options</h3>
                     </div>
                     <div class="step-content">
-                        <p class="text-neutral-600 text-xs font-serif leading-relaxed">
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             Set your preferences like the number of generations, title, and family tree direction. Decide if you want to display additional data like birth and death dates.
                         </p>
                     </div>
                 </div>
 
-                <div data-step="3" class="step-box bg-white p-5 rounded-md border border-neutral-200 shadow-xs relative group hover:border-brand-400/50 transition-all">
+                <div data-step="3" class="step-box bg-white p-5 rounded-lg border border-apple-gray-100 shadow-xs relative group hover:border-brand/30 transition-all">
                     <div class="flex items-center space-x-3">
-                        <div class="step-badge w-7 h-7 shrink-0 bg-neutral-100 rounded-md flex items-center justify-center text-brand-800 font-bold text-xs border border-neutral-200 group-hover:bg-brand-400 group-hover:text-white transition-colors">3</div>
-                        <h3 class="text-sm font-bold text-neutral-900 tracking-tight">Choose Style</h3>
+                        <div class="step-badge w-7 h-7 shrink-0 bg-apple-gray-50 rounded-sm flex items-center justify-center text-brand font-bold text-xs border border-apple-gray-100 group-hover:bg-brand group-hover:text-white transition-colors">3</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Choose Style</h3>
                     </div>
                     <div class="step-content">
-                        <p class="text-neutral-600 text-xs font-serif leading-relaxed">
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             Select your preferred design framework, such as our historic Baroque layout or our Medieval theme.
                         </p>
                     </div>
                 </div>
 
-                <div data-step="4" class="step-box bg-white p-5 rounded-md border border-neutral-200 shadow-xs relative group hover:border-brand-400/50 transition-all">
+                <div data-step="4" class="step-box bg-white p-5 rounded-lg border border-apple-gray-100 shadow-xs relative group hover:border-brand/30 transition-all">
                     <div class="flex items-center space-x-3">
-                        <div class="step-badge w-7 h-7 shrink-0 bg-neutral-100 rounded-md flex items-center justify-center text-brand-800 font-bold text-xs border border-neutral-200 group-hover:bg-brand-400 group-hover:text-white transition-colors">4</div>
-                        <h3 class="text-sm font-bold text-neutral-900 tracking-tight">Personalize</h3>
+                        <div class="step-badge w-7 h-7 shrink-0 bg-apple-gray-50 rounded-sm flex items-center justify-center text-brand font-bold text-xs border border-apple-gray-100 group-hover:bg-brand group-hover:text-white transition-colors">4</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Personalize</h3>
                     </div>
                     <div class="step-content">
-                        <p class="text-neutral-600 text-xs font-serif leading-relaxed">
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             If you want, add your own final touches to fine-tune the visuals.
                         </p>
                     </div>
                 </div>
 
-                <div data-step="5" class="step-box bg-white p-5 rounded-md border border-neutral-200 shadow-xs relative group hover:border-brand-400/50 transition-all">
+                <div data-step="5" class="step-box bg-white p-5 rounded-lg border border-apple-gray-100 shadow-xs relative group hover:border-brand/30 transition-all">
                     <div class="flex items-center space-x-3">
-                        <div class="step-badge w-7 h-7 shrink-0 bg-neutral-100 rounded-md flex items-center justify-center text-brand-800 font-bold text-xs border border-neutral-200 group-hover:bg-brand-400 group-hover:text-white transition-colors">5</div>
-                        <h3 class="text-sm font-bold text-neutral-900 tracking-tight">Generate!</h3>
+                        <div class="step-badge w-7 h-7 shrink-0 bg-apple-gray-50 rounded-sm flex items-center justify-center text-brand font-bold text-xs border border-apple-gray-100 group-hover:bg-brand group-hover:text-white transition-colors">5</div>
+                        <h3 class="text-sm font-bold text-apple-gray-900 tracking-tight">Generate!</h3>
                     </div>
                     <div class="step-content">
-                        <p class="text-neutral-600 text-xs font-serif leading-relaxed">
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             Just click the "Generate" button. Our system will instantly process your choices and your high-resolution family tree layout is ready!
                         </p>
                     </div>
@@ -235,20 +238,20 @@
         </div>
     </section>
 
-    <section id="style-examples" class="py-12 lg:py-16 bg-white border-b border-neutral-200/80">
+    <section id="style-examples" class="py-12 lg:py-16 bg-white border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-10">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400 mb-2">OVER 10 STYLES TO CHOOSE FROM</h2>
-                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900">Style Examples</h2>
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brand mb-2">OVER 10 STYLES TO CHOOSE FROM</h2>
+                <h2 class="text-3xl sm:text-4xl font-semibold font-serif tracking-tight text-apple-gray-900">Style Examples</h2>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
-                <div class="bg-neutral-50 rounded-md p-4 border border-neutral-200 shadow-xs space-y-4">
-                    <div class="flex items-center justify-between border-b border-neutral-200/60 pb-3">
-                        <h3 class="text-sm font-bold tracking-tight text-neutral-900">Baroque Style</h3>
-                        <span class="text-[10px] font-bold px-2 py-0.5 bg-white text-neutral-700 rounded border border-neutral-200 uppercase tracking-wider">Interactive</span>
+                <div class="bg-apple-gray-50/60 rounded-lg p-4 border border-apple-gray-100 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between border-b border-apple-gray-100 pb-3">
+                        <h3 class="text-sm font-bold tracking-tight text-apple-gray-900">Baroque Style</h3>
+                        <span class="text-[10px] font-semibold px-2 py-0.5 bg-white text-apple-gray-400 rounded-sm border border-apple-gray-100 uppercase tracking-wider">Interactive</span>
                     </div>
-                    <div id="slider-baroque" class="relative w-full aspect-widescreen bg-white rounded border border-neutral-200 overflow-hidden shadow-xs select-none">
+                    <div id="slider-baroque" class="relative w-full aspect-widescreen bg-white rounded-md overflow-hidden border border-apple-gray-100 shadow-xs select-none">
                         <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520147/Bildschirmfoto_2026-07-08_um_16.10.12_kelzx4.png" alt="Simple Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
 
                         <div id="clip-baroque" class="slider-clip-path absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
@@ -256,19 +259,19 @@
                         </div>
 
                         <div id="line-baroque" class="slider-line absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] pointer-events-none z-20" style="left: 50%;">
-                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white text-neutral-900 rounded-full shadow-md flex items-center justify-center border border-neutral-200 text-[10px] font-bold">↔</div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white text-apple-gray-900 rounded-full shadow-md flex items-center justify-center border border-apple-gray-100 text-[10px] font-bold">↔</div>
                         </div>
 
                         <input type="range" min="0" max="100" value="50" step="0.1" oninput="updateComparisonSlider('baroque', this.value)" class="slider-input absolute inset-0 w-full h-full opacity-0 z-30 cursor-ew-resize appearance-none" aria-label="Baroque reveal slider" />
                     </div>
                 </div>
 
-                <div class="bg-neutral-50 rounded-md p-4 border border-neutral-200 shadow-xs space-y-4">
-                    <div class="flex items-center justify-between border-b border-neutral-200/60 pb-3">
-                        <h3 class="text-sm font-bold tracking-tight text-neutral-900">Medieval Style</h3>
-                        <span class="text-[10px] font-bold px-2 py-0.5 bg-white text-neutral-700 rounded border border-neutral-200 uppercase tracking-wider">Interactive</span>
+                <div class="bg-apple-gray-50/60 rounded-lg p-4 border border-apple-gray-100 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between border-b border-apple-gray-100 pb-3">
+                        <h3 class="text-sm font-bold tracking-tight text-apple-gray-900">Medieval Style</h3>
+                        <span class="text-[10px] font-semibold px-2 py-0.5 bg-white text-apple-gray-400 rounded-sm border border-apple-gray-100 uppercase tracking-wider">Interactive</span>
                     </div>
-                    <div id="slider-medieval" class="relative w-full aspect-widescreen bg-white rounded border border-neutral-200 overflow-hidden shadow-xs select-none">
+                    <div id="slider-medieval" class="relative w-full aspect-widescreen bg-white rounded-md overflow-hidden border border-apple-gray-100 shadow-xs select-none">
                         <img src="https://res.cloudinary.com/db44a5zwl/image/upload/v1783520147/Bildschirmfoto_2026-07-08_um_16.10.12_kelzx4.png" alt="Simple Layout View" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
 
                         <div id="clip-medieval" class="slider-clip-path absolute inset-0 w-full h-full overflow-hidden pointer-events-none" style="clip-path: inset(0 0 0 50%);">
@@ -276,7 +279,7 @@
                         </div>
 
                         <div id="line-medieval" class="slider-line absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)] pointer-events-none z-20" style="left: 50%;">
-                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white text-neutral-900 rounded-full shadow-md flex items-center justify-center border border-neutral-200 text-[10px] font-bold">↔</div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white text-apple-gray-900 rounded-full shadow-md flex items-center justify-center border border-apple-gray-100 text-[10px] font-bold">↔</div>
                         </div>
 
                         <input type="range" min="0" max="100" value="50" step="0.1" oninput="updateComparisonSlider('medieval', this.value)" class="slider-input absolute inset-0 w-full h-full opacity-0 z-30 cursor-ew-resize appearance-none" aria-label="Medieval reveal slider" />
@@ -286,64 +289,64 @@
         </div>
     </section>
 
-    <section class="py-12 lg:py-16 bg-neutral-50 border-b border-neutral-200/80">
+    <section class="py-12 lg:py-16 bg-apple-gray-50 border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-10">
-                <p class="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900">Product Benefits</p>
+                <p class="text-3xl sm:text-4xl font-semibold font-serif tracking-tight text-apple-gray-900">Product Benefits</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div class="bg-white p-6 sm:p-8 rounded-md border border-neutral-200 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
+                <div class="bg-white p-6 sm:p-8 rounded-lg border border-apple-gray-100 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                     <div class="space-y-4">
                         <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 shrink-0 bg-neutral-50 flex items-center justify-center rounded text-brand-800 border border-neutral-200">
+                            <div class="w-8 h-8 shrink-0 bg-apple-gray-50 flex items-center justify-center rounded-sm text-brand border border-apple-gray-100">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
                             </div>
-                            <h3 class="text-base font-bold text-neutral-900 tracking-tight">Unique designs & personalization</h3>
+                            <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Unique designs & personalization</h3>
                         </div>
-                        <p class="text-neutral-600 text-sm font-serif leading-relaxed">
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             You can make your family tree really special with multiple styles to choose from. Additionally you can add some unique features like your own coat of arms to it.
                         </p>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 sm:p-8 rounded-md border border-neutral-200 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
+                <div class="bg-white p-6 sm:p-8 rounded-lg border border-apple-gray-100 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                     <div class="space-y-4">
                         <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 shrink-0 bg-neutral-50 flex items-center justify-center rounded text-brand-800 border border-neutral-200">
+                            <div class="w-8 h-8 shrink-0 bg-apple-gray-50 flex items-center justify-center rounded-sm text-brand border border-apple-gray-100">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
                             </div>
-                            <h3 class="text-base font-bold text-neutral-900 tracking-tight">Works with complex family trees</h3>
+                            <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Works with complex family trees</h3>
                         </div>
-                        <p class="text-neutral-600 text-sm font-serif leading-relaxed">
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             The program can handle all kinds of complex formations. This means that everything will still look good if your family tree has unusual branches and nothing will get messy or overlap.
                         </p>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 sm:p-8 rounded-md border border-neutral-200 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
+                <div class="bg-white p-6 sm:p-8 rounded-lg border border-apple-gray-100 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                     <div class="space-y-4">
                         <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 shrink-0 bg-neutral-50 flex items-center justify-center rounded text-brand-800 border border-neutral-200">
+                            <div class="w-8 h-8 shrink-0 bg-apple-gray-50 flex items-center justify-center rounded-sm text-brand border border-apple-gray-100">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             </div>
-                            <h3 class="text-base font-bold text-neutral-900 tracking-tight">Your data is secure</h3>
+                            <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Your data is secure</h3>
                         </div>
-                        <p class="text-neutral-600 text-sm font-serif leading-relaxed">
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             We keep your family records safe. We do not send them to companies. Facidra makes sure that all the details are added safely at the end.
                         </p>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 sm:p-8 rounded-md border border-neutral-200 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
+                <div class="bg-white p-6 sm:p-8 rounded-lg border border-apple-gray-100 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                     <div class="space-y-4">
                         <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 shrink-0 bg-neutral-50 flex items-center justify-center rounded text-brand-800 border border-neutral-200">
+                            <div class="w-8 h-8 shrink-0 bg-apple-gray-50 flex items-center justify-center rounded-sm text-brand border border-apple-gray-100">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                             </div>
-                            <h3 class="text-base font-bold text-neutral-900 tracking-tight">Partnership with trusted fine art printing firm</h3>
+                            <h3 class="text-base font-semibold text-apple-gray-900 tracking-tight">Partnership with trusted fine art printing firm</h3>
                         </div>
-                        <p class="text-neutral-600 text-sm font-serif leading-relaxed">
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             We work with Prodigi to print your family trees. Prodigi is a known company that makes high quality prints with great colors and premium paper.
                         </p>
                     </div>
@@ -352,22 +355,22 @@
         </div>
     </section>
 
-    <section id="gedcom-guide" class="py-12 lg:py-16 bg-white border-b border-neutral-200/80">
+    <section id="gedcom-guide" class="py-12 lg:py-16 bg-white border-b border-apple-gray-100">
         <div class="max-w-4xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-10">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 tracking-tight">How to Get Your GEDCOM File</h2>
-                <p class="text-neutral-600 text-sm font-serif">Select your platform below for simple, step-by-step instructions to export your family tree file.</p>
+                <h2 class="text-3xl sm:text-4xl font-semibold font-serif text-apple-gray-900 tracking-tight">How to Get Your GEDCOM File</h2>
+                <p class="text-apple-gray-800 text-sm font-normal">Select your platform below for simple, step-by-step instructions to export your family tree file.</p>
             </div>
 
             <!-- Platform Tabs -->
-            <div class="flex justify-center border-b border-neutral-200 mb-8" role="tablist">
-                <button onclick="switchGedcomTab('ancestry')" id="tab-btn-ancestry" class="border-b-2 border-brand-400 px-6 pb-3 text-sm font-bold text-neutral-900 outline-none transition-all" role="tab">
+            <div class="flex justify-center border-b border-apple-gray-100 mb-8" role="tablist">
+                <button onclick="switchGedcomTab('ancestry')" id="tab-btn-ancestry" class="border-b-2 border-brand px-6 pb-3 text-sm font-semibold text-apple-gray-900 outline-none transition-all" role="tab">
                     Ancestry.com
                 </button>
-                <button onclick="switchGedcomTab('myheritage')" id="tab-btn-myheritage" class="border-b-2 border-transparent px-6 pb-3 text-sm font-bold text-neutral-500 hover:text-neutral-900 outline-none transition-all" role="tab">
+                <button onclick="switchGedcomTab('myheritage')" id="tab-btn-myheritage" class="border-b-2 border-transparent px-6 pb-3 text-sm font-semibold text-apple-gray-400 hover:text-apple-gray-900 outline-none transition-all" role="tab">
                     MyHeritage
                 </button>
-                <button onclick="switchGedcomTab('familysearch')" id="tab-btn-familysearch" class="border-b-2 border-transparent px-6 pb-3 text-sm font-bold text-neutral-500 hover:text-neutral-900 outline-none transition-all" role="tab">
+                <button onclick="switchGedcomTab('familysearch')" id="tab-btn-familysearch" class="border-b-2 border-transparent px-6 pb-3 text-sm font-semibold text-apple-gray-400 hover:text-apple-gray-900 outline-none transition-all" role="tab">
                     FamilySearch
                 </button>
             </div>
@@ -377,58 +380,58 @@
                 
                 <!-- Ancestry Steps -->
                 <div id="tab-content-ancestry" class="contents">
-                    <div class="bg-neutral-50 border border-neutral-200 p-5 rounded-md flex flex-col space-y-2">
-                        <div class="w-7 h-7 bg-white border border-neutral-300 text-brand-800 font-bold text-xs rounded flex items-center justify-center shadow-xs">1</div>
-                        <h4 class="text-sm font-bold text-neutral-900 pt-1">Go to Tree Settings</h4>
-                        <p class="text-xs font-serif text-neutral-600 leading-relaxed">Open your family tree on Ancestry, click your tree name in the top left corner, and select <strong class="text-neutral-900 font-sans">Tree Settings</strong>.</p>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-brand font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">1</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Go to Tree Settings</h4>
+                        <p class="text-xs text-apple-gray-800 leading-relaxed">Open your family tree on Ancestry, click your tree name in the top left corner, and select <strong class="text-apple-gray-800">Tree Settings</strong>.</p>
                     </div>
-                    <div class="bg-neutral-50 border border-neutral-200 p-5 rounded-md flex flex-col space-y-2">
-                        <div class="w-7 h-7 bg-white border border-neutral-300 text-brand-800 font-bold text-xs rounded flex items-center justify-center shadow-xs">2</div>
-                        <h4 class="text-sm font-bold text-neutral-900 pt-1">Export Tree</h4>
-                        <p class="text-xs font-serif text-neutral-600 leading-relaxed">On the right side of the settings page, look for the banner and click <strong class="text-neutral-900 font-sans">Export Tree</strong>.</p>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-brand font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">2</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Export Tree</h4>
+                        <p class="text-xs text-apple-gray-800 leading-relaxed">On the right side of the settings page, look for the banner and click <strong class="text-apple-gray-800">Export Tree</strong>.</p>
                     </div>
-                    <div class="bg-neutral-50 border border-neutral-200 p-5 rounded-md flex flex-col space-y-2">
-                        <div class="w-7 h-7 bg-white border border-neutral-300 text-brand-800 font-bold text-xs rounded flex items-center justify-center shadow-xs">3</div>
-                        <h4 class="text-sm font-bold text-neutral-900 pt-1">Download File</h4>
-                        <p class="text-xs font-serif text-neutral-600 leading-relaxed">Wait a few seconds for the file to generate, then click the green <strong class="text-neutral-900 font-sans">Download GEDCOM</strong> button.</p>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-brand font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">3</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Download File</h4>
+                        <p class="text-xs text-apple-gray-800 leading-relaxed">Wait a few seconds for the file to generate, then click the green <strong class="text-apple-gray-800">Download GEDCOM</strong> button.</p>
                     </div>
                 </div>
 
                 <!-- MyHeritage Steps -->
                 <div id="tab-content-myheritage" class="contents hidden">
-                    <div class="bg-neutral-50 border border-neutral-200 p-5 rounded-md flex flex-col space-y-2">
-                        <div class="w-7 h-7 bg-white border border-neutral-300 text-brand-800 font-bold text-xs rounded flex items-center justify-center shadow-xs">1</div>
-                        <h4 class="text-sm font-bold text-neutral-900 pt-1">Manage Trees</h4>
-                        <p class="text-xs font-serif text-neutral-600 leading-relaxed">Hover over the <strong class="text-neutral-900 font-sans">Family Tree</strong> tab in the top menu and click on <strong class="text-neutral-900 font-sans">Manage Trees</strong>.</p>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-brand font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">1</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Manage Trees</h4>
+                        <p class="text-xs text-apple-gray-800 leading-relaxed">Hover over the <strong class="text-apple-gray-800">Family Tree</strong> tab in the top menu and click on <strong class="text-apple-gray-800">Manage Trees</strong>.</p>
                     </div>
-                    <div class="bg-neutral-50 border border-neutral-200 p-5 rounded-md flex flex-col space-y-2">
-                        <div class="w-7 h-7 bg-white border border-neutral-300 text-brand-800 font-bold text-xs rounded flex items-center justify-center shadow-xs">2</div>
-                        <h4 class="text-sm font-bold text-neutral-900 pt-1">Find Your Tree</h4>
-                        <p class="text-xs font-serif text-neutral-600 leading-relaxed">Locate your family tree in the list displayed on your screen.</p>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-brand font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">2</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Find Your Tree</h4>
+                        <p class="text-xs text-apple-gray-800 leading-relaxed">Locate your family tree in the list displayed on your screen.</p>
                     </div>
-                    <div class="bg-neutral-50 border border-neutral-200 p-5 rounded-md flex flex-col space-y-2">
-                        <div class="w-7 h-7 bg-white border border-neutral-300 text-brand-800 font-bold text-xs rounded flex items-center justify-center shadow-xs">3</div>
-                        <h4 class="text-sm font-bold text-neutral-900 pt-1">Export GEDCOM</h4>
-                        <p class="text-xs font-serif text-neutral-600 leading-relaxed">Click <strong class="text-neutral-900 font-sans">Export GEDCOM</strong> next to your tree name to download the file directly to your device.</p>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-brand font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">3</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Export GEDCOM</h4>
+                        <p class="text-xs text-apple-gray-800 leading-relaxed">Click <strong class="text-apple-gray-800">Export GEDCOM</strong> next to your tree name to download the file directly to your device.</p>
                     </div>
                 </div>
 
                 <!-- FamilySearch Steps -->
                 <div id="tab-content-familysearch" class="contents hidden">
-                    <div class="bg-neutral-50 border border-neutral-200 p-5 rounded-md flex flex-col space-y-2">
-                        <div class="w-7 h-7 bg-white border border-neutral-300 text-brand-800 font-bold text-xs rounded flex items-center justify-center shadow-xs">1</div>
-                        <h4 class="text-sm font-bold text-neutral-900 pt-1">Unified Tree</h4>
-                        <p class="text-xs font-serif text-neutral-600 leading-relaxed">FamilySearch uses a shared collaborative tree, so standard direct GEDCOM exports aren't built directly into the main interface.</p>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-brand font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">1</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Unified Tree</h4>
+                        <p class="text-xs text-apple-gray-800 leading-relaxed">FamilySearch uses a shared collaborative tree, so standard direct GEDCOM exports aren't built directly into the main interface.</p>
                     </div>
-                    <div class="bg-neutral-50 border border-neutral-200 p-5 rounded-md flex flex-col space-y-2">
-                        <div class="w-7 h-7 bg-white border border-neutral-300 text-brand-800 font-bold text-xs rounded flex items-center justify-center shadow-xs">2</div>
-                        <h4 class="text-sm font-bold text-neutral-900 pt-1">Use Partner Tool</h4>
-                        <p class="text-xs font-serif text-neutral-600 leading-relaxed">Log into an approved partner desktop software (like RootsMagic or Legacy) using your FamilySearch account.</p>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-brand font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">2</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Use Partner Tool</h4>
+                        <p class="text-xs text-apple-gray-800 leading-relaxed">Log into an approved partner desktop software (like RootsMagic or Legacy) using your FamilySearch account.</p>
                     </div>
-                    <div class="bg-neutral-50 border border-neutral-200 p-5 rounded-md flex flex-col space-y-2">
-                        <div class="w-7 h-7 bg-white border border-neutral-300 text-brand-800 font-bold text-xs rounded flex items-center justify-center shadow-xs">3</div>
-                        <h4 class="text-sm font-bold text-neutral-900 pt-1">Sync & Export</h4>
-                        <p class="text-xs font-serif text-neutral-600 leading-relaxed">Sync your ancestors into the software and export a clean <strong class="text-neutral-900 font-sans">.ged</strong> file ready for Facidra.</p>
+                    <div class="bg-apple-gray-50 border border-apple-gray-100 p-5 rounded-lg flex flex-col space-y-2">
+                        <div class="w-7 h-7 bg-white border border-apple-gray-200 text-brand font-bold text-xs rounded-sm flex items-center justify-center shadow-xs">3</div>
+                        <h4 class="text-sm font-bold text-apple-gray-900 pt-1">Sync & Export</h4>
+                        <p class="text-xs text-apple-gray-800 leading-relaxed">Sync your ancestors into the software and export a clean <strong class="text-apple-gray-800">.ged</strong> file ready for Facidra.</p>
                     </div>
                 </div>
 
@@ -436,61 +439,61 @@
         </div>
     </section>
 
-    <section id="products" class="py-12 lg:py-16 bg-neutral-50 border-b border-neutral-200/80">
+    <section id="products" class="py-12 lg:py-16 bg-apple-gray-50 border-b border-apple-gray-100">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto space-y-3 mb-10">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-brand-400">SIMPLE PRICING</h2>
-                <p class="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900">Provided Services</p>
-                <p class="text-neutral-600 text-sm font-serif">Choose either a digital copy or order a professional museum-grade print.</p>
+                <h2 class="text-xs font-bold uppercase tracking-widest text-brand">SIMPLE PRICING</h2>
+                <p class="text-3xl sm:text-4xl font-semibold font-serif tracking-tight text-apple-gray-900">Provided Services</p>
+                <p class="text-apple-gray-800 text-sm">Choose either a digital copy or order a professional museum-grade print.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
-                <div class="bg-white border border-neutral-200 p-8 sm:p-10 rounded-md flex flex-col justify-between shadow-xs hover:shadow-md transition-all duration-300">
+                <div class="bg-white border border-apple-gray-100 p-8 sm:p-10 rounded-lg flex flex-col justify-between shadow-xs hover:shadow-md transition-all duration-300">
                     <div class="space-y-6">
                         <div class="flex justify-between items-start">
                             <div>
-                                <span class="text-[10px] font-bold tracking-widest text-neutral-400 uppercase block mb-1"></span>
-                                <h3 class="text-xl font-bold text-neutral-900">Digital Copy</h3>
+                                <span class="text-[10px] font-bold tracking-widest text-apple-gray-400 uppercase block mb-1"></span>
+                                <h3 class="text-xl font-bold text-apple-gray-900">Digital Copy</h3>
                             </div>
                             <div class="text-right">
-                                <span class="text-2xl font-extrabold text-neutral-900">€25</span>
-                                <span class="text-[10px] text-neutral-500 block uppercase font-semibold mt-0.5">FILE</span>
+                                <span class="text-2xl font-bold text-apple-gray-900">€25</span>
+                                <span class="text-[10px] text-apple-gray-400 block uppercase font-medium mt-0.5">FILE</span>
                             </div>
                         </div>
-                        <div class="w-full h-[1px] bg-neutral-200"></div>
-                        <p class="text-neutral-600 text-sm font-serif leading-relaxed">
+                        <div class="w-full h-[1px] bg-apple-gray-100"></div>
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             Perfect for local viewing and printing on your own terms. Your personal artwork gets sent instantly as a high-resolution, fully scalable vector PDF file via e-mail.
                         </p>
                     </div>
                     <div class="pt-8">
-                        <a href="https://www.facidra.com/introduction.html" class="block w-full text-center px-4 py-3 text-xs font-bold uppercase tracking-wider bg-neutral-100 text-neutral-800 rounded-md border border-neutral-300 hover:bg-neutral-200 transition-all">
+                        <a href="https://www.facidra.com/introduction.html" class="block w-full text-center px-4 py-2.5 text-xs font-medium bg-apple-gray-50 text-apple-gray-800 rounded-sm border border-apple-gray-200 hover:bg-apple-gray-100 transition-all">
                             Choose Option
                         </a>
                     </div>
                 </div>
 
-                <div class="bg-white border-2 border-brand-400 p-8 sm:p-10 rounded-md flex flex-col justify-between shadow-sm relative">
-                    <div class="absolute top-0 right-8 transform -translate-y-1/2 bg-brand-400 text-white px-3 py-1 text-[10px] font-bold tracking-wider rounded uppercase">
+                <div class="bg-white border-2 border-brand p-8 sm:p-10 rounded-lg flex flex-col justify-between shadow-sm relative">
+                    <div class="absolute top-0 right-8 transform -translate-y-1/2 bg-brand text-white px-2.5 py-0.5 text-[10px] font-bold tracking-wider rounded-sm uppercase">
                         MOST POPULAR
                     </div>
                     <div class="space-y-6">
                         <div class="flex justify-between items-start">
                             <div>
-                                <span class="text-[10px] font-bold tracking-widest text-brand-400 uppercase block mb-1"></span>
-                                <h3 class="text-xl font-bold text-neutral-900">High Quality Print</h3>
+                                <span class="text-[10px] font-bold tracking-widest text-brand uppercase block mb-1"></span>
+                                <h3 class="text-xl font-bold text-apple-gray-900">High Quality Print</h3>
                             </div>
                             <div class="text-right">
-                                <span class="text-2xl font-extrabold text-neutral-900">€75</span>
-                                <span class="text-[10px] text-neutral-500 block uppercase font-semibold mt-0.5">PRINTED + SHIPPED</span>
+                                <span class="text-2xl font-bold text-apple-gray-900">€75</span>
+                                <span class="text-[10px] text-apple-gray-400 block uppercase font-medium mt-0.5">PRINTED + SHIPPED</span>
                             </div>
                         </div>
-                        <div class="w-full h-[1px] bg-neutral-200"></div>
-                        <p class="text-neutral-600 text-sm font-serif leading-relaxed">
+                        <div class="w-full h-[1px] bg-apple-gray-100"></div>
+                        <p class="text-apple-gray-800 text-sm font-normal leading-relaxed">
                             Museum-quality canvas prints on premium paper with rich detail.
                         </p>
                     </div>
                     <div class="pt-8">
-                        <a href="https://www.facidra.com/introduction.html" class="block w-full text-center px-4 py-3 text-xs font-bold uppercase tracking-wider bg-brand-800 text-white rounded-md hover:bg-brand-900 transition-all shadow-xs">
+                        <a href="https://www.facidra.com/introduction.html" class="block w-full text-center px-4 py-2.5 text-xs font-medium bg-brand text-white rounded-sm border border-brand-border hover:bg-brand-hover transition-all shadow-xs">
                             Choose Option
                         </a>
                     </div>
@@ -499,16 +502,16 @@
         </div>
     </section>
 
-    <footer class="bg-white text-neutral-500 py-10 border-t border-neutral-200 text-xs font-serif">
+    <footer class="bg-white text-apple-gray-400 py-10 border-t border-apple-gray-50 text-xs">
         <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div>
-                <p class="font-bold font-sans text-neutral-900 mb-1">© 2026 Facidra</p>
-                <p class="font-normal text-neutral-600">All rights reserved. Transforming data exports into premium design artifacts.</p>
+                <p class="font-medium text-apple-gray-900 mb-1">© 2026 Facidra</p>
+                <p class="font-normal text-apple-gray-400">All rights reserved. Transforming data exports into premium design artifacts.</p>
             </div>
-            <div class="flex space-x-6 font-sans font-semibold">
-                <a href="#" class="hover:text-neutral-900 transition-colors">Privacy Policy</a>
-                <a href="#" class="hover:text-neutral-900 transition-colors">Terms of Service</a>
-                <a href="https://heritageprint-frontend.vercel.app/contact.html" class="hover:text-neutral-900 transition-colors">Contact Support</a>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-apple-gray-900 transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-apple-gray-900 transition-colors">Terms of Service</a>
+                <a href="https://heritageprint-frontend.vercel.app/contact.html" class="hover:text-apple-gray-900 transition-colors">Contact Support</a>
             </div>
         </div>
     </footer>
@@ -524,13 +527,13 @@
                 const btn = document.getElementById(`tab-btn-${p}`);
                 const content = document.getElementById(`tab-content-${p}`);
                 if (p === platform) {
-                    btn.classList.remove('border-transparent', 'text-neutral-500');
-                    btn.classList.add('border-brand-400', 'text-neutral-900');
+                    btn.classList.remove('border-transparent', 'text-apple-gray-400');
+                    btn.classList.add('border-brand', 'text-apple-gray-900');
                     content.classList.remove('hidden');
                     content.classList.add('contents');
                 } else {
-                    btn.classList.remove('border-brand-400', 'text-neutral-900');
-                    btn.classList.add('border-transparent', 'text-neutral-500');
+                    btn.classList.remove('border-brand', 'text-apple-gray-900');
+                    btn.classList.add('border-transparent', 'text-apple-gray-400');
                     content.classList.add('hidden');
                     content.classList.remove('contents');
                 }
