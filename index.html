@@ -17,7 +17,7 @@
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
                         serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-                        schwabacher: ['"Alte Schwabacher Regular"', '"Alte Schwabacher"', 'Georgia', 'serif'],
+                        schwabacher: ['"Alte Schwabacher Regular"', '"Alte Schwabacher"', 'Fraktur', '"Cormorant Garamond"', 'serif'],
                     },
                     colors: {
                         brand: {
@@ -48,6 +48,14 @@
         }
     </script>
     <style>
+        @font-face {
+            font-family: 'Alte Schwabacher Regular';
+            src: local('Alte Schwabacher Regular'), local('Alte Schwabacher'), url('AlteSchwabacher-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -97,20 +105,16 @@
             margin-top: 0.75rem;
         }
 
-        /* Typewriter Cursor Animation */
+        /* Typing Cursor Effect */
         .typing-cursor::after {
             content: '|';
-            display: inline-block;
-            margin-left: 2px;
-            color: #914D4D;
             animation: blink 0.8s infinite;
+            color: #914D4D;
+            margin-left: 2px;
         }
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
-        }
-        .typing-done::after {
-            display: none;
         }
     </style>
 </head>
@@ -163,8 +167,8 @@
         <div class="max-w-6xl mx-auto px-6 w-full relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 <div class="lg:col-span-6 space-y-5 text-center lg:text-left bg-white/40 backdrop-blur-xs p-6 rounded-lg lg:bg-transparent lg:backdrop-blur-none lg:p-0">
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold font-schwabacher tracking-tight text-apple-gray-900 leading-[1.1] typing-cursor" id="hero-title">
-                        <span id="title-fast"></span><span id="title-slow" class="text-brand not-italic"></span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-normal font-schwabacher tracking-tight text-apple-gray-900 leading-[1.1] min-h-[1.2em]">
+                        <span id="typed-prefix"></span><span id="typed-art" class="text-brand font-schwabacher"></span><span id="typing-cursor" class="typing-cursor"></span>
                     </h1>
                     <p class="text-apple-gray-800 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
                         Upload your GEDCOM file or build your family tree from scratch to design elegant, custom family trees.
@@ -566,38 +570,43 @@
             }
         }
 
-        // Typewriter effect for Hero Title
+        // Fast & Slow Typewriter Animation for Title
         document.addEventListener('DOMContentLoaded', () => {
-            const fastText = "Turn your family tree into ";
-            const slowText = "art.";
-            const fastContainer = document.getElementById('title-fast');
-            const slowContainer = document.getElementById('title-slow');
-            const titleContainer = document.getElementById('hero-title');
+            const prefixText = "Turn your family tree into ";
+            const artText = "art.";
+            const prefixElem = document.getElementById('typed-prefix');
+            const artElem = document.getElementById('typed-art');
+            const cursorElem = document.getElementById('typing-cursor');
 
-            let fastIndex = 0;
-            let slowIndex = 0;
+            const fastSpeed = 25;  // Speed for prefix (ms)
+            const slowSpeed = 150; // Speed for "art." (ms)
 
-            function typeFast() {
-                if (fastIndex < fastText.length) {
-                    fastContainer.textContent += fastText.charAt(fastIndex);
-                    fastIndex++;
-                    setTimeout(typeFast, 35); // Fast typing speed
+            let pIndex = 0;
+            let aIndex = 0;
+
+            function typePrefix() {
+                if (pIndex < prefixText.length) {
+                    prefixElem.textContent += prefixText.charAt(pIndex);
+                    pIndex++;
+                    setTimeout(typePrefix, fastSpeed);
                 } else {
-                    setTimeout(typeSlow, 250); // Pause before typing "art."
+                    setTimeout(typeArt, 100);
                 }
             }
 
-            function typeSlow() {
-                if (slowIndex < slowText.length) {
-                    slowContainer.textContent += slowText.charAt(slowIndex);
-                    slowIndex++;
-                    setTimeout(typeSlow, 120); // Slower typing speed
+            function typeArt() {
+                if (aIndex < artText.length) {
+                    artElem.textContent += artText.charAt(aIndex);
+                    aIndex++;
+                    setTimeout(typeArt, slowSpeed);
                 } else {
-                    titleContainer.classList.add('typing-done');
+                    setTimeout(() => {
+                        if (cursorElem) cursorElem.style.display = 'none';
+                    }, 2500);
                 }
             }
 
-            typeFast();
+            typePrefix();
         });
 
         // Left-to-Right Non-Reversible Step Highlighting Animation Controlled by Scroll
